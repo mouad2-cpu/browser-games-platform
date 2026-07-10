@@ -1,0 +1,289 @@
+.about-page {
+  position: relative;
+  overflow-x: hidden;
+  color: #0f1115;
+}
+
+html.about-scroll-snap {
+  scroll-snap-type: y mandatory;
+}
+
+html.about-scroll-snap .about-scene {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
+.about-scene {
+  height: 100vh;
+  min-height: 100vh;
+  max-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 3rem 1.5rem;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.about-scene-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 56rem;
+  margin: 0 auto;
+  text-align: center;
+  width: 100%;
+}
+
+.about-shapes {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.about-shape {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #0f1115;
+  opacity: 0.2;
+  pointer-events: none;
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about-shape {
+    will-change: auto;
+    transform: none !important;
+  }
+}
+
+.about-hero-title {
+  font-size: clamp(2.25rem, 6vw, 3.5rem);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  margin: 0 0 1rem;
+  color: #0f1115;
+}
+
+.about-scene-title {
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: 800;
+  margin: 0 0 1.25rem;
+  letter-spacing: -0.02em;
+  color: #0f1115;
+}
+
+.about-scene-text {
+  font-size: clamp(1rem, 2.5vw, 1.2rem);
+  line-height: 1.6;
+  margin: 0;
+  color: rgba(15, 17, 21, 0.88);
+}
+
+.about-hero-sub {
+  font-size: clamp(1rem, 2.5vw, 1.25rem);
+  line-height: 1.5;
+  margin: 0 0 2rem;
+  color: rgba(15, 17, 21, 0.88);
+}
+
+.about-kicker {
+  margin: 0 0 1rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(15, 17, 21, 0.65);
+}
+
+.about-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.9rem 2rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+  text-decoration: none;
+  border-radius: 9999px;
+  border: none;
+  cursor: pointer;
+  transition: box-shadow 0.25s, transform 0.2s, background 0.2s;
+}
+
+.about-btn:hover {
+  transform: translateY(-1px);
+}
+
+.about-btn--primary {
+  background: #0f1115;
+  color: #fff;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.22);
+}
+
+.about-btn--primary:hover {
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+}
+
+.about-btn--secondary {
+  background: rgba(15, 17, 21, 0.12);
+  color: #0f1115;
+  border: 2px solid rgba(15, 17, 21, 0.3);
+  margin-top: 1rem;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.95rem;
+}
+
+.about-btn--secondary:hover {
+  background: rgba(15, 17, 21, 0.2);
+  border-color: rgba(15, 17, 21, 0.45);
+}
+
+.about-scene--promise .about-scene-inner {
+  max-height: 100%;
+  overflow: hidden;
+}
+
+.about-promise-view {
+  width: 100%;
+}
+
+.about-scene--promise .about-promise-grid {
+  margin-top: 1.75rem;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.about-scene--promise .about-promise-card {
+  padding: 1.1rem 0.95rem;
+}
+
+.about-scene--promise .about-promise-icon {
+  width: 2.75rem;
+  height: 2.75rem;
+  margin-bottom: 0.75rem;
+  font-size: 1.2rem;
+}
+
+.about-scene--promise .about-promise-card h3 {
+  font-size: 1.05rem;
+}
+
+.about-scene--promise .about-promise-card p {
+  font-size: 0.85rem;
+  line-height: 1.45;
+}
+
+.about-scene--promise .about-btn--secondary {
+  margin-top: 1.25rem;
+}
+
+.about-promise-grid {
+  display: grid;
+  gap: 1rem;
+  margin-top: 2.5rem;
+  text-align: left;
+}
+
+@media (min-width: 640px) {
+  .about-promise-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.25rem;
+  }
+}
+
+.about-promise-card {
+  background: rgba(255, 255, 255, 0.45);
+  border: 2px solid rgba(15, 17, 21, 0.12);
+  border-radius: 1.5rem;
+  padding: 1.5rem;
+  backdrop-filter: blur(4px);
+}
+
+.about-promise-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  margin-bottom: 1rem;
+  border-radius: 1rem;
+  background: rgba(15, 17, 21, 0.08);
+  color: #0f1115;
+  font-size: 1.35rem;
+  font-weight: 800;
+}
+
+.about-promise-card h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #0f1115;
+}
+
+.about-promise-card p {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: rgba(15, 17, 21, 0.82);
+}
+
+.about-progress {
+  position: fixed;
+  right: 1.25rem;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  z-index: 40;
+}
+
+.about-progress-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid rgba(15, 17, 21, 0.4);
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+  transition: transform 0.2s, background 0.2s, border-color 0.2s;
+}
+
+.about-progress-dot:hover {
+  transform: scale(1.2);
+  border-color: rgba(15, 17, 21, 0.7);
+}
+
+.about-progress-dot--active {
+  background: rgba(15, 17, 21, 0.88);
+  border-color: rgba(15, 17, 21, 0.95);
+  transform: scale(1.25);
+}
+
+@media (max-width: 768px) {
+  .about-progress {
+    right: 0.75rem;
+  }
+
+  .about-progress-dot {
+    width: 10px;
+    height: 10px;
+  }
+
+  .about-scene--promise .about-promise-grid {
+    grid-template-columns: repeat(4, minmax(9.5rem, 1fr));
+    overflow-x: auto;
+    padding-bottom: 0.25rem;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .about-scene--promise .about-promise-grid::-webkit-scrollbar {
+    display: none;
+  }
+}

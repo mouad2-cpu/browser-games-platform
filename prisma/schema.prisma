@@ -1,0 +1,344 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum GameStatus {
+  draft
+  published
+}
+
+enum Role {
+  USER
+  SUPER_ADMIN
+  ADMIN
+  MODERATOR
+  ANALYST
+  AD_MANAGER
+}
+
+enum ReportStatus {
+  OPEN
+  CLOSED
+}
+
+enum ReportType {
+  GAME_ISSUE
+  USER
+  TOXIC_CONTENT
+  COPYRIGHT
+}
+
+enum UploadStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum ScanStatus {
+  PENDING
+  CLEAN
+  SUSPICIOUS
+  FAILED
+}
+
+enum ModerationStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum AdPlacement {
+  HOME
+  PRE_GAME
+  SIDEBAR
+}
+
+enum PayoutStatus {
+  PENDING
+  PROCESSING
+  PAID
+}
+
+enum VoteType {
+  LIKE
+  DISLIKE
+}
+
+model Game {
+  id                Int          @id @default(autoincrement())
+  slug              String       @unique(map: "Game_slug_key") @db.VarChar(128)
+  title             String       @db.VarChar(256)
+  embedPath         String?      @db.VarChar(512)
+  thumbnail         String?      @db.VarChar(512)
+  previewVideo      String?      @db.VarChar(512)
+  description       String?      @db.Text
+  metaTitle         String?      @db.VarChar(256)
+  metaDescription   String?      @db.VarChar(512)
+  featured          Boolean      @default(false)
+  releasedAt        DateTime?
+  status            GameStatus   @default(draft)
+  primaryCategoryId Int?
+  addedAt           DateTime?
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
+
+  primaryCategory Category?      @relation("PrimaryCategory", fields: [primaryCategoryId], references: [id], onDelete: SetNull)
+  categories      GameCategory[]
+  reports         GameReport[]
+  playEvents      PlayEvent[]
+  userProgress    UserGameProgress[]
+  votes           GameVote[]
+
+  @@index([status, featured])
+  @@index([status, createdAt])
+  @@index([primaryCategoryId])
+}
+
+model GameVote {
+  id        String   @id @default(cuid())
+  gameId    Int
+  vote      VoteType
+  voterId   String   @db.VarChar(128)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  game Game @relation(fields: [gameId], references: [id], onDelete: Cascade)
+
+  @@unique([gameId, voterId])
+  @@index([gameId])
+}
+
+model Category {
+  id            Int               @id @default(autoincrement())
+  slug          String            @unique @db.VarChar(128)
+  name          String            @db.VarChar(256)
+  icon          String?           @db.VarChar(512)
+  sortOrder     Int               @default(0)
+  showOnHome    Boolean           @default(true)
+  homeLabel     String?           @db.VarChar(256)
+  homeSize      String            @default("md") @db.VarChar(8)
+  homeSortOrder Int               @default(0)
+  homePlacement String            @default("between_featured_latest") @db.VarChar(32)
+  description   String?           @db.Text
+  games         GameCategory[]
+  primaryGames  Game[]            @relation("PrimaryCategory")
+  homeSections  HomePageSection[]
+}
+
+model HomePageSection {
+  id         Int      @id @default(autoincrement())
+  categoryId Int      @unique
+  title      String?  @db.VarChar(256)
+  layout     String   @default("row") @db.VarChar(16)
+  gameLimit  Int      @default(14)
+  sortOrder  Int      @default(0)
+  placement  String   @default("between_top_picks_featured") @db.VarChar(32)
+  published  Boolean  @default(true)
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@index([sortOrder])
+}
+
+model MenuPage {
+  id        Int      @id @default(autoincrement())
+  title     String   @db.VarChar(256)
+  slug      String   @unique @db.VarChar(128)
+  icon      String?  @db.VarChar(64)
+  content   String?  @db.Text
+  sortOrder Int      @default(0)
+  published Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ContactMessage {
+  id        Int      @id @default(autoincrement())
+  issueType String   @db.VarChar(64)
+  name      String   @db.VarChar(256)
+  email     String   @db.VarChar(256)
+  message   String   @db.Text
+  createdAt DateTime @default(now())
+}
+
+model GameCategory {
+  gameId     Int
+  categoryId Int
+  game       Game     @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@id([gameId, categoryId])
+}
+
+model User {
+  id           String    @id @default(cuid())
+  username     String    @unique
+  email        String    @unique
+  passwordHash String
+  role         Role      @default(USER)
+  isBanned     Boolean   @default(false)
+  bannedAt     DateTime?
+  bannedReason String?   @db.Text
+  lastActiveAt DateTime?
+  createdAt    DateTime  @default(now())
+
+  developerProfile Developer?
+  auditLogs        AuditLog[]
+  playEvents       PlayEvent[]
+  reportsSubmitted GameReport[] @relation("ReportSubmitter")
+  gameProgress     UserGameProgress[]
+
+  @@index([role])
+  @@index([isBanned])
+}
+
+model Developer {
+  id           String       @id @default(cuid())
+  userId       String       @unique
+  companyName  String?
+  revenueShare Float        @default(0.7)
+  payoutStatus PayoutStatus @default(PENDING)
+  totalRevenue Float        @default(0)
+  createdAt    DateTime     @default(now())
+
+  user    User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  uploads GameUpload[]
+}
+
+model GameUpload {
+  id           String       @id @default(cuid())
+  developerId  String
+  title        String
+  description  String?      @db.Text
+  embedPath    String       @db.VarChar(512)
+  thumbnail    String?      @db.VarChar(512)
+  status       UploadStatus @default(PENDING)
+  rejectReason String?      @db.Text
+  scanStatus   ScanStatus   @default(PENDING)
+  createdAt    DateTime     @default(now())
+  reviewedAt   DateTime?
+
+  developer Developer @relation(fields: [developerId], references: [id], onDelete: Cascade)
+
+  @@index([status])
+  @@index([developerId])
+}
+
+model GameReport {
+  id           String       @id @default(cuid())
+  reportType   ReportType   @default(GAME_ISSUE)
+  gameId       Int?
+  targetUserId String?
+  submitterId  String?
+  issueType    String       @db.VarChar(100)
+  email        String?      @db.VarChar(254)
+  message      String       @db.Text
+  status       ReportStatus @default(OPEN)
+  createdAt    DateTime     @default(now())
+
+  game      Game? @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  submitter User? @relation("ReportSubmitter", fields: [submitterId], references: [id], onDelete: SetNull)
+
+  @@index([gameId])
+  @@index([status])
+  @@index([reportType])
+}
+
+model PlayEvent {
+  id        String   @id @default(cuid())
+  gameId    Int
+  userId    String?
+  ip        String?  @db.VarChar(45)
+  createdAt DateTime @default(now())
+
+  game Game  @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([gameId, createdAt])
+  @@index([userId])
+  @@index([createdAt])
+}
+
+model UserGameProgress {
+  id           String   @id @default(cuid())
+  userId       String
+  gameId       Int
+  lastPlayedAt DateTime @default(now())
+  progressData String?  @db.Text
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  game Game @relation(fields: [gameId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, gameId])
+  @@index([userId, lastPlayedAt])
+}
+
+model AdSlot {
+  id        String      @id @default(cuid())
+  name      String
+  placement AdPlacement
+  isActive  Boolean     @default(true)
+  cpm       Float       @default(0)
+  createdAt DateTime    @default(now())
+
+  campaigns AdCampaign[]
+}
+
+model AdCampaign {
+  id          String    @id @default(cuid())
+  name        String
+  slotId      String
+  cpm         Float     @default(0)
+  impressions Int       @default(0)
+  clicks      Int       @default(0)
+  isActive    Boolean   @default(true)
+  startDate   DateTime?
+  endDate     DateTime?
+  createdAt   DateTime  @default(now())
+
+  slot AdSlot @relation(fields: [slotId], references: [id], onDelete: Cascade)
+
+  @@index([slotId])
+  @@index([isActive])
+}
+
+model AuditLog {
+  id         String   @id @default(cuid())
+  userId     String
+  action     String   @db.VarChar(100)
+  entityType String   @db.VarChar(50)
+  entityId   String?  @db.VarChar(100)
+  ip         String?  @db.VarChar(45)
+  metadata   String?  @db.Text
+  createdAt  DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([entityType, entityId])
+  @@index([createdAt])
+}
+
+model PlatformSetting {
+  key       String   @id
+  value     String   @db.Text
+  updatedAt DateTime @updatedAt
+}
+
+model ModerationFlag {
+  id         String           @id @default(cuid())
+  entityType String           @db.VarChar(50)
+  entityId   String           @db.VarChar(100)
+  reason     String           @db.Text
+  status     ModerationStatus @default(PENDING)
+  flaggedBy  String?
+  createdAt  DateTime         @default(now())
+  resolvedAt DateTime?
+
+  @@index([status])
+  @@index([entityType, entityId])
+}

@@ -1,0 +1,94 @@
+.home-seo {
+  width: 100%;
+  padding: 2.5rem 0.5rem 1rem;
+}
+
+@media (min-width: 640px) {
+  .home-seo {
+    padding-inline: 0.75rem;
+  }
+}
+
+.home-seo-inner {
+  margin: 0 auto;
+  max-width: 920px;
+  padding: 2rem 1.25rem 2.5rem;
+  border-radius: 1.25rem;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.02) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.home-seo-eyebrow {
+  margin: 0 0 0.75rem;
+  color: var(--color-page-muted);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.home-seo-block + .home-seo-block {
+  margin-top: 2rem;
+}
+
+.home-seo-title,
+.home-seo-heading {
+  margin: 0 0 0.85rem;
+  color: var(--color-text);
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.home-seo-title {
+  font-size: clamp(1.75rem, 4vw, 2.35rem);
+}
+
+.home-seo-heading {
+  font-size: clamp(1.2rem, 2.5vw, 1.5rem);
+}
+
+.home-seo-text {
+  margin: 0 0 1rem;
+  color: var(--color-page-muted);
+  font-size: 0.98rem;
+  line-height: 1.75;
+}
+
+.home-seo-text:last-child,
+.home-seo-list:last-child {
+  margin-bottom: 0;
+}
+
+.home-seo-list {
+  margin: 0 0 1rem;
+  padding-left: 1.25rem;
+  color: var(--color-page-muted);
+  font-size: 0.98rem;
+  line-height: 1.75;
+}
+
+.home-seo-list li + li {
+  margin-top: 0.35rem;
+}
+
+.home-seo-link,
+.home-seo-link-text {
+  color: #7aa7ff;
+  font-weight: 600;
+}
+
+.home-seo-link {
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.home-seo-link:hover {
+  color: #a8c5ff;
+  text-decoration: underline;
+}
+
+@media (min-width: 640px) {
+  .home-seo-inner {
+    padding: 2.5rem 2rem 3rem;
+  }
+}
