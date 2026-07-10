@@ -74,7 +74,7 @@ function buildFooterMenuPages(
     dbPages.map((page) => [normalizeMenuPageSlug(page.slug), page])
   );
 
-  const merged = DEFAULT_SIDEBAR_PAGE_SLUGS.map((slug) => {
+  const merged: SidebarMenuPage[] = DEFAULT_SIDEBAR_PAGE_SLUGS.map((slug) => {
     const fromDb = dbBySlug.get(slug);
     if (fromDb) {
       return { ...fromDb, slug };
