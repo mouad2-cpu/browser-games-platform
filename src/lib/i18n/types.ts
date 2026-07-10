@@ -191,6 +191,7 @@ export type Messages = {
     releaseDate: string;
     platforms: string;
     platformWeb: string;
+    tags: string;
     lastUpdated: string;
     details: string;
   };

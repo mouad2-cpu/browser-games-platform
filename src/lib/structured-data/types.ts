@@ -9,7 +9,8 @@ export type JsonLdObject = {
   "@type"?: string | string[];
   "@id"?: string;
   "@context"?: string | Record<string, unknown>;
-  [key: string]: JsonLdValue | undefined;
+  // Allow nested plain objects (e.g. @context maps) alongside JSON-LD values.
+  [key: string]: JsonLdValue | Record<string, unknown> | undefined;
 };
 
 export type JsonLdGraph = {

@@ -83,7 +83,11 @@ assert(
   Array.isArray(breadcrumb?.itemListElement) && breadcrumb.itemListElement.length === 1,
   "Homepage breadcrumb is Home only"
 );
-const crumb = breadcrumb?.itemListElement?.[0] as Record<string, unknown> | undefined;
+const crumb = (
+  Array.isArray(breadcrumb?.itemListElement)
+    ? breadcrumb.itemListElement[0]
+    : undefined
+) as Record<string, unknown> | undefined;
 assert(crumb?.["@type"] === "ListItem", "breadcrumb ListItem typed");
 assert(crumb?.position === 1, "breadcrumb position starts at 1");
 assert(typeof crumb?.item === "string", "breadcrumb item is the page URL");
