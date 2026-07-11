@@ -2,6 +2,7 @@ import { cookies } from "next/headers";
 import { SignJWT, jwtVerify } from "jose";
 import bcrypt from "bcrypt";
 import type { Role } from "@prisma/client";
+import { useSecureCookies } from "@/lib/cookie-secure";
 
 const SESSION_COOKIE = "session";
 const MAX_AGE = 60 * 60 * 24 * 7; // 7 days
@@ -49,7 +50,7 @@ export async function setSession(user: Session): Promise<void> {
   const cookieStore = await cookies();
   cookieStore.set(SESSION_COOKIE, token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
+    secure: useSecureCookies(),
     sameSite: "lax",
     maxAge: MAX_AGE,
     path: "/",

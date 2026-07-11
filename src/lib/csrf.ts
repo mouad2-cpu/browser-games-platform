@@ -1,5 +1,6 @@
 import { cookies } from "next/headers";
 import { randomBytes } from "crypto";
+import { useSecureCookies } from "@/lib/cookie-secure";
 
 const CSRF_COOKIE = "csrf";
 
@@ -8,7 +9,7 @@ export async function generateCsrfToken(): Promise<string> {
   const cookieStore = await cookies();
   cookieStore.set(CSRF_COOKIE, token, {
     httpOnly: false,
-    secure: process.env.NODE_ENV === "production",
+    secure: useSecureCookies(),
     sameSite: "lax",
     maxAge: 60 * 60,
     path: "/",
