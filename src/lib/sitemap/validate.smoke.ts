@@ -1,31 +1,29 @@
 /**
- * Smoke-test sitemap segment helpers.
+ * Smoke-test sitemap helpers.
  * Run: npx tsx src/lib/sitemap/validate.smoke.ts
  */
+import { getSitemapBaseUrl, sitemapAbsoluteUrl } from "./base-url";
 import { dedupeSitemapEntries, toMetadataSitemap } from "./build-entries";
-import { gameSitemapChunkCount, listSitemapSegmentIds, parseGamesChunk } from "./segments";
-import { buildStaticSitemapEntries } from "./static-pages";
+import { gameSitemapChunkCount, gamesSitemapPath, listGamesSitemapPaths } from "./segments";
+import { buildStaticSitemapEntries, COLLECTION_SITEMAP_PATHS } from "./static-pages";
 import { MAX_URLS_PER_SITEMAP } from "./types";
+import { renderSitemapIndexXml, renderUrlsetXml } from "./xml";
 
 function assert(condition: unknown, message: string) {
   if (!condition) throw new Error(message);
 }
 
-assert(gameSitemapChunkCount(0) === 1, "empty catalog still exposes games-0");
+assert(gameSitemapChunkCount(0) === 1, "empty catalog still exposes games sitemap");
 assert(gameSitemapChunkCount(1) === 1, "1 game → 1 chunk");
 assert(gameSitemapChunkCount(MAX_URLS_PER_SITEMAP) === 1, "exactly 50k → 1 chunk");
 assert(gameSitemapChunkCount(MAX_URLS_PER_SITEMAP + 1) === 2, "50k+1 → 2 chunks");
 
-const ids = listSitemapSegmentIds(MAX_URLS_PER_SITEMAP + 1);
-assert(ids.includes("static"), "index includes static");
-assert(ids.includes("categories"), "index includes categories");
-assert(ids.includes("tags"), "index includes tags");
-assert(ids.includes("collections"), "index includes collections");
-assert(ids.includes("images"), "index includes images");
-assert(ids.includes("games-0"), "index includes games-0");
-assert(ids.includes("games-1"), "index includes games-1");
-assert(parseGamesChunk("games-3") === 3, "parse games chunk");
-assert(parseGamesChunk("static") === null, "named segments are not game chunks");
+assert(gamesSitemapPath(0) === "/sitemap-games.xml", "chunk 0 uses sitemap-games.xml");
+assert(gamesSitemapPath(1) === "/sitemap-games-1.xml", "chunk 1 uses numbered file");
+
+const gamePaths = listGamesSitemapPaths(MAX_URLS_PER_SITEMAP + 1);
+assert(gamePaths[0] === "/sitemap-games.xml", "first games path is canonical");
+assert(gamePaths[1] === "/sitemap-games-1.xml", "second games path numbered");
 
 const staticEntries = buildStaticSitemapEntries([
   { slug: "about", updatedAt: new Date("2026-01-01") },
@@ -40,25 +38,60 @@ assert(
   "CMS page without dedicated route uses /pages/{slug}"
 );
 assert(
-  !staticEntries.some((e) => e.path === "/new"),
-  "collections paths stay out of static sitemap"
+  !staticEntries.some((e) => e.path === "/search"),
+  "search is excluded from pages sitemap"
+);
+assert(
+  COLLECTION_SITEMAP_PATHS.some((p) => p.path === "/popular"),
+  "collections include /popular"
+);
+assert(
+  !COLLECTION_SITEMAP_PATHS.some((p) => p.path === "/featured"),
+  "non-existent collection routes are not invented"
 );
 
 const deduped = dedupeSitemapEntries([
-  { path: "/game/a" },
-  { path: "/game/a" },
-  { path: "/game/b" },
+  { path: "/game/a", priority: 0.9 },
+  { path: "/game/a", priority: 0.1 },
+  { path: "/game/b", priority: 0.8 },
 ]);
-assert(deduped.length === 2, "dedupe removes duplicate paths");
+assert(deduped.length === 2, "dedupe keeps unique paths");
+assert(deduped[0]?.priority === 0.9, "dedupe keeps first entry");
 
-const meta = toMetadataSitemap([
+const meta = toMetadataSitemap([{ path: "/game/demo", lastModified: new Date("2026-03-01") }]);
+assert(meta[0]?.url.includes("/game/demo"), "metadata sitemap absolutizes url");
+
+const indexXml = renderSitemapIndexXml([
+  { path: "/sitemap-pages.xml" },
+  { path: "/sitemap-games.xml", lastModified: new Date("2026-03-01") },
+]);
+assert(indexXml.includes("<sitemapindex"), "index root element");
+assert(indexXml.includes("sitemap-pages.xml"), "index lists pages");
+assert(indexXml.includes("sitemap-games.xml"), "index lists games");
+assert(indexXml.includes("<lastmod>"), "index can include lastmod");
+
+const urlset = renderUrlsetXml([
   {
     path: "/game/demo",
-    lastModified: new Date("2026-03-01"),
-    images: ["/uploads/demo.png"],
+    lastModified: new Date("2026-04-01T12:00:00.000Z"),
+    changeFrequency: "weekly",
+    priority: 0.9,
+    imagesDetailed: [{ loc: "/uploads/thumbnails/demo.png", title: "Demo logo" }],
   },
 ]);
-assert(meta[0]?.url.includes("/game/demo"), "metadata url is absolute");
-assert(Array.isArray(meta[0]?.images) && meta[0].images!.length === 1, "images preserved");
+assert(urlset.includes("<urlset"), "urlset root");
+assert(urlset.includes("<changefreq>weekly</changefreq>"), "changefreq present");
+assert(urlset.includes("<priority>0.9</priority>"), "priority present");
+assert(urlset.includes("xmlns:image="), "image namespace present");
+assert(urlset.includes("<image:image>"), "image extension present");
+assert(urlset.includes("<image:loc>"), "image loc present");
+assert(urlset.includes("2026-04-01T12:00:00.000Z"), "lastmod from game timestamp");
+
+const origin = getSitemapBaseUrl();
+assert(typeof origin === "string" && origin.length > 0, "sitemap base url defined");
+assert(
+  sitemapAbsoluteUrl("/game/x").endsWith("/game/x"),
+  "absolute sitemap url keeps path"
+);
 
 console.log("sitemap smoke tests passed");

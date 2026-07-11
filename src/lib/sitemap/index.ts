@@ -1,153 +1,175 @@
-import type { MetadataRoute } from "next";
 import { isCategoryIconImage } from "@/lib/category-icons";
 import { getGameImageAlt } from "@/lib/game-image-alt";
-import { absoluteUrl } from "@/lib/structured-data/urls";
-import { toMetadataSitemap } from "./build-entries";
+import { SITE_LOGO } from "@/lib/site-config";
+import { sitemapAbsoluteUrl } from "./base-url";
 import {
+  getLatestGameUpdatedAt,
   getPublishedGameCount,
   getSitemapCategories,
   getSitemapGamesPage,
   getSitemapMenuPages,
 } from "./queries";
-import { isNamedSegment, listSitemapSegmentIds, parseGamesChunk } from "./segments";
-import { buildStaticSitemapEntries } from "./static-pages";
+import { listGamesSitemapPaths } from "./segments";
 import {
-  MAX_URLS_PER_SITEMAP,
-  type SitemapEntry,
-  type SitemapSegmentId,
-} from "./types";
+  COLLECTION_SITEMAP_PATHS,
+  buildStaticSitemapEntries,
+} from "./static-pages";
+import { MAX_URLS_PER_SITEMAP, type SitemapEntry } from "./types";
+import { renderSitemapIndexXml, renderUrlsetXml } from "./xml";
 
-export async function getSitemapIndexIds(): Promise<Array<{ id: SitemapSegmentId }>> {
-  const totalGames = await getPublishedGameCount();
-  return listSitemapSegmentIds(totalGames).map((id) => ({ id }));
+export { getSitemapBaseUrl, sitemapAbsoluteUrl } from "./base-url";
+export { revalidateSitemap } from "./revalidate";
+export { gamesSitemapPath, listGamesSitemapPaths, gameSitemapChunkCount } from "./segments";
+
+export function getSitemapIndexUrl(): string {
+  return sitemapAbsoluteUrl("/sitemap.xml");
 }
 
-export async function buildSegmentSitemap(segmentId: string): Promise<MetadataRoute.Sitemap> {
-  const gamesChunk = parseGamesChunk(segmentId);
-  if (gamesChunk != null) {
-    return buildGamesSitemap(gamesChunk);
-  }
+/** Child sitemap paths advertised by /sitemap.xml */
+export async function getChildSitemapIndexEntries(): Promise<
+  Array<{ path: string; lastModified?: Date }>
+> {
+  const [totalGames, latestGame] = await Promise.all([
+    getPublishedGameCount(),
+    getLatestGameUpdatedAt(),
+  ]);
+  const lastmod = latestGame ?? undefined;
 
-  if (!isNamedSegment(segmentId)) {
-    return [];
-  }
-
-  switch (segmentId) {
-    case "static":
-      return buildStaticSitemap();
-    case "categories":
-      return buildCategoriesSitemap();
-    case "tags":
-      // Tags currently alias categories (/c/[slug]). Dedicated tag routes can swap this later.
-      return buildTagsSitemap();
-    case "collections":
-      return buildCollectionsSitemap();
-    case "images":
-      return buildImagesSitemap();
-    default:
-      return [];
-  }
+  return [
+    { path: "/sitemap-pages.xml", lastModified: lastmod },
+    { path: "/sitemap-categories.xml", lastModified: lastmod },
+    { path: "/sitemap-collections.xml", lastModified: lastmod },
+    { path: "/sitemap-images.xml", lastModified: lastmod },
+    ...listGamesSitemapPaths(totalGames).map((path) => ({
+      path,
+      lastModified: lastmod,
+    })),
+  ];
 }
 
-async function buildStaticSitemap(): Promise<MetadataRoute.Sitemap> {
-  const menuPages = await getSitemapMenuPages();
-  const entries = buildStaticSitemapEntries(menuPages).map((entry) =>
-    entry.path === "/"
-      ? { ...entry, images: ["/zenfun-brand.png"] }
-      : entry
-  );
-  return toMetadataSitemap(entries);
+export async function buildSitemapIndexXml(): Promise<string> {
+  const entries = await getChildSitemapIndexEntries();
+  return renderSitemapIndexXml(entries);
 }
 
-async function buildGamesSitemap(chunk: number): Promise<MetadataRoute.Sitemap> {
-  const games = await getSitemapGamesPage(chunk, MAX_URLS_PER_SITEMAP);
-
-  const entries: SitemapEntry[] = games.map((game) => ({
-    path: `/game/${game.slug}`,
-    lastModified: game.updatedAt,
-    changeFrequency: "weekly",
-    priority: 0.9,
-    // Image sitemap extension on the game URL (Google-supported).
-    images: game.thumbnail ? [game.thumbnail] : undefined,
-  }));
-
-  return toMetadataSitemap(entries);
+export async function buildPagesSitemapXml(): Promise<string> {
+  const [menuPages, latestGame] = await Promise.all([
+    getSitemapMenuPages(),
+    getLatestGameUpdatedAt(),
+  ]);
+  const entries = buildStaticSitemapEntries(menuPages, {
+    homepageLastmod: latestGame,
+  });
+  return renderUrlsetXml(entries);
 }
 
-async function buildCategoriesSitemap(): Promise<MetadataRoute.Sitemap> {
+export async function buildCategoriesSitemapXml(): Promise<string> {
   const categories = await getSitemapCategories();
   const now = new Date();
-
   const entries: SitemapEntry[] = categories.map((category) => ({
     path: `/c/${category.slug}`,
     lastModified: category.lastModified ?? now,
     changeFrequency: "weekly",
     priority: 0.8,
-    images: isCategoryIconImage(category.icon) ? [category.icon!] : undefined,
   }));
+  return renderUrlsetXml(entries);
+}
 
-  return toMetadataSitemap(entries);
+export async function buildCollectionsSitemapXml(): Promise<string> {
+  const latestGame = await getLatestGameUpdatedAt();
+  const lastModified = latestGame ?? new Date();
+  const entries: SitemapEntry[] = COLLECTION_SITEMAP_PATHS.map((page) => ({
+    path: page.path,
+    lastModified,
+    changeFrequency: page.changeFrequency,
+    priority: page.priority,
+  }));
+  return renderUrlsetXml(entries);
+}
+
+export async function buildGamesSitemapXml(chunk = 0): Promise<string> {
+  const games = await getSitemapGamesPage(chunk, MAX_URLS_PER_SITEMAP);
+  const entries: SitemapEntry[] = games.map((game) => ({
+    path: `/game/${game.slug}`,
+    lastModified: game.updatedAt,
+    changeFrequency: "weekly",
+    priority: 0.9,
+  }));
+  return renderUrlsetXml(entries);
 }
 
 /**
- * Tag URLs — today categories are the public taxonomy (`/c/{slug}`).
- * Kept as a separate sitemap so Search Console can track tag coverage
- * once dedicated `/tag/{slug}` routes exist without restructuring the index.
+ * Google image sitemap: page URL + image:image children.
+ * Includes homepage logo, game thumbnails, and category icons when image-based.
  */
-async function buildTagsSitemap(): Promise<MetadataRoute.Sitemap> {
-  // Avoid duplicate URLs with the categories sitemap until real tags exist.
-  return [];
-}
+export async function buildImagesSitemapXml(chunk = 0): Promise<string> {
+  const [games, categories, latestGame] = await Promise.all([
+    getSitemapGamesPage(chunk, MAX_URLS_PER_SITEMAP),
+    chunk === 0 ? getSitemapCategories() : Promise.resolve([]),
+    getLatestGameUpdatedAt(),
+  ]);
 
-async function buildCollectionsSitemap(): Promise<MetadataRoute.Sitemap> {
-  const now = new Date();
-  const entries: SitemapEntry[] = [
-    {
-      path: "/new",
-      lastModified: now,
+  const entries: SitemapEntry[] = [];
+
+  if (chunk === 0) {
+    entries.push({
+      path: "/",
+      lastModified: latestGame ?? new Date(),
       changeFrequency: "daily",
+      priority: 1,
+      imagesDetailed: [
+        {
+          loc: SITE_LOGO.path,
+          title: SITE_LOGO.alt,
+          caption: `${SITE_LOGO.alt} logo`,
+        },
+        {
+          loc: "/zenfun-icon.png",
+          title: SITE_LOGO.alt,
+          caption: `${SITE_LOGO.alt} icon`,
+        },
+      ],
+    });
+
+    for (const category of categories) {
+      if (!isCategoryIconImage(category.icon)) continue;
+      entries.push({
+        path: `/c/${category.slug}`,
+        lastModified: category.lastModified ?? latestGame ?? new Date(),
+        changeFrequency: "weekly",
+        priority: 0.5,
+        imagesDetailed: [
+          {
+            loc: category.icon!,
+            title: `${category.slug} category icon`,
+          },
+        ],
+      });
+    }
+  }
+
+  for (const game of games) {
+    if (!game.thumbnail?.trim()) continue;
+    entries.push({
+      path: `/game/${game.slug}`,
+      lastModified: game.updatedAt,
+      changeFrequency: "weekly",
       priority: 0.8,
-    },
-    {
-      path: "/popular",
-      lastModified: now,
-      changeFrequency: "daily",
-      priority: 0.8,
-    },
-    {
-      path: "/all-games",
-      lastModified: now,
-      changeFrequency: "daily",
-      priority: 0.7,
-    },
-  ];
+      imagesDetailed: [
+        {
+          loc: game.thumbnail,
+          title: getGameImageAlt(game.title),
+          caption: getGameImageAlt(game.title),
+        },
+      ],
+    });
+  }
 
-  return toMetadataSitemap(entries);
+  return renderUrlsetXml(entries);
 }
 
-/**
- * Dedicated images sitemap.
- *
- * Game thumbnails and category icons are attached on their primary URL
- * entries (`games-*` / `categories`) to avoid duplicate page URLs across
- * sitemaps (Google Search Central). This segment stays in the index for
- * future gallery / screenshot pages.
- */
-async function buildImagesSitemap(): Promise<MetadataRoute.Sitemap> {
-  return [];
-}
-
-/** Absolute URLs for every child sitemap (for diagnostics / custom tooling). */
+/** Absolute child sitemap URLs (diagnostics). */
 export async function getChildSitemapUrls(): Promise<string[]> {
-  const ids = await getSitemapIndexIds();
-  return ids.map(({ id }) => absoluteUrl(`/sitemap/${id}.xml`));
-}
-
-export function getSitemapIndexUrl(): string {
-  return absoluteUrl("/sitemap.xml");
-}
-
-/** Optional helper if you need image title metadata outside MetadataRoute. */
-export function gameImageTitle(title: string): string {
-  return getGameImageAlt(title);
+  const entries = await getChildSitemapIndexEntries();
+  return entries.map((e) => sitemapAbsoluteUrl(e.path));
 }

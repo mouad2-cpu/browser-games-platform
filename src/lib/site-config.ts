@@ -1,7 +1,30 @@
 export const CONTACT_EMAIL = "jorfmouad1@gmail.com";
 export const LEGAL_EMAIL = CONTACT_EMAIL;
 export const SITE_NAME = "ZenFun Games";
-export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+
+const RAW_SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+
+/** Normalize production host to https://www.zenfungames.com for SEO consistency. */
+function normalizeSiteUrl(raw: string): string {
+  try {
+    const url = new URL(raw);
+    const host = url.hostname.toLowerCase();
+    if (host === "localhost" || host === "127.0.0.1") {
+      return url.origin.replace(/\/+$/, "");
+    }
+    if (host === "zenfungames.com" || host === "www.zenfungames.com") {
+      return "https://www.zenfungames.com";
+    }
+    if (url.protocol === "http:" && !host.includes("localhost")) {
+      url.protocol = "https:";
+    }
+    return url.origin.replace(/\/+$/, "");
+  } catch {
+    return raw.replace(/\/+$/, "");
+  }
+}
+
+export const SITE_URL = normalizeSiteUrl(RAW_SITE_URL);
 
 /** Primary brand mark used in UI, sitemap, and ImageObject structured data. */
 export const SITE_LOGO = {

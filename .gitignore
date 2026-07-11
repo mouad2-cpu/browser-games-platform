@@ -41,3 +41,7 @@ next-env.d.ts
 !/public/uploads/thumbnails/.gitkeep
 /public/uploads/games/*
 !/public/uploads/games/.gitkeep
+
+# local migrate artifacts / secrets (never commit)
+/_migrate/
+src/app/favicon-temp.png

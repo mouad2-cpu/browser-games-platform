@@ -1,7 +1,13 @@
 import { GameStatus } from "@prisma/client";
 import { unstable_cache } from "next/cache";
 import { prisma } from "@/lib/db";
-import { SITEMAP_REVALIDATE_SECONDS, type SitemapCategoryRow, type SitemapGameRow, type SitemapMenuPageRow } from "./types";
+import {
+  SITEMAP_CACHE_TAGS,
+  SITEMAP_REVALIDATE_SECONDS,
+  type SitemapCategoryRow,
+  type SitemapGameRow,
+  type SitemapMenuPageRow,
+} from "./types";
 
 const publishedPlayableWhere = {
   status: GameStatus.published,
@@ -27,10 +33,15 @@ async function fetchGamesPageUncached(chunk: number, pageSize: number): Promise<
   });
 }
 
-/**
- * Categories with lastmod = latest published game update in that category.
- * Avoids N+1 and keeps lastmod accurate for Google.
- */
+async function fetchLatestGameUpdatedAtUncached(): Promise<Date | null> {
+  const row = await prisma.game.findFirst({
+    where: publishedPlayableWhere,
+    select: { updatedAt: true },
+    orderBy: { updatedAt: "desc" },
+  });
+  return row?.updatedAt ?? null;
+}
+
 async function fetchCategoriesUncached(): Promise<SitemapCategoryRow[]> {
   const rows = await prisma.category.findMany({
     select: {
@@ -61,26 +72,37 @@ async function fetchPublishedMenuPagesUncached(): Promise<SitemapMenuPageRow[]> 
   });
 }
 
+const cacheOpts = (tags: string[]) => ({
+  revalidate: SITEMAP_REVALIDATE_SECONDS,
+  tags,
+});
+
 export const getPublishedGameCount = unstable_cache(
   countPublishedGamesUncached,
-  ["sitemap-published-game-count"],
-  { revalidate: SITEMAP_REVALIDATE_SECONDS, tags: ["sitemap", "sitemap:games"] }
+  ["sitemap-published-game-count-v2"],
+  cacheOpts([SITEMAP_CACHE_TAGS.all, SITEMAP_CACHE_TAGS.games])
 );
 
 export const getSitemapGamesPage = unstable_cache(
   fetchGamesPageUncached,
-  ["sitemap-games-page"],
-  { revalidate: SITEMAP_REVALIDATE_SECONDS, tags: ["sitemap", "sitemap:games"] }
+  ["sitemap-games-page-v2"],
+  cacheOpts([SITEMAP_CACHE_TAGS.all, SITEMAP_CACHE_TAGS.games])
+);
+
+export const getLatestGameUpdatedAt = unstable_cache(
+  fetchLatestGameUpdatedAtUncached,
+  ["sitemap-latest-game-updated-v2"],
+  cacheOpts([SITEMAP_CACHE_TAGS.all, SITEMAP_CACHE_TAGS.games, SITEMAP_CACHE_TAGS.collections])
 );
 
 export const getSitemapCategories = unstable_cache(
   fetchCategoriesUncached,
-  ["sitemap-categories"],
-  { revalidate: SITEMAP_REVALIDATE_SECONDS, tags: ["sitemap", "sitemap:categories"] }
+  ["sitemap-categories-v2"],
+  cacheOpts([SITEMAP_CACHE_TAGS.all, SITEMAP_CACHE_TAGS.categories])
 );
 
 export const getSitemapMenuPages = unstable_cache(
   fetchPublishedMenuPagesUncached,
-  ["sitemap-menu-pages"],
-  { revalidate: SITEMAP_REVALIDATE_SECONDS, tags: ["sitemap", "sitemap:static"] }
+  ["sitemap-menu-pages-v2"],
+  cacheOpts([SITEMAP_CACHE_TAGS.all, SITEMAP_CACHE_TAGS.pages])
 );

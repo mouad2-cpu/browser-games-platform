@@ -3,34 +3,37 @@ import type { MetadataRoute } from "next";
 /** Google's hard limit per sitemap file. */
 export const MAX_URLS_PER_SITEMAP = 50_000;
 
-/** Revalidate sitemap payloads (seconds). */
+/** Revalidate sitemap payloads (seconds). Soft TTL — also busted via revalidateTag. */
 export const SITEMAP_REVALIDATE_SECONDS = 3600;
 
-/** Named sitemap segments (excluding auto-split game chunks). */
-export const SITEMAP_SEGMENTS = [
-  "static",
-  "categories",
-  "tags",
-  "collections",
-  "images",
-] as const;
-
-export type SitemapNamedSegment = (typeof SITEMAP_SEGMENTS)[number];
-
-/** Full segment id: named segment or `games-{chunk}`. */
-export type SitemapSegmentId = SitemapNamedSegment | `games-${number}`;
+export const SITEMAP_CACHE_TAGS = {
+  all: "sitemap",
+  games: "sitemap:games",
+  categories: "sitemap:categories",
+  pages: "sitemap:pages",
+  collections: "sitemap:collections",
+  images: "sitemap:images",
+} as const;
 
 export type SitemapChangeFrequency = NonNullable<
   MetadataRoute.Sitemap[number]["changeFrequency"]
 >;
+
+export type SitemapImageEntry = {
+  loc: string;
+  title?: string;
+  caption?: string;
+};
 
 export type SitemapEntry = {
   path: string;
   lastModified?: Date;
   changeFrequency?: SitemapChangeFrequency;
   priority?: number;
-  /** Absolute or site-relative image URLs (image sitemap / page images). */
+  /** Simple image URLs (converted to image:image). */
   images?: string[];
+  /** Rich image entries for dedicated image sitemap. */
+  imagesDetailed?: SitemapImageEntry[];
 };
 
 export type SitemapGameRow = {

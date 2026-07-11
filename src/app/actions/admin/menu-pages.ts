@@ -1,6 +1,8 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { revalidateSitemap } from "@/lib/sitemap";
+
 import { redirect } from "next/navigation";
 import { getSession } from "@/lib/auth";
 import { requirePermission, PERMISSIONS } from "@/lib/rbac";
@@ -33,6 +35,7 @@ function revalidateMenuPaths(slug?: string) {
   revalidatePath("/");
   revalidatePath("/admin/menu");
   if (slug) revalidatePath(`/pages/${slug}`);
+  revalidateSitemap();
 }
 
 export async function createMenuPageAction(formData: FormData) {

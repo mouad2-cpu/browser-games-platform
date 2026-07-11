@@ -9,6 +9,12 @@ const nextConfig: NextConfig = {
       { source: "/pages/privacy", destination: "/privacy-policy", permanent: true },
       { source: "/terms", destination: "/terms-of-service", permanent: true },
       { source: "/privacy", destination: "/privacy-policy", permanent: true },
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "zenfungames.com" }],
+        destination: "https://www.zenfungames.com/:path*",
+        permanent: true,
+      },
     ];
   },
   images: {

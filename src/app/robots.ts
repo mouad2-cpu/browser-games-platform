@@ -1,10 +1,10 @@
 import type { MetadataRoute } from "next";
 import { getSitemapIndexUrl } from "@/lib/sitemap";
-import { getSiteOrigin } from "@/lib/structured-data/urls";
+import { getSitemapBaseUrl } from "@/lib/sitemap/base-url";
 
 /**
- * robots.txt — Allow public content, block private surfaces,
- * and advertise the sitemap index at /sitemap.xml.
+ * robots.txt — allow public content, block private surfaces,
+ * advertise the sitemap index.
  *
  * @see https://developers.google.com/search/docs/crawling-indexing/robots/intro
  */
@@ -17,16 +17,19 @@ export default function robots(): MetadataRoute.Robots {
         disallow: [
           "/admin",
           "/admin/",
+          "/api",
           "/api/",
+          "/dashboard",
+          "/dashboard/",
           "/login",
           "/register",
-          "/dashboard",
           "/continue-playing",
           "/top-picks",
+          "/search",
         ],
       },
     ],
     sitemap: getSitemapIndexUrl(),
-    host: getSiteOrigin(),
+    host: getSitemapBaseUrl().replace(/^https?:\/\//, ""),
   };
 }

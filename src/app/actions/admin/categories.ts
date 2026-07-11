@@ -1,6 +1,8 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { revalidateSitemap } from "@/lib/sitemap";
+
 import { redirect } from "next/navigation";
 import { writeFile, mkdir } from "fs/promises";
 import path from "path";
@@ -88,6 +90,7 @@ export async function createCategory(formData: FormData) {
 
     revalidatePath("/");
     revalidatePath("/admin/categories");
+    revalidateSitemap();
     return { ok: true as const, id: category.id };
   } catch (e) {
     return { error: e instanceof Error ? e.message : "Something went wrong." };
@@ -137,6 +140,7 @@ export async function updateCategory(categoryId: number, formData: FormData) {
     revalidatePath(`/c/${parsed.data.slug}`);
     revalidatePath("/admin/categories");
     revalidatePath(`/admin/categories/${categoryId}`);
+    revalidateSitemap();
     return { ok: true as const };
   } catch (e) {
     return { error: e instanceof Error ? e.message : "Something went wrong." };
@@ -160,6 +164,7 @@ export async function deleteCategory(categoryId: number) {
 
   revalidatePath("/");
   revalidatePath("/admin/categories");
+  revalidateSitemap();
   redirect("/admin/categories");
 }
 

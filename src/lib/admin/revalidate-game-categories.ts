@@ -1,4 +1,5 @@
 import { revalidatePath } from "next/cache";
+import { revalidateSitemap } from "@/lib/sitemap";
 
 export function revalidateGameCategoryPaths(slug: string, gameId: number, categoryId?: number) {
   revalidatePath("/");
@@ -7,4 +8,5 @@ export function revalidateGameCategoryPaths(slug: string, gameId: number, catego
   revalidatePath(`/game/${slug}`);
   revalidatePath("/admin/categories");
   if (categoryId) revalidatePath(`/admin/categories/${categoryId}`);
+  revalidateSitemap();
 }

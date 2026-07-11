@@ -38,8 +38,11 @@ export async function POST(request: Request) {
     );
   }
 
-  const user = await prisma.user.findUnique({
-    where: { username: parsed.data.username },
+  const loginId = parsed.data.username.trim();
+  const user = await prisma.user.findFirst({
+    where: loginId.includes("@")
+      ? { email: loginId }
+      : { username: loginId },
   });
 
   if (!user || !(await verifyPassword(user.passwordHash, parsed.data.password))) {

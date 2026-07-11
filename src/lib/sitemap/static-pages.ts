@@ -2,8 +2,8 @@ import { getMenuPageHref } from "@/lib/menu-page-routes";
 import type { SitemapEntry, SitemapMenuPageRow } from "./types";
 
 /**
- * Hard-coded public marketing / utility pages.
- * Excludes admin, auth, API, personalized, and error routes.
+ * Indexable static / marketing pages only.
+ * Excludes search, admin, auth, personalized, and API surfaces.
  */
 export const STATIC_SITEMAP_PATHS: ReadonlyArray<{
   path: string;
@@ -11,7 +11,6 @@ export const STATIC_SITEMAP_PATHS: ReadonlyArray<{
   priority: number;
 }> = [
   { path: "/", changeFrequency: "daily", priority: 1 },
-  { path: "/search", changeFrequency: "weekly", priority: 0.5 },
   { path: "/about", changeFrequency: "monthly", priority: 0.4 },
   { path: "/contact", changeFrequency: "monthly", priority: 0.4 },
   { path: "/information-for-parents", changeFrequency: "monthly", priority: 0.3 },
@@ -22,7 +21,6 @@ export const STATIC_SITEMAP_PATHS: ReadonlyArray<{
   { path: "/community-guidelines-policy", changeFrequency: "yearly", priority: 0.2 },
 ] as const;
 
-/** Paths that must never appear in any sitemap. */
 export const SITEMAP_EXCLUDED_PATH_PREFIXES = [
   "/admin",
   "/api",
@@ -30,30 +28,45 @@ export const SITEMAP_EXCLUDED_PATH_PREFIXES = [
   "/register",
   "/dashboard",
   "/_next",
+  "/search",
 ] as const;
 
-/**
- * Personalized / non-canonical list pages — keep out of the sitemap
- * to avoid thin or user-specific URLs.
- */
 export const SITEMAP_EXCLUDED_PATHS = [
   "/continue-playing",
   "/top-picks",
+  "/search",
+] as const;
+
+/** Real public collection routes only (no invented SEO URLs). */
+export const COLLECTION_SITEMAP_PATHS: ReadonlyArray<{
+  path: string;
+  changeFrequency: SitemapEntry["changeFrequency"];
+  priority: number;
+}> = [
+  { path: "/new", changeFrequency: "daily", priority: 0.8 },
+  { path: "/popular", changeFrequency: "daily", priority: 0.8 },
+  { path: "/all-games", changeFrequency: "daily", priority: 0.7 },
 ] as const;
 
 export function buildStaticSitemapEntries(
   menuPages: SitemapMenuPageRow[],
-  now = new Date()
+  options?: { now?: Date; homepageLastmod?: Date | null }
 ): SitemapEntry[] {
+  const now = options?.now ?? new Date();
+  const homepageLastmod = options?.homepageLastmod ?? now;
+
   const staticEntries: SitemapEntry[] = STATIC_SITEMAP_PATHS.map((page) => ({
     path: page.path,
-    lastModified: now,
+    lastModified: page.path === "/" ? homepageLastmod : now,
     changeFrequency: page.changeFrequency,
     priority: page.priority,
   }));
 
-  const reserved = new Set(STATIC_SITEMAP_PATHS.map((p) => p.path));
-  for (const excluded of SITEMAP_EXCLUDED_PATHS) reserved.add(excluded);
+  const reserved = new Set<string>([
+    ...STATIC_SITEMAP_PATHS.map((p) => p.path),
+    ...SITEMAP_EXCLUDED_PATHS,
+    ...COLLECTION_SITEMAP_PATHS.map((p) => p.path),
+  ]);
 
   const cmsEntries: SitemapEntry[] = [];
   for (const page of menuPages) {

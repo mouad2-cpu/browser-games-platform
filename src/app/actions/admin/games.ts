@@ -1,6 +1,8 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { revalidateSitemap } from "@/lib/sitemap";
+
 import { redirect } from "next/navigation";
 import { writeFile, mkdir } from "fs/promises";
 import path from "path";
@@ -178,6 +180,7 @@ export async function createGame(formData: FormData) {
 
     revalidatePath("/");
     revalidatePath("/admin/games");
+    revalidateSitemap();
     return { ok: true as const, id: game.id };
   } catch (e) {
     return { error: e instanceof Error ? e.message : "Something went wrong." };
@@ -282,6 +285,7 @@ export async function updateGame(gameId: number, formData: FormData) {
   revalidatePath("/");
   revalidatePath(`/game/${parsed.data.slug}`);
   revalidatePath("/admin/games");
+  revalidateSitemap();
   return { ok: true as const };
   } catch (e) {
     return { error: e instanceof Error ? e.message : "Something went wrong." };
@@ -300,6 +304,7 @@ export async function deleteGame(gameId: number) {
   });
   revalidatePath("/");
   revalidatePath("/admin/games");
+  revalidateSitemap();
   redirect("/admin/games");
 }
 
@@ -358,6 +363,7 @@ export async function updateGameCategories(formData: FormData) {
 
     revalidatePath("/");
     revalidatePath("/admin/games");
+    revalidateSitemap();
     revalidatePath(`/admin/games/${gameId}`);
     revalidatePath(`/game/${game.slug}`);
     return { ok: true as const };
@@ -447,6 +453,7 @@ export async function toggleGameFeaturedAction(formData: FormData) {
     revalidatePath("/admin/games");
     revalidatePath(`/admin/games/${gameId}`);
     revalidatePath(`/game/${game.slug}`);
+    revalidateSitemap();
     return { ok: true as const, featured };
   } catch (e) {
     return { error: e instanceof Error ? e.message : "Something went wrong." };
