@@ -6,7 +6,7 @@ export const revalidate = 3600;
 
 type Props = { params: Promise<{ chunk: string }> };
 
-/** Extra game chunks — /sitemap-games-1.xml, /sitemap-games-2.xml, … */
+/** Extra game chunks via rewrite: /sitemap-games-1.xml → /api/sitemap/games/1 */
 export async function GET(_request: Request, { params }: Props) {
   const { chunk: raw } = await params;
   const chunk = Number.parseInt(raw, 10);

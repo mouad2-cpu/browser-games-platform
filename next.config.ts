@@ -17,6 +17,15 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  async rewrites() {
+    return [
+      // Extra game sitemap chunks: /sitemap-games-1.xml, /sitemap-games-2.xml, …
+      {
+        source: "/sitemap-games-:chunk(\\d+).xml",
+        destination: "/api/sitemap/games/:chunk",
+      },
+    ];
+  },
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "**" },
