@@ -25,9 +25,12 @@ export type SitemapImageEntry = {
   caption?: string;
 };
 
+/** Date-like values — Prisma returns Date; unstable_cache may return ISO strings. */
+export type SitemapDate = Date | string;
+
 export type SitemapEntry = {
   path: string;
-  lastModified?: Date;
+  lastModified?: SitemapDate;
   changeFrequency?: SitemapChangeFrequency;
   priority?: number;
   /** Simple image URLs (converted to image:image). */
@@ -40,16 +43,16 @@ export type SitemapGameRow = {
   slug: string;
   title: string;
   thumbnail: string | null;
-  updatedAt: Date;
+  updatedAt: SitemapDate;
 };
 
 export type SitemapCategoryRow = {
   slug: string;
   icon: string | null;
-  lastModified: Date | null;
+  lastModified: SitemapDate | null;
 };
 
 export type SitemapMenuPageRow = {
   slug: string;
-  updatedAt: Date;
+  updatedAt: SitemapDate;
 };

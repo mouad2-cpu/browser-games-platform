@@ -50,7 +50,7 @@ export const COLLECTION_SITEMAP_PATHS: ReadonlyArray<{
 
 export function buildStaticSitemapEntries(
   menuPages: SitemapMenuPageRow[],
-  options?: { now?: Date; homepageLastmod?: Date | null }
+  options?: { now?: Date; homepageLastmod?: Date | string | null }
 ): SitemapEntry[] {
   const now = options?.now ?? new Date();
   const homepageLastmod = options?.homepageLastmod ?? now;

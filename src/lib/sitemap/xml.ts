@@ -10,9 +10,15 @@ function escapeXml(value: string): string {
     .replace(/'/g, "&apos;");
 }
 
-function toLastmod(value?: Date): string | undefined {
-  if (!value || Number.isNaN(value.getTime())) return undefined;
-  return value.toISOString();
+/**
+ * `unstable_cache` JSON-serializes Prisma Dates into ISO strings.
+ * Accept both so sitemap routes don't 500 with `getTime is not a function`.
+ */
+function toLastmod(value?: Date | string | number | null): string | undefined {
+  if (value == null || value === "") return undefined;
+  const date = value instanceof Date ? value : new Date(value);
+  if (Number.isNaN(date.getTime())) return undefined;
+  return date.toISOString();
 }
 
 function renderUrlEntry(entry: SitemapEntry): string {
@@ -76,7 +82,7 @@ ${body}
 
 /** Sitemap index XML. */
 export function renderSitemapIndexXml(
-  sitemaps: Array<{ path: string; lastModified?: Date }>
+  sitemaps: Array<{ path: string; lastModified?: Date | string | number | null }>
 ): string {
   const seen = new Set<string>();
   const body = sitemaps

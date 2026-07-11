@@ -70,6 +70,14 @@ assert(indexXml.includes("sitemap-pages.xml"), "index lists pages");
 assert(indexXml.includes("sitemap-games.xml"), "index lists games");
 assert(indexXml.includes("<lastmod>"), "index can include lastmod");
 
+const indexXmlCachedDates = renderSitemapIndexXml([
+  { path: "/sitemap-pages.xml", lastModified: "2026-03-01T00:00:00.000Z" },
+]);
+assert(
+  indexXmlCachedDates.includes("2026-03-01T00:00:00.000Z"),
+  "index lastmod accepts ISO strings from unstable_cache"
+);
+
 const urlset = renderUrlsetXml([
   {
     path: "/game/demo",
@@ -77,6 +85,10 @@ const urlset = renderUrlsetXml([
     changeFrequency: "weekly",
     priority: 0.9,
     imagesDetailed: [{ loc: "/uploads/thumbnails/demo.png", title: "Demo logo" }],
+  },
+  {
+    path: "/game/cached",
+    lastModified: "2026-05-01T00:00:00.000Z",
   },
 ]);
 assert(urlset.includes("<urlset"), "urlset root");
@@ -86,6 +98,7 @@ assert(urlset.includes("xmlns:image="), "image namespace present");
 assert(urlset.includes("<image:image>"), "image extension present");
 assert(urlset.includes("<image:loc>"), "image loc present");
 assert(urlset.includes("2026-04-01T12:00:00.000Z"), "lastmod from game timestamp");
+assert(urlset.includes("2026-05-01T00:00:00.000Z"), "urlset lastmod accepts ISO strings");
 
 const origin = getSitemapBaseUrl();
 assert(typeof origin === "string" && origin.length > 0, "sitemap base url defined");
