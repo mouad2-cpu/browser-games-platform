@@ -26,6 +26,11 @@ function normalizeSiteUrl(raw: string): string {
 
 export const SITE_URL = normalizeSiteUrl(RAW_SITE_URL);
 
+/** GA4 Measurement ID (e.g. G-XXXXXXXXXX). Empty disables the tag. */
+export const GA_MEASUREMENT_ID = (
+  process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID ?? ""
+).trim();
+
 /** Primary brand mark used in UI, sitemap, and ImageObject structured data. */
 export const SITE_LOGO = {
   path: "/zenfun-brand.png",

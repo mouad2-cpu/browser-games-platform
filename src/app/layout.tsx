@@ -5,6 +5,7 @@ import { LanguageProvider } from "@/components/layout/language-provider";
 import { LocaleDocumentTitle } from "@/components/layout/locale-document-title";
 import { translate } from "@/lib/i18n";
 import { isLocaleCode, type LocaleCode } from "@/lib/locale";
+import { GoogleAnalytics } from "@/components/analytics/google-analytics";
 import { SITE_LOGO, SITE_NAME, SITE_URL } from "@/lib/site-config";
 import { absoluteUrl } from "@/lib/structured-data/urls";
 import "./globals.css";
@@ -75,6 +76,7 @@ export default async function RootLayout({
           <LocaleDocumentTitle />
           {children}
         </LanguageProvider>
+        <GoogleAnalytics />
       </body>
     </html>
   );
