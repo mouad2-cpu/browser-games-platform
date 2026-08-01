@@ -35,7 +35,7 @@ export function EmbedPreview({ embedPath, title = "Game preview" }: Props) {
           src={src}
           title={title}
           allowFullScreen
-          sandbox="allow-scripts allow-same-origin allow-forms allow-pointer-lock allow-fullscreen"
+          sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-pointer-lock allow-fullscreen"
           className="absolute inset-0 h-full w-full border-0"
         />
       </div>

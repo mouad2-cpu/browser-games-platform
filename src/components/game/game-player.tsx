@@ -27,8 +27,9 @@ export function GamePlayer({ embedPath, title, onPlay }: Props) {
         src={embedPath}
         title={title}
         allowFullScreen
-        // Keep players on ZenFun: no popups / top-navigation (GD/Famobi "play on our site" escapes).
-        sandbox="allow-scripts allow-same-origin allow-forms allow-pointer-lock allow-fullscreen"
+        // allow-popups: needed for GD/Famobi Play/Try buttons & ads.
+        // Do NOT add allow-top-navigation*: that lets embeds replace zenfungames.com.
+        sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-pointer-lock allow-fullscreen"
         referrerPolicy="strict-origin-when-cross-origin"
         className="h-full min-h-[inherit] w-full border-0"
         style={{ minHeight: "min(70vh, 640px)" }}
