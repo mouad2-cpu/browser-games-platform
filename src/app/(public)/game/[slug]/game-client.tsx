@@ -83,7 +83,6 @@ export function GameClient({
               <GamePlayer
                 embedPath={embedPath}
                 title={game.title}
-                pageUrl={gameUrl}
                 onPlay={handlePlay}
               />
 
