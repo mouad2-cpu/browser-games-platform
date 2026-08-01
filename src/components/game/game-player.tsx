@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { normalizeEmbedUrl } from "@/lib/embed-url";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { isAllowedEmbedUrl, normalizeEmbedUrl } from "@/lib/embed-url";
 
 type Props = {
   embedPath: string;
@@ -13,7 +13,13 @@ type Props = {
 export function GamePlayer({ embedPath, title, pageUrl, onPlay }: Props) {
   const playRecorded = useRef(false);
   const [started, setStarted] = useState(false);
-  const src = normalizeEmbedUrl(embedPath, pageUrl);
+  const src = useMemo(
+    () => normalizeEmbedUrl(embedPath, pageUrl),
+    [embedPath, pageUrl]
+  );
+  const canPlay = Boolean(
+    src && (src.startsWith("/") || isAllowedEmbedUrl(src))
+  );
 
   useEffect(() => {
     setStarted(false);
@@ -21,6 +27,7 @@ export function GamePlayer({ embedPath, title, pageUrl, onPlay }: Props) {
   }, [embedPath]);
 
   function startGame() {
+    if (!canPlay) return;
     setStarted(true);
     if (playRecorded.current) return;
     playRecorded.current = true;
@@ -37,7 +44,8 @@ export function GamePlayer({ embedPath, title, pageUrl, onPlay }: Props) {
         <button
           type="button"
           onClick={startGame}
-          className="flex h-full min-h-[inherit] w-full flex-col items-center justify-center gap-4 bg-gradient-to-b from-[#1a2030] to-[#0f131a] px-6 text-center"
+          disabled={!canPlay}
+          className="flex h-full min-h-[inherit] w-full flex-col items-center justify-center gap-4 bg-gradient-to-b from-[#1a2030] to-[#0f131a] px-6 text-center disabled:cursor-not-allowed disabled:opacity-60"
           style={{ minHeight: "min(70vh, 640px)" }}
         >
           <span className="text-lg font-semibold text-white sm:text-xl">{title}</span>
@@ -45,7 +53,9 @@ export function GamePlayer({ embedPath, title, pageUrl, onPlay }: Props) {
             Play Game
           </span>
           <span className="max-w-sm text-sm text-[var(--color-muted)]">
-            Plays on ZenFun Games — stays in this page
+            {canPlay
+              ? "Plays on ZenFun Games — stays in this page"
+              : "This game embed is unavailable"}
           </span>
         </button>
       ) : (
