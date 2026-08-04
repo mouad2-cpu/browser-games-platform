@@ -5,6 +5,7 @@ import { deleteGameAction } from "@/app/actions/admin/games";
 import { GameThumbnail } from "@/components/admin/game-thumbnail";
 import { GameCategoryQuickEdit } from "@/components/admin/game-category-quick-edit";
 import { GameFeaturedToggle } from "@/components/admin/game-featured-toggle";
+import { GameStatusToggle } from "@/components/admin/game-status-toggle";
 
 type Props = {
   searchParams: Promise<{ status?: string; category?: string }>;
@@ -105,7 +106,13 @@ export default async function AdminGamesPage({ searchParams }: Props) {
                     primaryCategoryId={game.primaryCategoryId}
                   />
                 </td>
-                <td className="px-4 py-3 capitalize">{game.status}</td>
+                <td className="px-4 py-3">
+                  <GameStatusToggle
+                    gameId={game.id}
+                    status={game.status === "draft" ? "draft" : "published"}
+                    compact
+                  />
+                </td>
                 <td className="px-4 py-3">
                   <GameFeaturedToggle gameId={game.id} featured={game.featured} compact />
                 </td>

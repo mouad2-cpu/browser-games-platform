@@ -5,6 +5,7 @@ import { GameForm } from "@/components/admin/game-form";
 import { GameThumbnail } from "@/components/admin/game-thumbnail";
 import { GameCategoryEditor } from "@/components/admin/game-category-editor";
 import { GameFeaturedToggle } from "@/components/admin/game-featured-toggle";
+import { GameStatusToggle } from "@/components/admin/game-status-toggle";
 
 type Props = { params: Promise<{ id: string }> };
 
@@ -60,6 +61,16 @@ export default async function GameDetailAdminPage({ params }: Props) {
 
           <div className="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-4">
             <p className="mb-2 text-xs font-medium uppercase tracking-wide text-[var(--color-muted)]">
+              Status
+            </p>
+            <GameStatusToggle
+              gameId={game.id}
+              status={game.status === "draft" ? "draft" : "published"}
+            />
+          </div>
+
+          <div className="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-4">
+            <p className="mb-2 text-xs font-medium uppercase tracking-wide text-[var(--color-muted)]">
               Featured
             </p>
             <GameFeaturedToggle gameId={game.id} featured={game.featured} />
@@ -68,7 +79,6 @@ export default async function GameDetailAdminPage({ params }: Props) {
           <div className="grid grid-cols-2 gap-2 sm:grid-cols-1">
             <MiniStat label="Play events" value={playCount} />
             <MiniStat label="Open reports" value={openReports.length} />
-            <MiniStat label="Status" value={game.status} />
             <MiniStat
               label="Released"
               value={game.releasedAt ? game.releasedAt.toLocaleDateString() : "—"}

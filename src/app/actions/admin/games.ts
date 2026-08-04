@@ -459,3 +459,53 @@ export async function toggleGameFeaturedAction(formData: FormData) {
     return { error: e instanceof Error ? e.message : "Something went wrong." };
   }
 }
+
+export async function setGameStatusAction(formData: FormData) {
+  try {
+    const session = await requireAdmin();
+    const gameId = parseInt(String(formData.get("gameId")), 10);
+    const statusRaw = String(formData.get("status") ?? "");
+    if (!gameId) return { error: "Invalid game." };
+    if (statusRaw !== "draft" && statusRaw !== "published") {
+      return { error: "Invalid status." };
+    }
+
+    const game = await prisma.game.findUnique({
+      where: { id: gameId },
+      select: { id: true, slug: true, status: true, releasedAt: true },
+    });
+    if (!game) return { error: "Game not found." };
+
+    const status = statusRaw as GameStatus;
+    const wasPublished = game.status === GameStatus.published;
+    const isPublished = status === GameStatus.published;
+
+    await prisma.game.update({
+      where: { id: gameId },
+      data: {
+        status,
+        releasedAt:
+          isPublished && !wasPublished ? new Date() : game.releasedAt,
+      },
+    });
+
+    await logAudit({
+      userId: session.userId,
+      action: isPublished ? "game.publish" : "game.unpublish",
+      entityType: "game",
+      entityId: String(gameId),
+      metadata: { status },
+    });
+
+    revalidatePath("/");
+    revalidatePath("/top-picks");
+    revalidatePath("/all-games");
+    revalidatePath("/admin/games");
+    revalidatePath(`/admin/games/${gameId}`);
+    revalidatePath(`/game/${game.slug}`);
+    revalidateSitemap();
+    return { ok: true as const, status };
+  } catch (e) {
+    return { error: e instanceof Error ? e.message : "Something went wrong." };
+  }
+}
