@@ -11,13 +11,14 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
   const { s } = await searchParams;
   const query = s?.trim() ?? "";
 
+  // Always noindex: search is blocked in robots.txt and has no unique SEO value.
   if (!query) {
     return buildPageMetadata({
       path: "/search",
       title: "Search Games",
       description:
         "Search free online games and unblocked HTML5 browser games on ZenFun Games. Find action, puzzle, racing, sports, and more.",
-      index: true,
+      index: false,
     });
   }
 
