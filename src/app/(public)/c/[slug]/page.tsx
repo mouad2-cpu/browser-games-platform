@@ -7,6 +7,7 @@ import { GameListPagination } from "@/components/game/game-list-pagination";
 import { CategoryPageHeader } from "@/components/category/category-page-header";
 import {
   getCategoryPageDescription,
+  getCategoryMetaDescription,
   getCategoryPageTitle,
 } from "@/lib/category-descriptions";
 import { getCategorySeoContent } from "@/lib/category-seo-content";
@@ -29,7 +30,7 @@ export async function generateMetadata({ params, searchParams }: Props): Promise
   const page = parsePageNumber(pageParam);
   const sort = parseCategorySort(sortParam);
   const title = getCategoryPageTitle(category.name);
-  const description = getCategoryPageDescription(category.name, category.description);
+  const description = getCategoryMetaDescription(category.name, category.description);
   const index = page <= 1 && sort === "popular";
 
   return buildPageMetadata({

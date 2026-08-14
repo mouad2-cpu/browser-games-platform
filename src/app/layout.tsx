@@ -5,9 +5,10 @@ import { LanguageProvider } from "@/components/layout/language-provider";
 import { LocaleDocumentTitle } from "@/components/layout/locale-document-title";
 import { translate } from "@/lib/i18n";
 import { isLocaleCode, type LocaleCode } from "@/lib/locale";
-import { GoogleAnalytics } from "@/components/analytics/google-analytics";
 import { SITE_LOGO, SITE_NAME, SITE_URL } from "@/lib/site-config";
 import { absoluteUrl } from "@/lib/structured-data/urls";
+import { descriptionToMetaDescription } from "@/lib/meta-description";
+import { GoogleAnalytics } from "@/components/analytics/google-analytics";
 import "./globals.css";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -17,7 +18,9 @@ export async function generateMetadata(): Promise<Metadata> {
     cookieLocale && isLocaleCode(cookieLocale) ? cookieLocale : "en";
 
   const title = translate(locale, "meta.siteTitle");
-  const description = translate(locale, "meta.siteDescription", { siteName: SITE_NAME });
+  const description = descriptionToMetaDescription(
+    translate(locale, "meta.siteDescription", { siteName: SITE_NAME })
+  );
   const homeUrl = absoluteUrl("/");
   const socialImage = {
     url: SITE_LOGO.path,

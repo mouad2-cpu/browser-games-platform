@@ -30,7 +30,9 @@ export function GameBreadcrumb({ categories, title }: Props) {
           </>
         )}
         <li aria-hidden>»</li>
-        <li className="truncate text-[var(--color-text)]">{title}</li>
+        <li className="truncate text-[var(--color-text)]" aria-current="page">
+          {title}
+        </li>
       </ol>
     </nav>
   );

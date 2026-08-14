@@ -181,7 +181,7 @@ export function GameDescription({
   return (
     <section className="space-y-6">
       <DescriptionBlock title={t("game.description")}>
-        <h1 className="text-xl font-bold text-white">{title}</h1>
+        <h2 className="text-xl font-bold text-white">{title}</h2>
         {hasIntro ? (
           parsed.intro.map((block, i) => (
             <div key={i} className="space-y-1.5">

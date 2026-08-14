@@ -5,7 +5,7 @@ export const en: Messages = {
     siteTitle: "Unblocked Games, Free Online Games & Browser Games | ZenFun Games",
     siteTitleTemplate: "%s | ZenFun Games",
     siteDescription:
-      "Play unblocked games, free online games, and HTML5 browser games instantly. ZenFun Games offers thousands of fun, creative, educational, and multiplayer games with no downloads. Play on desktop, tablet, or mobile.",
+      "Play unblocked games and free HTML5 browser games instantly on ZenFun Games. No downloads — play on desktop, tablet, or mobile.",
   },
   shell: {
     hideMenu: "Hide menu",

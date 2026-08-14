@@ -5,7 +5,7 @@ export const nl: Messages = {
     siteTitle: "Speel gratis browsergames online",
     siteTitleTemplate: "%s | Browsergames",
     siteDescription:
-      "{siteName} biedt de nieuwste en beste gratis online games. Speel in je browser zonder downloads, opdringerige advertenties of pop-ups. Laad een game en begin direct op desktop, tablet of mobiel.",
+      "Speel unblocked games en gratis HTML5-browsergames direct op {siteName}. Geen downloads — op desktop, tablet of mobiel.",
   },
   shell: {
     hideMenu: "Menu verbergen",

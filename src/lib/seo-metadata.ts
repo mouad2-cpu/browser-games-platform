@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { SITE_HOME_PRIMARY_IMAGE, SITE_LOGO, SITE_NAME } from "@/lib/site-config";
 import { absoluteUrl } from "@/lib/structured-data/urls";
+import { descriptionToMetaDescription } from "@/lib/meta-description";
 
 export function parsePageNumber(pageParam?: string): number {
   return Math.max(1, parseInt(pageParam ?? "1", 10) || 1);
@@ -52,15 +53,16 @@ export function buildPageMetadata({
   const ogImages = hasCustomImages
     ? images!.map((url) => ({ url }))
     : [defaultSocialImage()];
+  const metaDescription = descriptionToMetaDescription(description);
 
   return {
     title,
-    description,
+    description: metaDescription,
     alternates: { canonical },
     robots: { index, follow },
     openGraph: {
       title: resolvedOgTitle,
-      description,
+      description: metaDescription,
       url: canonical,
       siteName: SITE_NAME,
       type: "website",
@@ -69,7 +71,7 @@ export function buildPageMetadata({
     twitter: {
       card: hasCustomImages ? "summary_large_image" : "summary",
       title: resolvedOgTitle,
-      description,
+      description: metaDescription,
       images: ogImages.map((img) => img.url),
     },
   };

@@ -41,6 +41,9 @@ export default async function HomePage() {
   return (
     <>
       <HomeJsonLd featuredGames={featuredGames} />
+      <h1 className="mb-4 px-1 text-[24px] font-bold leading-tight text-[var(--color-text)] sm:px-0">
+        Unblocked Games & Free Online Browser Games
+      </h1>
       <HomePlacementSlot placement="first" {...slotProps} />
       <ContinuePlayingSection games={continuePlaying} />
       <HomePlacementSlot placement="between_continue_top_picks" {...slotProps} />

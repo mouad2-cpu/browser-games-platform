@@ -86,22 +86,32 @@ export function GameClient({
                 onPlay={handlePlay}
               />
 
-              <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
-                <GameBreadcrumb categories={game.categories} title={game.title} />
-                <GameToolbar
-                  gameId={game.id}
-                  title={game.title}
-                  gameUrl={gameUrl}
-                  voteStats={voteStats}
-                  onVoteChange={setVoteStats}
-                  onReport={() => setIsReportOpen(true)}
-                />
+              <div className="mt-4 space-y-2">
+                <h1 className="text-xl font-bold leading-tight text-[var(--color-text)] sm:text-2xl">
+                  {game.title}
+                </h1>
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <GameBreadcrumb categories={game.categories} title={game.title} />
+                  <GameToolbar
+                    gameId={game.id}
+                    title={game.title}
+                    gameUrl={gameUrl}
+                    voteStats={voteStats}
+                    onVoteChange={setVoteStats}
+                    onReport={() => setIsReportOpen(true)}
+                  />
+                </div>
               </div>
             </>
           ) : (
-            <p className="rounded-2xl bg-[var(--color-surface)] p-8 text-center text-[var(--color-muted)]">
-              This game is not available to play yet.
-            </p>
+            <div className="space-y-4">
+              <h1 className="text-xl font-bold leading-tight text-[var(--color-text)] sm:text-2xl">
+                {game.title}
+              </h1>
+              <p className="rounded-2xl bg-[var(--color-surface)] p-8 text-center text-[var(--color-muted)]">
+                This game is not available to play yet.
+              </p>
+            </div>
           )}
 
           <GameInfoPanel

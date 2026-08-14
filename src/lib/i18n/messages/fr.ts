@@ -5,7 +5,7 @@ export const fr: Messages = {
     siteTitle: "Jouez à des jeux navigateur gratuits",
     siteTitleTemplate: "%s | Jeux navigateur",
     siteDescription:
-      "{siteName} propose les meilleurs jeux en ligne gratuits. Jouez dans votre navigateur sans téléchargement, publicités intrusives ni pop-ups. Lancez un jeu et jouez instantanément sur ordinateur, tablette ou mobile.",
+      "Jouez à des jeux débloqués et jeux HTML5 gratuits instantanément sur {siteName}. Sans téléchargement — PC, tablette ou mobile.",
   },
   shell: {
     hideMenu: "Masquer le menu",

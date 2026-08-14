@@ -21,11 +21,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!game) return { title: "Game Not Found" };
 
   const title = game.metaTitle ?? `${game.title} - Play Online`;
-  const description =
+  const description = descriptionToMetaDescription(
     game.metaDescription ??
-    (game.description
-      ? descriptionToMetaDescription(game.description)
-      : `Play ${game.title} free online on ZenFun Games — instant HTML5 browser play, no download.`);
+      (game.description
+        ? game.description
+        : `Play ${game.title} free online on ZenFun Games — instant HTML5 browser play, no download.`)
+  );
 
   return buildPageMetadata({
     path: `/game/${slug}`,
