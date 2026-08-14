@@ -1,5 +1,5 @@
 /** Plain-text excerpt for SEO meta tags from a game/markdown description. */
-export function descriptionToMetaDescription(text: string, maxLength = 160): string {
+export function descriptionToMetaDescription(text: string, maxLength = 155): string {
   const plain = text
     .replace(/\*\*([^*]+)\*\*/g, "$1")
     .replace(/!!([^!]+)!!/g, "$1")
