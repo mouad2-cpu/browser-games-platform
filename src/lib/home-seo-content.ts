@@ -2,10 +2,10 @@ export const HOME_SEO_CONTENT = {
   eyebrow: "About ZenFunGames",
   sections: [
     {
-      id: "free-online-games",
-      title: "Free Online Games",
+      id: "unblocked-games",
+      title: "Unblocked Games",
       paragraphs: [
-        "ZenFunGames brings you one of the best collections of Free Online Games, Online Games, Browser Games, and Free Games. Play instantly without downloads, installations, or registration. Every game runs directly in your browser on PC, mobile, and tablet, so you can enjoy gaming anywhere. Our platform focuses on fast loading, smooth gameplay, and a growing library of fun games for every type of player.",
+        "ZenFunGames brings you one of the best collections of Unblocked Games, Free Online Games, Browser Games, and Free Games. Play instantly without downloads, installations, or registration. Every game runs directly in your browser on PC, mobile, and tablet, so you can enjoy gaming anywhere. Our platform focuses on fast loading, smooth gameplay, and a growing library of fun games for every type of player.",
       ],
     },
     {
@@ -43,17 +43,17 @@ export const HOME_SEO_CONTENT = {
       ],
     },
     {
-      id: "unblocked-games",
-      title: "Unblocked Games",
+      id: "play-anywhere",
+      title: "Play on Restricted Networks",
       paragraphs: [
-        "Need games that work on restricted networks? Our collection of Unblocked Games helps you enjoy fun gameplay wherever access is available. Play directly from your browser with no installation and no extra software required.",
+        "Need games that work on restricted networks? Our Unblocked Games collection helps you enjoy fun gameplay wherever access is available. Play directly from your browser with no installation and no extra software required.",
       ],
     },
     {
       id: "why-choose",
       title: "Why Choose ZenFunGames?",
       paragraphs: [
-        "ZenFunGames makes it easy to play Free Online Games anytime. Enjoy fast loading Browser Games, Instant Games, and No Download Games on PC, mobile, and tablet. With new HTML5 Games added regularly, you'll always find Popular Games, Puzzle Games, Action Games, Arcade Games, Multiplayer Games, Casual Games, Educational Games, and Creative Games to enjoy for free.",
+        "ZenFunGames makes it easy to play Unblocked Games and Free Online Games anytime. Enjoy fast loading Browser Games, Instant Games, and No Download Games on PC, mobile, and tablet. With new HTML5 Games added regularly, you'll always find Popular Games, Puzzle Games, Action Games, Arcade Games, Multiplayer Games, Casual Games, Educational Games, and Creative Games to enjoy for free.",
       ],
     },
   ],
