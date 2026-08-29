@@ -1,5 +1,5 @@
-import { GameStatus } from "@prisma/client";
 import { prisma } from "./db";
+import { publishedPlayableGameWhere } from "./game-visibility";
 import {
   normalizeCategoryTilePlacement,
   type HomePlacement,
@@ -43,20 +43,22 @@ export async function getAllCategories(): Promise<CategoryWithCount[]> {
       _count: {
         select: {
           games: {
-            where: { game: { status: GameStatus.published } },
+            where: { game: publishedPlayableGameWhere },
           },
         },
       },
     },
   });
 
-  return categories.map((c) => ({
-    id: c.id,
-    slug: c.slug,
-    name: c.name,
-    icon: c.icon,
-    gameCount: c._count.games,
-  }));
+  return categories
+    .filter((category) => category._count.games > 0)
+    .map((category) => ({
+      id: category.id,
+      slug: category.slug,
+      name: category.name,
+      icon: category.icon,
+      gameCount: category._count.games,
+    }));
 }
 
 function mapToHomeCategory(
@@ -91,7 +93,7 @@ const categoryCountInclude = {
   _count: {
     select: {
       games: {
-        where: { game: { status: GameStatus.published } },
+        where: { game: publishedPlayableGameWhere },
       },
     },
   },
@@ -107,16 +109,20 @@ export async function getHomeCategories(): Promise<HomeCategory[]> {
 
     const placementOverrides = await getCategoryHomePlacements();
 
-    return categories.map((c) =>
-      mapToHomeCategory(c, placementOverrides.get(c.id))
-    );
+    return categories
+      .filter((category) => category._count.games > 0)
+      .map((category) =>
+        mapToHomeCategory(category, placementOverrides.get(category.id))
+      );
   } catch {
     const categories = await prisma.category.findMany({
       orderBy: { sortOrder: "asc" },
       include: categoryCountInclude,
     });
 
-    return categories.map((c) => mapToHomeCategory(c));
+    return categories
+      .filter((category) => category._count.games > 0)
+      .map((category) => mapToHomeCategory(category));
   }
 }
 
@@ -175,8 +181,7 @@ export async function getCategoryGameDateRange(slug: string): Promise<{
   latestAdded: Date | null;
 }> {
   const where = {
-    status: GameStatus.published,
-    embedPath: { not: null },
+    ...publishedPlayableGameWhere,
     categories: { some: { category: { slug } } },
   } as const;
 
@@ -205,8 +210,7 @@ export async function getCatalogGameDateRange(): Promise<{
   latestAdded: Date | null;
 }> {
   const where = {
-    status: GameStatus.published,
-    embedPath: { not: null },
+    ...publishedPlayableGameWhere,
   } as const;
 
   const [oldest, newest] = await Promise.all([

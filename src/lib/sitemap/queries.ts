@@ -1,6 +1,6 @@
-import { GameStatus } from "@prisma/client";
 import { unstable_cache } from "next/cache";
 import { prisma } from "@/lib/db";
+import { publishedPlayableGameWhere } from "@/lib/game-visibility";
 import {
   SITEMAP_CACHE_TAGS,
   SITEMAP_REVALIDATE_SECONDS,
@@ -9,18 +9,13 @@ import {
   type SitemapMenuPageRow,
 } from "./types";
 
-const publishedPlayableWhere = {
-  status: GameStatus.published,
-  embedPath: { not: null },
-} as const;
-
 async function countPublishedGamesUncached(): Promise<number> {
-  return prisma.game.count({ where: publishedPlayableWhere });
+  return prisma.game.count({ where: publishedPlayableGameWhere });
 }
 
 async function fetchGamesPageUncached(chunk: number, pageSize: number): Promise<SitemapGameRow[]> {
   return prisma.game.findMany({
-    where: publishedPlayableWhere,
+    where: publishedPlayableGameWhere,
     select: {
       slug: true,
       title: true,
@@ -35,7 +30,7 @@ async function fetchGamesPageUncached(chunk: number, pageSize: number): Promise<
 
 async function fetchLatestGameUpdatedAtUncached(): Promise<Date | null> {
   const row = await prisma.game.findFirst({
-    where: publishedPlayableWhere,
+    where: publishedPlayableGameWhere,
     select: { updatedAt: true },
     orderBy: { updatedAt: "desc" },
   });
@@ -48,7 +43,7 @@ async function fetchCategoriesUncached(): Promise<SitemapCategoryRow[]> {
       slug: true,
       icon: true,
       games: {
-        where: { game: publishedPlayableWhere },
+        where: { game: publishedPlayableGameWhere },
         select: { game: { select: { updatedAt: true } } },
         orderBy: { game: { updatedAt: "desc" } },
         take: 1,
@@ -57,11 +52,13 @@ async function fetchCategoriesUncached(): Promise<SitemapCategoryRow[]> {
     orderBy: { sortOrder: "asc" },
   });
 
-  return rows.map((row) => ({
-    slug: row.slug,
-    icon: row.icon,
-    lastModified: row.games[0]?.game.updatedAt ?? null,
-  }));
+  return rows
+    .filter((row) => row.games.length > 0)
+    .map((row) => ({
+      slug: row.slug,
+      icon: row.icon,
+      lastModified: row.games[0].game.updatedAt,
+    }));
 }
 
 async function fetchPublishedMenuPagesUncached(): Promise<SitemapMenuPageRow[]> {
@@ -79,25 +76,25 @@ const cacheOpts = (tags: string[]) => ({
 
 export const getPublishedGameCount = unstable_cache(
   countPublishedGamesUncached,
-  ["sitemap-published-game-count-v2"],
+  ["sitemap-published-game-count-v3"],
   cacheOpts([SITEMAP_CACHE_TAGS.all, SITEMAP_CACHE_TAGS.games])
 );
 
 export const getSitemapGamesPage = unstable_cache(
   fetchGamesPageUncached,
-  ["sitemap-games-page-v2"],
+  ["sitemap-games-page-v3"],
   cacheOpts([SITEMAP_CACHE_TAGS.all, SITEMAP_CACHE_TAGS.games])
 );
 
 export const getLatestGameUpdatedAt = unstable_cache(
   fetchLatestGameUpdatedAtUncached,
-  ["sitemap-latest-game-updated-v2"],
+  ["sitemap-latest-game-updated-v3"],
   cacheOpts([SITEMAP_CACHE_TAGS.all, SITEMAP_CACHE_TAGS.games, SITEMAP_CACHE_TAGS.collections])
 );
 
 export const getSitemapCategories = unstable_cache(
   fetchCategoriesUncached,
-  ["sitemap-categories-v2"],
+  ["sitemap-categories-v3"],
   cacheOpts([SITEMAP_CACHE_TAGS.all, SITEMAP_CACHE_TAGS.categories])
 );
 
