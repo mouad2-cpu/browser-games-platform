@@ -71,6 +71,7 @@ export type Messages = {
     genericError: string;
   };
   home: {
+    heading: string;
     continuePlaying: string;
     topPicks: string;
     featuredGames: string;

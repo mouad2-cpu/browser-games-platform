@@ -74,6 +74,7 @@ export const nl: Messages = {
     genericError: "Er ging iets mis. Probeer het opnieuw.",
   },
   home: {
+    heading: "Gratis browsergames",
     continuePlaying: "Verder spelen",
     topPicks: "Topkeuzes voor jou",
     featuredGames: "Uitgelichte games",

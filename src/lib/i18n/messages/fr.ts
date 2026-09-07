@@ -74,6 +74,7 @@ export const fr: Messages = {
     genericError: "Une erreur s'est produite. Réessayez.",
   },
   home: {
+    heading: "Jeux navigateur gratuits",
     continuePlaying: "Continuer à jouer",
     topPicks: "Sélection pour vous",
     featuredGames: "Jeux en vedette",

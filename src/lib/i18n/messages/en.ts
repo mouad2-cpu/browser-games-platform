@@ -2,7 +2,7 @@ import type { Messages } from "../types";
 
 export const en: Messages = {
   meta: {
-    siteTitle: "Unblocked Games, Free Online Games & Browser Games | ZenFun Games",
+    siteTitle: "Unblocked Games & Free Browser Games | ZenFun Games",
     siteTitleTemplate: "%s | ZenFun Games",
     siteDescription:
       "Play unblocked games and free HTML5 browser games instantly on ZenFun Games. No downloads — play on desktop, tablet, or mobile.",
@@ -74,6 +74,7 @@ export const en: Messages = {
     genericError: "Something went wrong. Please try again.",
   },
   home: {
+    heading: "Unblocked Games",
     continuePlaying: "Continue playing",
     topPicks: "Top picks for you",
     featuredGames: "Featured games",

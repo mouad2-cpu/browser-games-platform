@@ -11,13 +11,12 @@ export function HomeSeoSection() {
 
         {HOME_SEO_CONTENT.sections.map((section, index) => (
           <div key={section.id} className="home-seo-block">
-            {index === 0 ? (
-              <h1 id="home-seo-title" className="home-seo-title">
-                {section.title}
-              </h1>
-            ) : (
-              <h2 className="home-seo-heading">{section.title}</h2>
-            )}
+            <h2
+              id={index === 0 ? "home-seo-title" : undefined}
+              className={index === 0 ? "home-seo-title" : "home-seo-heading"}
+            >
+              {section.title}
+            </h2>
 
             {section.paragraphs.map((paragraph) => (
               <p key={paragraph} className="home-seo-text">

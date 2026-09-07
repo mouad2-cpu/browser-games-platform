@@ -15,6 +15,7 @@ import { LatestSection } from "@/components/home/latest-section";
 import { HomePlacementSlot } from "@/components/home/home-placement-slot";
 import { HomePageFooterActions } from "@/components/home/home-page-footer-actions";
 import { HomeSeoSection } from "@/components/home/home-seo-section";
+import { HomePageHeading } from "@/components/home/home-page-heading";
 import { HomeJsonLd } from "@/components/seo/structured-data";
 import { absoluteUrl } from "@/lib/structured-data/urls";
 
@@ -41,6 +42,7 @@ export default async function HomePage() {
   return (
     <>
       <HomeJsonLd featuredGames={featuredGames} />
+      <HomePageHeading />
       <HomePlacementSlot placement="first" {...slotProps} />
       <ContinuePlayingSection games={continuePlaying} />
       <HomePlacementSlot placement="between_continue_top_picks" {...slotProps} />

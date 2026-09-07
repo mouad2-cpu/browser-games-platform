@@ -74,6 +74,7 @@ export const es: Messages = {
     genericError: "Algo salió mal. Inténtalo de nuevo.",
   },
   home: {
+    heading: "Juegos gratis en el navegador",
     continuePlaying: "Seguir jugando",
     topPicks: "Mejores para ti",
     featuredGames: "Juegos destacados",
