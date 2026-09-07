@@ -7,7 +7,7 @@ import { isStaffRole } from "@/lib/rbac";
 import { getGameVoteStats, resolveVoterId } from "@/lib/game-votes.server";
 import { SITE_URL } from "@/lib/site-config";
 import { getGameSeoContent } from "@/lib/game-seo-content";
-import { buildPageMetadata } from "@/lib/seo-metadata";
+import { buildPageMetadata, formatGameMetaTitle } from "@/lib/seo-metadata";
 import { GameJsonLd } from "@/components/seo/structured-data";
 import { GameClient } from "./game-client";
 
@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const game = await getGameBySlug(slug);
   if (!game) return { title: "Game Not Found" };
 
-  const title = game.metaTitle ?? `${game.title} - Play Online`;
+  const title = formatGameMetaTitle(game.title);
   const description = descriptionToMetaDescription(
     game.metaDescription ??
       (game.description
@@ -32,7 +32,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     path: `/game/${slug}`,
     title,
     description,
-    ogTitle: game.metaTitle ?? game.title,
+    ogTitle: title,
+    absoluteTitle: true,
     images: game.thumbnail ? [game.thumbnail] : undefined,
   });
 }

@@ -241,7 +241,13 @@ export function GameForm({ categories, game }: Props) {
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="form-field">
           <label htmlFor="metaTitle" className="form-label">Meta title (SEO)</label>
-          <input id="metaTitle" className="form-input" value={metaTitle} onChange={(e) => setMetaTitle(e.target.value)} />
+          <input
+            id="metaTitle"
+            className="form-input"
+            value={metaTitle}
+            onChange={(e) => setMetaTitle(e.target.value)}
+            placeholder="Title Unblocked ⚡ Play Free"
+          />
         </div>
         <div className="form-field">
           <label htmlFor="metaDescription" className="form-label">Meta description (SEO)</label>

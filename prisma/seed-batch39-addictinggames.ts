@@ -1,12 +1,11 @@
 /**
- * Upsert GameSnacks batches 1–8 as PUBLISHED.
- * - Same SEO as batch25 (metaTitle / description / metaDescription)
+ * Upsert 39 AddictingGames HTML5 games.
  * - Never create a duplicate if slug/alias/title already exists
- * - If existing has CrazyGames (or other) embed, replace with GameSnacks iframe
- * - New + matched games are set to published
+ * - If existing game has a CrazyGames embed, replace with AG iframe
+ * - New games are created as draft; published games stay published
+ * - SEO: same metaTitle / description / metaDescription strategy as batch25
  *
- * Run: npx tsx prisma/seed-gs-batches-published.ts
- * Optional: GS_BATCH=3 to seed only one batch file gamesnacks-batch-03 (not used; uses combined JSON)
+ * Run: npx tsx prisma/seed-batch39-addictinggames.ts
  */
 import { copyFileSync, existsSync, mkdirSync, readFileSync } from "fs";
 import path from "path";
@@ -26,17 +25,14 @@ const GENRE_LABEL: Record<string, string> = {
 };
 
 type BatchGame = {
-  id: string;
   title: string;
   slug: string;
   embed: string;
-  thumbnail?: string | null;
-  coverFile?: string;
   categories: string[];
   aliasSlugs?: string[];
 };
 
-type BatchFile = { games: BatchGame[]; count?: number };
+type BatchFile = { games: BatchGame[] };
 
 function normTitle(s: string): string {
   return s.toLowerCase().replace(/[^a-z0-9]+/g, "");
@@ -77,15 +73,7 @@ async function findExisting(game: BatchGame) {
   }
 
   const all = await prisma.game.findMany({
-    select: {
-      id: true,
-      slug: true,
-      title: true,
-      embedPath: true,
-      status: true,
-      releasedAt: true,
-      addedAt: true,
-    },
+    select: { id: true, slug: true, title: true, embedPath: true, status: true },
   });
   const want = normTitle(game.title);
   const titleHits = all.filter((g) => normTitle(g.title) === want);
@@ -107,7 +95,7 @@ async function findExisting(game: BatchGame) {
 }
 
 async function main() {
-  const filePath = path.join(__dirname, "gamesnacks-batches-1-8-seed.json");
+  const filePath = path.join(__dirname, "batch39-addictinggames.json");
   const data = JSON.parse(readFileSync(filePath, "utf8")) as BatchFile;
 
   const coversSrc = path.join(process.cwd(), "public", "game-covers");
@@ -122,7 +110,6 @@ async function main() {
   let updated = 0;
   let replacedCrazy = 0;
   let skipped = 0;
-  let published = 0;
 
   for (const game of data.games) {
     const catSlugs = game.categories?.length ? game.categories : ["arcade"];
@@ -134,22 +121,19 @@ async function main() {
       continue;
     }
 
-    const coverName = game.coverFile || `${game.slug}.png`;
+    const coverName = `${game.slug}.png`;
     const coverPath = path.join(coversSrc, coverName);
     if (existsSync(coverPath)) {
       copyFileSync(coverPath, path.join(thumbsDir, coverName));
-    } else {
-      console.warn(`WARN missing cover: ${coverName}`);
     }
 
     const genre = GENRE_LABEL[primarySlug] ?? "browser";
     const description = seoDescription(game.title, genre);
     const metaTitle = `${game.title} Unblocked ⚡ Play Free`;
     const metaDescription = descriptionToMetaDescription(description);
-    const thumbnail = `/uploads/thumbnails/${coverName}`;
+    const thumbnail = `/uploads/thumbnails/${game.slug}.png`;
 
     const existing = await findExisting(game);
-    const now = new Date();
 
     if (existing) {
       const wasCrazy = isCrazyGamesEmbed(existing.embedPath);
@@ -163,9 +147,6 @@ async function main() {
           thumbnail,
           embedPath: game.embed,
           primaryCategoryId,
-          status: GameStatus.published,
-          releasedAt: existing.releasedAt ?? now,
-          addedAt: existing.addedAt ?? now,
         },
       });
 
@@ -179,12 +160,11 @@ async function main() {
       }
 
       updated += 1;
-      published += 1;
       if (wasCrazy) {
         replacedCrazy += 1;
-        console.log(`REPLACE CrazyGames → GS published: ${existing.slug} (${game.title})`);
+        console.log(`REPLACE CrazyGames → AG: ${existing.slug} (${game.title})`);
       } else {
-        console.log(`UPDATE published: ${existing.slug} ← ${game.slug} (${game.title})`);
+        console.log(`UPDATE existing: ${existing.slug} ← ${game.slug} (${game.title})`);
       }
       continue;
     }
@@ -199,10 +179,9 @@ async function main() {
         thumbnail,
         embedPath: game.embed,
         featured: false,
-        status: GameStatus.published,
+        status: GameStatus.draft,
         primaryCategoryId,
-        addedAt: now,
-        releasedAt: now,
+        addedAt: new Date(),
       },
     });
 
@@ -215,12 +194,11 @@ async function main() {
     }
 
     created += 1;
-    published += 1;
-    console.log(`CREATE published: ${game.slug}`);
+    console.log(`CREATE draft: ${game.slug}`);
   }
 
   console.log(
-    JSON.stringify({ created, updated, replacedCrazy, skipped, published, total: data.games.length }, null, 2)
+    JSON.stringify({ created, updated, replacedCrazy, skipped }, null, 2)
   );
 }
 

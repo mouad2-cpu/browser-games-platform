@@ -35,7 +35,14 @@ type BuildPageMetadataOptions = {
   follow?: boolean;
   /** Open Graph / Twitter title (defaults to `title`). */
   ogTitle?: string;
+  /** Skip the root layout title template (e.g. `| ZenFun Games`). */
+  absoluteTitle?: boolean;
 };
+
+/** Game page `<title>` / OG title: `{Name} Unblocked ⚡ Play Free` */
+export function formatGameMetaTitle(gameTitle: string): string {
+  return `${gameTitle} Unblocked ⚡ Play Free`;
+}
 
 /** Shared HTML metadata: canonical, robots, Open Graph, Twitter. */
 export function buildPageMetadata({
@@ -46,6 +53,7 @@ export function buildPageMetadata({
   index = true,
   follow = true,
   ogTitle,
+  absoluteTitle = false,
 }: BuildPageMetadataOptions): Metadata {
   const canonical = absoluteUrl(path);
   const resolvedOgTitle = ogTitle ?? title;
@@ -56,7 +64,7 @@ export function buildPageMetadata({
   const metaDescription = descriptionToMetaDescription(description);
 
   return {
-    title,
+    title: absoluteTitle ? { absolute: title } : title,
     description: metaDescription,
     alternates: { canonical },
     robots: { index, follow },

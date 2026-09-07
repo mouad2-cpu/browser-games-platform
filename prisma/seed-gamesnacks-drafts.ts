@@ -49,7 +49,7 @@ function seoDescription(title: string, genre: string): string {
 }
 
 function metaTitleFor(title: string): string {
-  return `${title} - Play Free Online`;
+  return `${title} Unblocked ⚡ Play Free`;
 }
 
 async function main() {

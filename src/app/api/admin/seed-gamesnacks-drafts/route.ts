@@ -70,7 +70,7 @@ export async function POST() {
 
       const genre = GENRE_LABEL[primarySlug] ?? "browser";
       const description = seoDescription(game.title, genre);
-      const metaTitle = `${game.title} - Play Free Online`;
+      const metaTitle = `${game.title} Unblocked ⚡ Play Free`;
       const metaDescription = descriptionToMetaDescription(description);
       const thumbnail = game.thumbnail?.startsWith("/")
         ? game.thumbnail
