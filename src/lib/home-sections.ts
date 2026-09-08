@@ -1,6 +1,6 @@
-import { GameStatus } from "@prisma/client";
 import type { GameCard } from "./games";
 import { prisma } from "./db";
+import { publishedPlayableGameWhere } from "./game-visibility";
 import { homePageSectionDelegate } from "./prisma-delegates";
 import {
   normalizeHomePlacement,
@@ -48,7 +48,7 @@ export async function getHomePageSectionsWithGames(): Promise<HomePageSectionWit
         category: {
           include: {
             games: {
-              where: { game: { status: GameStatus.published } },
+              where: { game: publishedPlayableGameWhere },
               orderBy: { game: { createdAt: "desc" } },
               take: 49,
               include: {
@@ -119,7 +119,7 @@ export async function getHomePageSectionsAdmin(): Promise<HomePageSectionAdmin[]
             _count: {
               select: {
                 games: {
-                  where: { game: { status: GameStatus.published } },
+                  where: { game: publishedPlayableGameWhere },
                 },
               },
             },
@@ -168,7 +168,7 @@ export async function getCategoriesWithoutHomeSection() {
         _count: {
           select: {
             games: {
-              where: { game: { status: GameStatus.published } },
+              where: { game: publishedPlayableGameWhere },
             },
           },
         },
@@ -181,7 +181,7 @@ export async function getCategoriesWithoutHomeSection() {
         _count: {
           select: {
             games: {
-              where: { game: { status: GameStatus.published } },
+              where: { game: publishedPlayableGameWhere },
             },
           },
         },

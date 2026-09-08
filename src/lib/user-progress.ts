@@ -1,7 +1,7 @@
 import { cookies } from "next/headers";
-import { GameStatus } from "@prisma/client";
 import { getSession } from "./auth";
 import { prisma } from "./db";
+import { publishedPlayableGameWhere } from "./game-visibility";
 import {
   MAX_RECENT_GAMES,
   parseRecentGameSlugs,
@@ -21,7 +21,7 @@ export async function getUserRecentGameSlugs(
   const rows = await prisma.userGameProgress.findMany({
     where: {
       userId,
-      game: { status: GameStatus.published },
+      game: publishedPlayableGameWhere,
     },
     orderBy: { lastPlayedAt: "desc" },
     take: limit,
@@ -38,7 +38,7 @@ export async function mergeGuestProgressIntoUser(
   if (slugs.length === 0 || !hasUserGameProgress()) return;
 
   const games = await prisma.game.findMany({
-    where: { slug: { in: slugs }, status: GameStatus.published },
+    where: { slug: { in: slugs }, ...publishedPlayableGameWhere },
     select: { id: true, slug: true },
   });
   const slugToId = new Map(games.map((game) => [game.slug, game.id]));
