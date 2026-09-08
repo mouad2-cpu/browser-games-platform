@@ -67,7 +67,17 @@ export function buildPageMetadata({
     title: absoluteTitle ? { absolute: title } : title,
     description: metaDescription,
     alternates: { canonical },
-    robots: { index, follow },
+    robots: {
+      index,
+      follow,
+      googleBot: {
+        index,
+        follow,
+        "max-video-preview": -1,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+      },
+    },
     openGraph: {
       title: resolvedOgTitle,
       description: metaDescription,
