@@ -70,6 +70,9 @@ export function buildPageMetadata({
     robots: {
       index,
       follow,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
       googleBot: {
         index,
         follow,
