@@ -3,7 +3,7 @@ set -euo pipefail
 
 DOSSIER="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SOURCE="$DOSSIER/compte-rendu.html"
-SORTIE="${1:-$DOSSIER/Nom_Prenom_Examen_TP_Arduino.pdf}"
+SORTIE="${1:-$DOSSIER/Jorf_Moaad_Examen_TP_Arduino.pdf}"
 CHROME="${CHROME_BIN:-$(command -v google-chrome-stable || command -v google-chrome || command -v chromium || true)}"
 PROFIL_TEMPORAIRE="$(mktemp -d)"
 trap 'rm -rf "$PROFIL_TEMPORAIRE"' EXIT

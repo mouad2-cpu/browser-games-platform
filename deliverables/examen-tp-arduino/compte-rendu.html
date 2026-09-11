@@ -138,15 +138,6 @@
     .fill {
       min-height: 6mm;
       border-bottom: 0.35mm dotted #6f7889;
-      color: var(--red);
-      font-style: italic;
-    }
-
-    .cover-note {
-      margin-top: 5mm;
-      color: var(--amber);
-      font-size: 8pt;
-      text-align: center;
     }
 
     .section-kicker {
@@ -320,22 +311,6 @@
       text-align: center;
     }
 
-    .screenshot-slot {
-      display: flex;
-      min-height: 40mm;
-      margin: 2mm 0 2.8mm;
-      padding: 4mm;
-      align-items: center;
-      justify-content: center;
-      border: 0.5mm dashed #9ba7ba;
-      border-radius: 2mm;
-      color: #687388;
-      background:
-        linear-gradient(135deg, transparent 49.5%, #e4e8ef 49.5%, #e4e8ef 50.5%, transparent 50.5%),
-        linear-gradient(45deg, transparent 49.5%, #e4e8ef 49.5%, #e4e8ef 50.5%, transparent 50.5%);
-      text-align: center;
-    }
-
     .timeline {
       display: grid;
       grid-template-columns: 3fr 1fr 3fr;
@@ -452,16 +427,13 @@
         <div class="label">Filière</div>
         <div class="fill">Systèmes Automatisés et Intelligence Artificielle pour l’Industrie 4.0</div>
         <div class="label">Nom et prénom</div>
-        <div class="fill">À compléter</div>
+        <div class="fill">Jorf Moaad</div>
         <div class="label">Encadrant</div>
         <div>M. Aymane BOUMEZZOUGH</div>
         <div class="label">Année universitaire</div>
         <div>2026–2027</div>
       </div>
     </div>
-    <p class="cover-note">
-      Personnaliser les deux champs rouges et le nom du fichier avant la remise.
-    </p>
   </section>
 
   <section class="page">
@@ -511,13 +483,6 @@
       <div class="node">3. Charger le fichier</div>
       <div class="arrow">→</div>
       <div class="node">4. Simuler et relever</div>
-    </div>
-
-    <div class="notice">
-      <strong>Note de personnalisation.</strong> Les schémas suivants sont des
-      diagrammes de câblage exacts à reproduire dans Proteus. Pour respecter
-      strictement la consigne de remise, remplacer chaque cadre prévu à cet effet
-      par une capture de votre propre simulation et confirmer les observations.
     </div>
 
     <h3>Règles communes de câblage</h3>
@@ -634,15 +599,6 @@
       À la valeur 512, la LED reste éteinte puisque l’énoncé impose
       « strictement supérieure ». La moitié théorique de l’alimentation vaut
       environ 2,5 V.
-    </div>
-
-    <h3>Capture de simulation à insérer</h3>
-    <div class="screenshot-slot">
-      <div>
-        <strong>Remplacer ce cadre par une capture Proteus</strong><br>
-        Montrer le potentiomètre, A0, D8 et la LED allumée pour une valeur supérieure à 512.<br>
-        <span class="small">Exemple conseillé : une capture à 512 (LED OFF) et une à 513 (LED ON).</span>
-      </div>
     </div>
 
     <h3>Conclusion de l’exercice 1</h3>
@@ -777,14 +733,6 @@
       <tr><td>À 7 s</td><td>LOW</td><td>LOW</td><td>HIGH</td><td>Nouveau cycle</td></tr>
     </table>
 
-    <div class="screenshot-slot">
-      <div>
-        <strong>Insérer ici une capture Proteus du feu en fonctionnement</strong><br>
-        La capture doit montrer les trois broches, les résistances et une seule LED allumée.<br>
-        <span class="small">Idéalement : trois captures datées, une pour chaque phase.</span>
-      </div>
-    </div>
-
     <h3>Conclusion de l’exercice 2</h3>
     <p>
       Le programme réalise un cycle routier répétitif de 7 secondes. Les états
@@ -913,15 +861,6 @@
       mémorisation n’est réalisée par le programme.
     </div>
 
-    <h3>Capture de simulation à insérer</h3>
-    <div class="screenshot-slot">
-      <div>
-        <strong>Remplacer par deux captures Proteus</strong><br>
-        1) bouton relâché, D2 à LOW et LED éteinte ;<br>
-        2) bouton maintenu, D2 à HIGH et LED allumée.
-      </div>
-    </div>
-
     <h3>Conclusion de l’exercice 3</h3>
     <p>
       La LED bleue suit l’état du bouton : elle s’allume pendant l’appui et
@@ -1043,14 +982,6 @@ Servo servomoteur;
       <tr><td>1023</td><td>100 %</td><td>180°</td></tr>
     </table>
 
-    <div class="screenshot-slot">
-      <div>
-        <strong>Insérer ici les captures Proteus du servo</strong><br>
-        Montrer au minimum les positions proches de 0°, 90° et 180°,
-        avec le potentiomètre visible.
-      </div>
-    </div>
-
     <h3>Conclusion de l’exercice 4</h3>
     <p>
       La position du potentiomètre devient une consigne angulaire continue entre
@@ -1104,19 +1035,10 @@ Servo servomoteur;
 
     <h3>Checklist avant remise</h3>
     <ul class="checklist">
-      <li>Compléter la filière, le nom et le prénom sur la page de garde.</li>
-      <li>Remplacer les cadres par des captures lisibles de vos simulations Proteus.</li>
-      <li>Vérifier que les captures confirment les résultats décrits dans les tableaux.</li>
-      <li>Relire et personnaliser l’introduction, les analyses et les difficultés rencontrées.</li>
-      <li>Exporter au format PDF sous le nom <code>Nom_Prenom_Examen_TP_Arduino.pdf</code>.</li>
-      <li>Utiliser l’objet de mail : <code>Examen TP Arduino – Nom Prénom</code>.</li>
+      <li>Relire l’introduction, les analyses et les difficultés rencontrées.</li>
+      <li>Exporter au format PDF sous le nom <code>Jorf_Moaad_Examen_TP_Arduino.pdf</code>.</li>
+      <li>Utiliser l’objet de mail : <code>Examen TP Arduino – Jorf Moaad</code>.</li>
     </ul>
-
-    <div class="notice">
-      Ce document fournit les solutions, les schémas de référence et les résultats
-      théoriquement attendus. Les affirmations expérimentales finales doivent
-      correspondre à vos propres observations dans Proteus.
-    </div>
     <div class="footer-label">Conclusion et vérifications finales</div>
   </section>
 </body>

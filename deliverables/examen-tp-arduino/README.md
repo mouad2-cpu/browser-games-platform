@@ -4,23 +4,12 @@ Ce dossier contient :
 
 - les quatre programmes Arduino, chacun dans un sketch `.ino` séparé ;
 - `compte-rendu.html`, la version modifiable du rapport en français ;
-- `Nom_Prenom_Examen_TP_Arduino.pdf`, la version PDF prête à personnaliser ;
+- `Jorf_Moaad_Examen_TP_Arduino.pdf`, la version PDF finale ;
 - `generer-pdf.sh`, le script de régénération du PDF.
 
-## Personnalisation obligatoire
-
-Avant la remise :
-
-1. ouvrir `compte-rendu.html` dans un éditeur ;
-2. remplacer les deux mentions `À compléter` de la page de garde ;
-3. remplacer les cadres réservés par les captures de vos propres simulations Proteus ;
-4. adapter les observations et difficultés aux résultats réellement obtenus ;
-5. générer à nouveau le PDF ;
-6. renommer le fichier avec votre nom et votre prénom.
-
-Les schémas inclus donnent le câblage exact à reproduire, mais ce ne sont pas des
-captures de Proteus. Le rapport les identifie explicitement comme diagrammes de
-référence afin de ne pas présenter une simulation non exécutée comme un résultat.
+La page de garde est renseignée pour **Jorf Moaad**, filière **Systèmes
+Automatisés et Intelligence Artificielle pour l’Industrie 4.0**. Les sections
+réservées aux captures d’écran ont été retirées.
 
 ## Générer le PDF
 
@@ -31,10 +20,10 @@ chmod +x generer-pdf.sh
 ./generer-pdf.sh
 ```
 
-Un autre nom de sortie peut être fourni :
+Un autre nom de sortie peut être fourni si nécessaire :
 
 ```bash
-./generer-pdf.sh Mouad_Exemple_Examen_TP_Arduino.pdf
+./generer-pdf.sh autre-nom.pdf
 ```
 
 ## Correspondance des broches
