@@ -1,0 +1,1123 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Examen TP Arduino — Compte rendu</title>
+  <style>
+    :root {
+      --ink: #172033;
+      --muted: #5b667a;
+      --blue: #105bd8;
+      --blue-soft: #eaf2ff;
+      --green: #16845b;
+      --amber: #c47b0a;
+      --red: #cf3348;
+      --line: #d8deea;
+      --panel: #f7f9fc;
+    }
+
+    * { box-sizing: border-box; }
+
+    @page {
+      size: A4;
+      margin: 12mm;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: #e8ebf1;
+      font-family: "Arial", "Helvetica", sans-serif;
+      font-size: 9.5pt;
+      line-height: 1.36;
+      counter-reset: page;
+    }
+
+    .page {
+      position: relative;
+      width: 186mm;
+      min-height: 273mm;
+      margin: 10mm auto;
+      padding: 12mm 13mm 15mm;
+      overflow: hidden;
+      background: white;
+      box-shadow: 0 3px 18px rgba(23, 32, 51, 0.13);
+      break-after: page;
+      page-break-after: always;
+      counter-increment: page;
+    }
+
+    .page:last-child {
+      break-after: auto;
+      page-break-after: auto;
+    }
+
+    .page::after {
+      position: absolute;
+      right: 13mm;
+      bottom: 6mm;
+      color: #7e8797;
+      font-size: 8pt;
+      content: counter(page);
+    }
+
+    .cover {
+      display: flex;
+      min-height: 273mm;
+      flex-direction: column;
+      border-top: 5mm solid var(--blue);
+    }
+
+    .cover::after { content: ""; }
+
+    .institution {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10mm;
+      color: var(--muted);
+      font-size: 9pt;
+      line-height: 1.5;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+    }
+
+    .institution .right { text-align: right; }
+
+    .hero {
+      margin: 35mm 0 20mm;
+      padding-left: 8mm;
+      border-left: 1.8mm solid var(--blue);
+    }
+
+    .eyebrow {
+      margin: 0 0 4mm;
+      color: var(--blue);
+      font-size: 10pt;
+      font-weight: 700;
+      letter-spacing: 1.3px;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 31pt;
+      line-height: 1.06;
+      letter-spacing: -0.8px;
+    }
+
+    .subtitle {
+      max-width: 120mm;
+      margin-top: 7mm;
+      color: var(--muted);
+      font-size: 14pt;
+      line-height: 1.35;
+    }
+
+    .identity {
+      margin-top: auto;
+      padding: 8mm 9mm;
+      border: 0.35mm solid var(--line);
+      border-radius: 3mm;
+      background: var(--panel);
+    }
+
+    .identity-grid {
+      display: grid;
+      grid-template-columns: 37mm 1fr;
+      gap: 4mm 7mm;
+      align-items: end;
+    }
+
+    .identity-grid .label {
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .fill {
+      min-height: 6mm;
+      border-bottom: 0.35mm dotted #6f7889;
+      color: var(--red);
+      font-style: italic;
+    }
+
+    .cover-note {
+      margin-top: 5mm;
+      color: var(--amber);
+      font-size: 8pt;
+      text-align: center;
+    }
+
+    .section-kicker {
+      margin: 0 0 2mm;
+      color: var(--blue);
+      font-size: 8.5pt;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    h2 {
+      margin: 0 0 6mm;
+      padding-bottom: 3mm;
+      border-bottom: 0.5mm solid var(--line);
+      font-size: 21pt;
+      line-height: 1.1;
+      letter-spacing: -0.25px;
+    }
+
+    h3 {
+      margin: 5mm 0 2.5mm;
+      color: #253149;
+      font-size: 12.5pt;
+      line-height: 1.2;
+    }
+
+    h4 {
+      margin: 3mm 0 1.5mm;
+      color: var(--muted);
+      font-size: 9.5pt;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    p { margin: 0 0 3.2mm; }
+
+    ul, ol {
+      margin: 1.5mm 0 3mm;
+      padding-left: 6mm;
+    }
+
+    li { margin: 0 0 1.2mm; }
+
+    .lead {
+      color: #364158;
+      font-size: 11.5pt;
+      line-height: 1.55;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5mm;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 4mm;
+    }
+
+    .card {
+      padding: 4.2mm;
+      border: 0.35mm solid var(--line);
+      border-radius: 2.2mm;
+      background: white;
+    }
+
+    .card.soft { background: var(--panel); }
+    .card.blue { border-color: #bcd2fa; background: var(--blue-soft); }
+
+    .metric {
+      margin-bottom: 1mm;
+      color: var(--blue);
+      font-size: 18pt;
+      font-weight: 700;
+    }
+
+    .small { color: var(--muted); font-size: 8.2pt; }
+
+    .notice {
+      margin: 4mm 0;
+      padding: 3.5mm 4mm;
+      border-left: 1mm solid var(--amber);
+      background: #fff7e8;
+      color: #604514;
+    }
+
+    .success {
+      margin: 4mm 0;
+      padding: 3.5mm 4mm;
+      border-left: 1mm solid var(--green);
+      background: #eaf8f2;
+      color: #165b43;
+    }
+
+    table {
+      width: 100%;
+      margin: 2mm 0 4mm;
+      border-collapse: collapse;
+      font-size: 8.6pt;
+    }
+
+    th, td {
+      padding: 2.2mm 2.5mm;
+      border: 0.3mm solid var(--line);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      color: #354157;
+      background: #edf1f7;
+      font-weight: 700;
+    }
+
+    tr:nth-child(even) td { background: #fafbfd; }
+
+    code {
+      font-family: "DejaVu Sans Mono", "Liberation Mono", monospace;
+      font-size: 8.2pt;
+    }
+
+    pre {
+      margin: 2mm 0 4mm;
+      padding: 4mm;
+      overflow: hidden;
+      border-radius: 2mm;
+      color: #eff5ff;
+      background: #182033;
+      font-family: "DejaVu Sans Mono", "Liberation Mono", monospace;
+      font-size: 7.25pt;
+      line-height: 1.36;
+      white-space: pre-wrap;
+    }
+
+    .kw { color: #8ed6ff; }
+    .fn { color: #f7cf78; }
+    .cm { color: #9bb0ca; }
+    .num { color: #f0a7c1; }
+
+    .diagram {
+      margin: 3mm 0 4mm;
+      padding: 2.5mm;
+      border: 0.35mm solid var(--line);
+      border-radius: 2mm;
+      background: #fcfdff;
+    }
+
+    .diagram svg {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .diagram-title {
+      margin: 0 0 2mm;
+      color: var(--muted);
+      font-size: 8pt;
+      font-weight: 700;
+      text-align: center;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .figure-caption {
+      margin: 1.5mm 0 0;
+      color: var(--muted);
+      font-size: 7.8pt;
+      text-align: center;
+    }
+
+    .screenshot-slot {
+      display: flex;
+      min-height: 48mm;
+      margin: 3mm 0 4mm;
+      padding: 6mm;
+      align-items: center;
+      justify-content: center;
+      border: 0.5mm dashed #9ba7ba;
+      border-radius: 2mm;
+      color: #687388;
+      background:
+        linear-gradient(135deg, transparent 49.5%, #e4e8ef 49.5%, #e4e8ef 50.5%, transparent 50.5%),
+        linear-gradient(45deg, transparent 49.5%, #e4e8ef 49.5%, #e4e8ef 50.5%, transparent 50.5%);
+      text-align: center;
+    }
+
+    .timeline {
+      display: grid;
+      grid-template-columns: 3fr 1fr 3fr;
+      overflow: hidden;
+      margin: 3mm 0;
+      border-radius: 2mm;
+      color: white;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    .timeline div { padding: 5mm 2mm; }
+    .timeline .green { background: #16845b; }
+    .timeline .yellow { color: #3d3000; background: #f2c94c; }
+    .timeline .red { background: #cf3348; }
+
+    .flow {
+      display: flex;
+      margin: 3mm 0 5mm;
+      align-items: stretch;
+      gap: 2mm;
+    }
+
+    .flow .node {
+      flex: 1;
+      padding: 3.5mm 2mm;
+      border: 0.35mm solid #b9c7dc;
+      border-radius: 2mm;
+      background: var(--blue-soft);
+      text-align: center;
+    }
+
+    .flow .arrow {
+      display: flex;
+      align-items: center;
+      color: var(--blue);
+      font-size: 16pt;
+      font-weight: 700;
+    }
+
+    .checklist {
+      padding: 0;
+      list-style: none;
+    }
+
+    .checklist li {
+      position: relative;
+      padding-left: 6mm;
+    }
+
+    .checklist li::before {
+      position: absolute;
+      left: 0;
+      content: "□";
+      color: var(--blue);
+      font-size: 12pt;
+      line-height: 1;
+    }
+
+    .footer-label {
+      position: absolute;
+      bottom: 6mm;
+      left: 13mm;
+      color: #7e8797;
+      font-size: 8pt;
+    }
+
+    .tag {
+      display: inline-block;
+      margin: 0 1mm 1.5mm 0;
+      padding: 1mm 2.2mm;
+      border-radius: 4mm;
+      color: #1d529e;
+      background: var(--blue-soft);
+      font-size: 7.8pt;
+      font-weight: 700;
+    }
+
+    @media print {
+      body { background: white; }
+      .page {
+        width: auto;
+        min-height: 273mm;
+        margin: 0;
+        box-shadow: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <section class="page cover">
+    <div class="institution">
+      <div>
+        Université Ibn-Tofaïl<br>
+        École Nationale des Sciences Appliquées — Kénitra
+      </div>
+      <div class="right">
+        Module M3<br>
+        Instrumentation et Informatique Industrielle
+      </div>
+    </div>
+
+    <div class="hero">
+      <p class="eyebrow">Compte rendu d’examen pratique</p>
+      <h1>Simulation Arduino<br>sous Proteus ISIS</h1>
+      <p class="subtitle">
+        Détection analogique, feu tricolore, commande d’éclairage
+        et contrôle angulaire d’un servomoteur.
+      </p>
+    </div>
+
+    <div class="identity">
+      <div class="identity-grid">
+        <div class="label">Filière</div>
+        <div class="fill">À compléter</div>
+        <div class="label">Nom et prénom</div>
+        <div class="fill">À compléter</div>
+        <div class="label">Encadrant</div>
+        <div>M. Aymane BOUMEZZOUGH</div>
+        <div class="label">Année universitaire</div>
+        <div>2026–2027</div>
+      </div>
+    </div>
+    <p class="cover-note">
+      Personnaliser les deux champs rouges et le nom du fichier avant la remise.
+    </p>
+  </section>
+
+  <section class="page">
+    <p class="section-kicker">01 — Présentation</p>
+    <h2>Introduction et méthode</h2>
+
+    <p class="lead">
+      Ce travail étudie quatre fonctions classiques d’un système embarqué :
+      acquérir une grandeur analogique, générer une séquence temporelle,
+      lire une commande tout-ou-rien et positionner un actionneur.
+      L’Arduino Uno assure le traitement, tandis que Proteus ISIS permet de
+      vérifier virtuellement le câblage et le comportement avant un montage réel.
+    </p>
+
+    <h3>Objectifs du TP</h3>
+    <div class="grid-2">
+      <div class="card blue">
+        <h4>Acquisition</h4>
+        <p>Exploiter <code>analogRead()</code> et interpréter une mesure codée sur 10 bits, de 0 à 1023.</p>
+      </div>
+      <div class="card blue">
+        <h4>Commande</h4>
+        <p>Piloter des sorties numériques avec <code>digitalWrite()</code> et des temporisations.</p>
+      </div>
+      <div class="card blue">
+        <h4>Interface</h4>
+        <p>Lire un bouton stabilisé par une résistance pull-down et reproduire son état.</p>
+      </div>
+      <div class="card blue">
+        <h4>Actionnement</h4>
+        <p>Convertir une mesure en angle avec <code>map()</code> et commander un servomoteur.</p>
+      </div>
+    </div>
+
+    <h3>Logiciels et démarche</h3>
+    <table>
+      <tr><th>Outil</th><th>Rôle</th></tr>
+      <tr><td>Arduino IDE</td><td>Écriture, compilation et export du programme destiné à l’Arduino Uno.</td></tr>
+      <tr><td>Proteus ISIS</td><td>Saisie du schéma, chargement du fichier compilé et simulation électrique.</td></tr>
+    </table>
+
+    <div class="flow">
+      <div class="node">1. Câbler le schéma</div>
+      <div class="arrow">→</div>
+      <div class="node">2. Compiler le code</div>
+      <div class="arrow">→</div>
+      <div class="node">3. Charger le fichier</div>
+      <div class="arrow">→</div>
+      <div class="node">4. Simuler et relever</div>
+    </div>
+
+    <div class="notice">
+      <strong>Note de personnalisation.</strong> Les schémas suivants sont des
+      diagrammes de câblage exacts à reproduire dans Proteus. Pour respecter
+      strictement la consigne de remise, remplacer chaque cadre prévu à cet effet
+      par une capture de votre propre simulation et confirmer les observations.
+    </div>
+
+    <h3>Règles communes de câblage</h3>
+    <ul>
+      <li>Toutes les masses <strong>GND</strong> doivent être communes.</li>
+      <li>Chaque LED doit être protégée par une résistance, typiquement <strong>220 Ω</strong>.</li>
+      <li>Les broches et polarités indiquées dans l’énoncé sont conservées.</li>
+      <li>Le programme compilé doit correspondre exactement au schéma simulé.</li>
+    </ul>
+    <div class="footer-label">Examen TP Arduino — Compte rendu</div>
+  </section>
+
+  <section class="page">
+    <p class="section-kicker">02 — Exercice 1 · 4 points</p>
+    <h2>Détecteur de seuil analogique</h2>
+
+    <p><strong>Objectif.</strong> Allumer la LED rouge uniquement lorsque la valeur du potentiomètre lue sur A0 est strictement supérieure à 512.</p>
+    <div>
+      <span class="tag">Arduino Uno R3</span>
+      <span class="tag">POT-HG</span>
+      <span class="tag">LED-RED</span>
+      <span class="tag">220 Ω</span>
+    </div>
+
+    <div class="diagram">
+      <p class="diagram-title">Schéma de câblage à reproduire sous Proteus ISIS</p>
+      <svg viewBox="0 0 900 330" role="img" aria-label="Potentiomètre A0 et LED rouge D8">
+        <defs>
+          <marker id="a1" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#105bd8"/></marker>
+        </defs>
+        <line x1="75" y1="45" x2="825" y2="45" stroke="#cf3348" stroke-width="5"/>
+        <text x="35" y="51" fill="#cf3348" font-size="20" font-weight="700">5 V</text>
+        <line x1="75" y1="285" x2="825" y2="285" stroke="#172033" stroke-width="5"/>
+        <text x="22" y="291" fill="#172033" font-size="20" font-weight="700">GND</text>
+
+        <rect x="355" y="80" width="220" height="165" rx="16" fill="#eaf2ff" stroke="#105bd8" stroke-width="4"/>
+        <text x="465" y="120" text-anchor="middle" fill="#105bd8" font-size="27" font-weight="700">ARDUINO UNO</text>
+        <text x="370" y="172" fill="#172033" font-size="22" font-weight="700">A0</text>
+        <text x="537" y="172" fill="#172033" font-size="22" font-weight="700">D8</text>
+        <text x="445" y="99" fill="#cf3348" font-size="16">5V</text>
+        <text x="442" y="236" fill="#172033" font-size="16">GND</text>
+        <line x1="465" y1="80" x2="465" y2="45" stroke="#cf3348" stroke-width="4"/>
+        <line x1="465" y1="245" x2="465" y2="285" stroke="#172033" stroke-width="4"/>
+
+        <rect x="120" y="104" width="100" height="126" rx="9" fill="#fff" stroke="#59657a" stroke-width="4"/>
+        <text x="170" y="133" text-anchor="middle" font-size="20" font-weight="700">POT-HG</text>
+        <path d="M170 146 L152 156 L188 170 L152 184 L188 198 L170 210" fill="none" stroke="#59657a" stroke-width="4"/>
+        <line x1="170" y1="104" x2="170" y2="45" stroke="#cf3348" stroke-width="4"/>
+        <line x1="170" y1="230" x2="170" y2="285" stroke="#172033" stroke-width="4"/>
+        <line x1="215" y1="170" x2="355" y2="170" stroke="#105bd8" stroke-width="5" marker-end="url(#a1)"/>
+        <text x="270" y="158" text-anchor="middle" fill="#105bd8" font-size="18" font-weight="700">curseur → A0</text>
+
+        <line x1="575" y1="170" x2="660" y2="170" stroke="#105bd8" stroke-width="5"/>
+        <rect x="660" y="155" width="75" height="30" rx="5" fill="#fff7e8" stroke="#c47b0a" stroke-width="3"/>
+        <text x="698" y="176" text-anchor="middle" font-size="17" font-weight="700">220 Ω</text>
+        <line x1="735" y1="170" x2="770" y2="170" stroke="#105bd8" stroke-width="5"/>
+        <circle cx="790" cy="170" r="20" fill="#ef4358" stroke="#a3152c" stroke-width="4"/>
+        <path d="M780 160 L800 170 L780 180 Z" fill="#fff"/>
+        <line x1="790" y1="190" x2="790" y2="285" stroke="#172033" stroke-width="4"/>
+        <text x="792" y="140" text-anchor="middle" fill="#cf3348" font-size="18" font-weight="700">LED rouge</text>
+      </svg>
+      <p class="figure-caption">Le curseur du potentiomètre va sur A0. L’anode de la LED est commandée par D8 à travers 220 Ω ; la cathode va à GND.</p>
+    </div>
+
+    <table>
+      <tr><th>Élément</th><th>Connexion</th><th>Rôle</th></tr>
+      <tr><td>Potentiomètre</td><td>Extrémités à 5 V et GND ; curseur à A0</td><td>Produit une tension variable de 0 à 5 V.</td></tr>
+      <tr><td>LED rouge</td><td>D8 → 220 Ω → anode ; cathode → GND</td><td>Indique le dépassement du seuil.</td></tr>
+    </table>
+
+    <h3>Programme Arduino</h3>
+    <pre><span class="kw">const byte</span> BROCHE_POTENTIOMETRE = A0;
+<span class="kw">const byte</span> BROCHE_LED = <span class="num">8</span>;
+<span class="kw">const int</span> SEUIL = <span class="num">512</span>;
+
+<span class="kw">void</span> <span class="fn">setup</span>() {
+  <span class="fn">pinMode</span>(BROCHE_LED, OUTPUT);
+}
+
+<span class="kw">void</span> <span class="fn">loop</span>() {
+  <span class="kw">const int</span> valeur = <span class="fn">analogRead</span>(BROCHE_POTENTIOMETRE);
+  <span class="kw">if</span> (valeur &gt; SEUIL) {
+    <span class="fn">digitalWrite</span>(BROCHE_LED, HIGH);
+  } <span class="kw">else</span> {
+    <span class="fn">digitalWrite</span>(BROCHE_LED, LOW);
+  }
+}</pre>
+    <div class="footer-label">Exercice 1 — Détecteur de seuil</div>
+  </section>
+
+  <section class="page">
+    <p class="section-kicker">02 — Exercice 1 · Validation</p>
+    <h2>Résultats et analyse</h2>
+
+    <div class="flow">
+      <div class="node">Lire A0<br><span class="small">0 à 1023</span></div>
+      <div class="arrow">→</div>
+      <div class="node">Comparer<br><strong>valeur &gt; 512 ?</strong></div>
+      <div class="arrow">→</div>
+      <div class="node">Vrai : D8 = HIGH<br>Faux : D8 = LOW</div>
+    </div>
+
+    <h3>Relevés de validation</h3>
+    <table>
+      <tr><th>Valeur sur A0</th><th>Tension approximative</th><th>Condition</th><th>État attendu de la LED</th></tr>
+      <tr><td>0</td><td>0,00 V</td><td>0 &gt; 512 : faux</td><td>Éteinte</td></tr>
+      <tr><td>512</td><td>2,50 V</td><td>512 &gt; 512 : faux</td><td>Éteinte</td></tr>
+      <tr><td>513</td><td>2,51 V</td><td>513 &gt; 512 : vrai</td><td>Allumée</td></tr>
+      <tr><td>1023</td><td>5,00 V</td><td>1023 &gt; 512 : vrai</td><td>Allumée</td></tr>
+    </table>
+
+    <div class="success">
+      <strong>Interprétation.</strong> La transition doit se produire entre 512 et 513.
+      À la valeur 512, la LED reste éteinte puisque l’énoncé impose
+      « strictement supérieure ». La moitié théorique de l’alimentation vaut
+      environ 2,5 V.
+    </div>
+
+    <h3>Capture de simulation à insérer</h3>
+    <div class="screenshot-slot">
+      <div>
+        <strong>Remplacer ce cadre par une capture Proteus</strong><br>
+        Montrer le potentiomètre, A0, D8 et la LED allumée pour une valeur supérieure à 512.<br>
+        <span class="small">Exemple conseillé : une capture à 512 (LED OFF) et une à 513 (LED ON).</span>
+      </div>
+    </div>
+
+    <h3>Conclusion de l’exercice 1</h3>
+    <p>
+      Le montage transforme une tension analogique en une information logique.
+      L’entrée A0 numérise la position du potentiomètre sur 10 bits, puis le
+      programme compare cette mesure au seuil 512. Le résultat attendu est une
+      LED éteinte jusqu’à 512 inclus et allumée à partir de 513. Cet exercice
+      met en évidence l’importance de l’opérateur de comparaison choisi pour
+      définir précisément la frontière de commutation.
+    </p>
+
+    <h3>Points à vérifier dans Proteus</h3>
+    <ul class="checklist">
+      <li>Le potentiomètre est alimenté entre 5 V et GND, sans borne flottante.</li>
+      <li>Le curseur, et non une extrémité, est relié à A0.</li>
+      <li>La LED possède une résistance en série et sa polarité est correcte.</li>
+      <li>La valeur 512 maintient bien la LED éteinte.</li>
+    </ul>
+    <div class="footer-label">Exercice 1 — Résultats attendus</div>
+  </section>
+
+  <section class="page">
+    <p class="section-kicker">03 — Exercice 2 · 6 points</p>
+    <h2>Gestion d’un feu tricolore</h2>
+
+    <p><strong>Objectif.</strong> Réaliser automatiquement et indéfiniment la séquence vert 3 s, jaune 1 s, rouge 3 s, avec une seule LED active à la fois.</p>
+    <div>
+      <span class="tag">Arduino Uno R3</span>
+      <span class="tag">3 LED</span>
+      <span class="tag">3 × 220 Ω</span>
+      <span class="tag">D11 / D12 / D13</span>
+    </div>
+
+    <div class="diagram">
+      <p class="diagram-title">Schéma de câblage à reproduire sous Proteus ISIS</p>
+      <svg viewBox="0 0 900 400" role="img" aria-label="Trois LED sur D13 D12 D11">
+        <line x1="95" y1="340" x2="825" y2="340" stroke="#172033" stroke-width="5"/>
+        <text x="30" y="346" fill="#172033" font-size="20" font-weight="700">GND</text>
+        <rect x="120" y="75" width="255" height="215" rx="16" fill="#eaf2ff" stroke="#105bd8" stroke-width="4"/>
+        <text x="248" y="118" text-anchor="middle" fill="#105bd8" font-size="27" font-weight="700">ARDUINO UNO</text>
+        <text x="312" y="165" font-size="20" font-weight="700">D13</text>
+        <text x="312" y="218" font-size="20" font-weight="700">D12</text>
+        <text x="312" y="271" font-size="20" font-weight="700">D11</text>
+        <line x1="248" y1="290" x2="248" y2="340" stroke="#172033" stroke-width="4"/>
+        <text x="220" y="281" font-size="16">GND</text>
+
+        <line x1="375" y1="158" x2="485" y2="158" stroke="#cf3348" stroke-width="5"/>
+        <rect x="485" y="143" width="75" height="30" rx="5" fill="#fff7e8" stroke="#c47b0a" stroke-width="3"/>
+        <text x="523" y="164" text-anchor="middle" font-size="17" font-weight="700">220 Ω</text>
+        <line x1="560" y1="158" x2="670" y2="158" stroke="#cf3348" stroke-width="5"/>
+        <circle cx="700" cy="158" r="25" fill="#ef4358" stroke="#a3152c" stroke-width="4"/>
+        <text x="745" y="165" fill="#cf3348" font-size="20" font-weight="700">ROUGE</text>
+        <line x1="700" y1="183" x2="700" y2="340" stroke="#172033" stroke-width="4"/>
+
+        <line x1="375" y1="211" x2="485" y2="211" stroke="#d69b00" stroke-width="5"/>
+        <rect x="485" y="196" width="75" height="30" rx="5" fill="#fff7e8" stroke="#c47b0a" stroke-width="3"/>
+        <text x="523" y="217" text-anchor="middle" font-size="17" font-weight="700">220 Ω</text>
+        <line x1="560" y1="211" x2="670" y2="211" stroke="#d69b00" stroke-width="5"/>
+        <circle cx="700" cy="211" r="25" fill="#f2c94c" stroke="#a87900" stroke-width="4"/>
+        <text x="745" y="218" fill="#9a6c00" font-size="20" font-weight="700">JAUNE</text>
+        <line x1="700" y1="236" x2="700" y2="340" stroke="#172033" stroke-width="4"/>
+
+        <line x1="375" y1="264" x2="485" y2="264" stroke="#16845b" stroke-width="5"/>
+        <rect x="485" y="249" width="75" height="30" rx="5" fill="#fff7e8" stroke="#c47b0a" stroke-width="3"/>
+        <text x="523" y="270" text-anchor="middle" font-size="17" font-weight="700">220 Ω</text>
+        <line x1="560" y1="264" x2="670" y2="264" stroke="#16845b" stroke-width="5"/>
+        <circle cx="700" cy="264" r="25" fill="#35b87e" stroke="#0a6a45" stroke-width="4"/>
+        <text x="745" y="271" fill="#16845b" font-size="20" font-weight="700">VERT</text>
+        <line x1="700" y1="289" x2="700" y2="340" stroke="#172033" stroke-width="4"/>
+      </svg>
+      <p class="figure-caption">Chaque sortie attaque l’anode de sa LED à travers une résistance de 220 Ω. Les trois cathodes sont reliées à la masse.</p>
+    </div>
+
+    <table>
+      <tr><th>Couleur</th><th>Broche</th><th>Connexion</th></tr>
+      <tr><td>Rouge</td><td>D13</td><td>D13 → 220 Ω → anode LED ; cathode → GND</td></tr>
+      <tr><td>Jaune</td><td>D12</td><td>D12 → 220 Ω → anode LED ; cathode → GND</td></tr>
+      <tr><td>Verte</td><td>D11</td><td>D11 → 220 Ω → anode LED ; cathode → GND</td></tr>
+    </table>
+
+    <h3>Principe temporel</h3>
+    <div class="timeline">
+      <div class="green">VERT<br>3 s</div>
+      <div class="yellow">JAUNE<br>1 s</div>
+      <div class="red">ROUGE<br>3 s</div>
+    </div>
+    <p class="small">Durée d’un cycle complet : 3 + 1 + 3 = 7 secondes, puis reprise immédiate au vert.</p>
+    <div class="footer-label">Exercice 2 — Feu tricolore</div>
+  </section>
+
+  <section class="page">
+    <p class="section-kicker">03 — Exercice 2 · Programme et validation</p>
+    <h2>Cycle automatique</h2>
+
+    <h3>Programme Arduino</h3>
+    <pre><span class="kw">const byte</span> BROCHE_ROUGE = <span class="num">13</span>;
+<span class="kw">const byte</span> BROCHE_JAUNE = <span class="num">12</span>;
+<span class="kw">const byte</span> BROCHE_VERTE = <span class="num">11</span>;
+
+<span class="kw">void</span> <span class="fn">afficherFeu</span>(<span class="kw">bool</span> rouge, <span class="kw">bool</span> jaune, <span class="kw">bool</span> vert) {
+  <span class="fn">digitalWrite</span>(BROCHE_ROUGE, rouge ? HIGH : LOW);
+  <span class="fn">digitalWrite</span>(BROCHE_JAUNE, jaune ? HIGH : LOW);
+  <span class="fn">digitalWrite</span>(BROCHE_VERTE, vert ? HIGH : LOW);
+}
+
+<span class="kw">void</span> <span class="fn">setup</span>() {
+  <span class="fn">pinMode</span>(BROCHE_ROUGE, OUTPUT);
+  <span class="fn">pinMode</span>(BROCHE_JAUNE, OUTPUT);
+  <span class="fn">pinMode</span>(BROCHE_VERTE, OUTPUT);
+  <span class="fn">afficherFeu</span>(false, false, false);
+}
+
+<span class="kw">void</span> <span class="fn">loop</span>() {
+  <span class="fn">afficherFeu</span>(false, false, true); <span class="fn">delay</span>(<span class="num">3000</span>);
+  <span class="fn">afficherFeu</span>(false, true, false); <span class="fn">delay</span>(<span class="num">1000</span>);
+  <span class="fn">afficherFeu</span>(true, false, false); <span class="fn">delay</span>(<span class="num">3000</span>);
+}</pre>
+
+    <p>
+      La fonction <code>afficherFeu()</code> écrit explicitement l’état des trois
+      sorties à chaque étape. Cette organisation évite de laisser allumée la
+      couleur précédente et rend le programme plus lisible.
+    </p>
+
+    <h3>Chronogramme de validation</h3>
+    <table>
+      <tr><th>Intervalle</th><th>D13 rouge</th><th>D12 jaune</th><th>D11 verte</th><th>Observation</th></tr>
+      <tr><td>0 à &lt; 3 s</td><td>LOW</td><td>LOW</td><td>HIGH</td><td>Vert seul</td></tr>
+      <tr><td>3 à &lt; 4 s</td><td>LOW</td><td>HIGH</td><td>LOW</td><td>Jaune seul</td></tr>
+      <tr><td>4 à &lt; 7 s</td><td>HIGH</td><td>LOW</td><td>LOW</td><td>Rouge seul</td></tr>
+      <tr><td>À 7 s</td><td>LOW</td><td>LOW</td><td>HIGH</td><td>Nouveau cycle</td></tr>
+    </table>
+
+    <div class="screenshot-slot">
+      <div>
+        <strong>Insérer ici une capture Proteus du feu en fonctionnement</strong><br>
+        La capture doit montrer les trois broches, les résistances et une seule LED allumée.<br>
+        <span class="small">Idéalement : trois captures datées, une pour chaque phase.</span>
+      </div>
+    </div>
+
+    <h3>Conclusion de l’exercice 2</h3>
+    <p>
+      Le programme réalise un cycle routier répétitif de 7 secondes. Les états
+      sont exclusifs : vert pendant 3 s, jaune pendant 1 s, puis rouge pendant
+      3 s. L’exercice montre comment organiser une séquence déterministe à l’aide
+      de sorties numériques et de <code>delay()</code>. Cette méthode convient à
+      ce montage simple, même si elle bloque temporairement le microcontrôleur.
+    </p>
+    <div class="footer-label">Exercice 2 — Programme et résultats attendus</div>
+  </section>
+
+  <section class="page">
+    <p class="section-kicker">04 — Exercice 3 · 5 points</p>
+    <h2>Commande manuelle d’éclairage</h2>
+
+    <p><strong>Objectif.</strong> Maintenir la LED bleue allumée uniquement pendant l’appui sur le bouton. Une résistance de 10 kΩ impose un état bas stable lorsque le bouton est relâché.</p>
+    <div>
+      <span class="tag">Arduino Uno R3</span>
+      <span class="tag">BUTTON</span>
+      <span class="tag">LED-BLUE</span>
+      <span class="tag">Pull-down 10 kΩ</span>
+    </div>
+
+    <div class="diagram">
+      <p class="diagram-title">Schéma de câblage du bouton avec pull-down</p>
+      <svg viewBox="0 0 900 390" role="img" aria-label="Bouton pull-down D2 et LED bleue D7">
+        <line x1="70" y1="48" x2="830" y2="48" stroke="#cf3348" stroke-width="5"/>
+        <text x="25" y="54" fill="#cf3348" font-size="20" font-weight="700">5 V</text>
+        <line x1="70" y1="335" x2="830" y2="335" stroke="#172033" stroke-width="5"/>
+        <text x="16" y="341" fill="#172033" font-size="20" font-weight="700">GND</text>
+
+        <rect x="350" y="105" width="225" height="170" rx="16" fill="#eaf2ff" stroke="#105bd8" stroke-width="4"/>
+        <text x="462" y="145" text-anchor="middle" fill="#105bd8" font-size="27" font-weight="700">ARDUINO UNO</text>
+        <text x="365" y="205" font-size="21" font-weight="700">D2</text>
+        <text x="535" y="205" font-size="21" font-weight="700">D7</text>
+        <line x1="462" y1="275" x2="462" y2="335" stroke="#172033" stroke-width="4"/>
+
+        <line x1="180" y1="48" x2="180" y2="100" stroke="#cf3348" stroke-width="4"/>
+        <circle cx="180" cy="110" r="8" fill="#172033"/>
+        <circle cx="180" cy="165" r="8" fill="#172033"/>
+        <line x1="150" y1="126" x2="210" y2="150" stroke="#59657a" stroke-width="7"/>
+        <rect x="126" y="88" width="108" height="100" rx="10" fill="none" stroke="#9ba7ba" stroke-width="3"/>
+        <text x="180" y="215" text-anchor="middle" font-size="19" font-weight="700">BOUTON</text>
+        <line x1="180" y1="173" x2="180" y2="202" stroke="#105bd8" stroke-width="5"/>
+        <circle cx="180" cy="202" r="7" fill="#105bd8"/>
+        <line x1="180" y1="202" x2="350" y2="202" stroke="#105bd8" stroke-width="5"/>
+        <text x="275" y="189" text-anchor="middle" fill="#105bd8" font-size="18" font-weight="700">nœud → D2</text>
+
+        <line x1="180" y1="202" x2="180" y2="235" stroke="#105bd8" stroke-width="4"/>
+        <rect x="142" y="235" width="76" height="46" rx="5" fill="#fff7e8" stroke="#c47b0a" stroke-width="3"/>
+        <text x="180" y="255" text-anchor="middle" font-size="16" font-weight="700">10 kΩ</text>
+        <text x="180" y="273" text-anchor="middle" font-size="13">pull-down</text>
+        <line x1="180" y1="281" x2="180" y2="335" stroke="#172033" stroke-width="4"/>
+
+        <line x1="575" y1="202" x2="650" y2="202" stroke="#105bd8" stroke-width="5"/>
+        <rect x="650" y="187" width="75" height="30" rx="5" fill="#fff7e8" stroke="#c47b0a" stroke-width="3"/>
+        <text x="688" y="208" text-anchor="middle" font-size="17" font-weight="700">220 Ω</text>
+        <line x1="725" y1="202" x2="760" y2="202" stroke="#105bd8" stroke-width="5"/>
+        <circle cx="785" cy="202" r="24" fill="#3b8eff" stroke="#105bd8" stroke-width="4"/>
+        <text x="785" y="167" text-anchor="middle" fill="#105bd8" font-size="18" font-weight="700">LED bleue</text>
+        <line x1="785" y1="226" x2="785" y2="335" stroke="#172033" stroke-width="4"/>
+      </svg>
+      <p class="figure-caption">Au repos, 10 kΩ relie D2 à GND. Pendant l’appui, le bouton relie le même nœud au 5 V.</p>
+    </div>
+
+    <h3>Pourquoi la résistance pull-down est nécessaire</h3>
+    <div class="grid-2">
+      <div class="card soft">
+        <h4>Bouton relâché</h4>
+        <div class="metric">LOW</div>
+        <p>La résistance ramène D2 à 0 V. L’entrée ne flotte pas et la LED reste éteinte.</p>
+      </div>
+      <div class="card soft">
+        <h4>Bouton appuyé</h4>
+        <div class="metric">HIGH</div>
+        <p>Le bouton impose environ 5 V sur D2. La LED s’allume pendant toute la durée de l’appui.</p>
+      </div>
+    </div>
+
+    <table>
+      <tr><th>Élément</th><th>Connexion</th></tr>
+      <tr><td>Bouton</td><td>Une borne au 5 V ; l’autre au nœud D2.</td></tr>
+      <tr><td>Pull-down</td><td>10 kΩ entre le nœud D2 et GND.</td></tr>
+      <tr><td>LED bleue</td><td>D7 → 220 Ω → anode ; cathode → GND.</td></tr>
+    </table>
+    <div class="footer-label">Exercice 3 — Commande d’éclairage</div>
+  </section>
+
+  <section class="page">
+    <p class="section-kicker">04 — Exercice 3 · Programme et validation</p>
+    <h2>Lecture du bouton</h2>
+
+    <h3>Programme Arduino</h3>
+    <pre><span class="kw">const byte</span> BROCHE_BOUTON = <span class="num">2</span>;
+<span class="kw">const byte</span> BROCHE_LED = <span class="num">7</span>;
+
+<span class="kw">void</span> <span class="fn">setup</span>() {
+  <span class="fn">pinMode</span>(BROCHE_BOUTON, INPUT); <span class="cm">// pull-down externe</span>
+  <span class="fn">pinMode</span>(BROCHE_LED, OUTPUT);
+}
+
+<span class="kw">void</span> <span class="fn">loop</span>() {
+  <span class="kw">const bool</span> boutonAppuye =
+    (<span class="fn">digitalRead</span>(BROCHE_BOUTON) == HIGH);
+  <span class="fn">digitalWrite</span>(BROCHE_LED, boutonAppuye ? HIGH : LOW);
+}</pre>
+
+    <p>
+      La broche D2 est déclarée en <code>INPUT</code> parce que la polarisation
+      basse est fournie par une résistance externe de 10 kΩ. Il ne faut pas
+      utiliser <code>INPUT_PULLUP</code> avec ce câblage : cela activerait une
+      polarisation interne opposée et modifierait la logique demandée.
+    </p>
+
+    <h3>Table de vérité</h3>
+    <table>
+      <tr><th>État du bouton</th><th>Tension D2</th><th>digitalRead(D2)</th><th>Commande D7</th><th>LED</th></tr>
+      <tr><td>Relâché</td><td>≈ 0 V</td><td>LOW</td><td>LOW</td><td>Éteinte</td></tr>
+      <tr><td>Maintenu</td><td>≈ 5 V</td><td>HIGH</td><td>HIGH</td><td>Allumée</td></tr>
+      <tr><td>Relâché de nouveau</td><td>≈ 0 V</td><td>LOW</td><td>LOW</td><td>Éteinte</td></tr>
+    </table>
+
+    <div class="success">
+      <strong>Résultat attendu.</strong> Il s’agit d’une commande non maintenue :
+      l’état lumineux suit directement l’état mécanique du bouton. Aucune
+      mémorisation n’est réalisée par le programme.
+    </div>
+
+    <h3>Capture de simulation à insérer</h3>
+    <div class="screenshot-slot">
+      <div>
+        <strong>Remplacer par deux captures Proteus</strong><br>
+        1) bouton relâché, D2 à LOW et LED éteinte ;<br>
+        2) bouton maintenu, D2 à HIGH et LED allumée.
+      </div>
+    </div>
+
+    <h3>Conclusion de l’exercice 3</h3>
+    <p>
+      La LED bleue suit l’état du bouton : elle s’allume pendant l’appui et
+      s’éteint dès le relâchement. La résistance de 10 kΩ donne un niveau LOW
+      défini en l’absence d’appui et empêche les commutations aléatoires d’une
+      entrée flottante. L’exercice permet de comprendre la relation entre le
+      câblage de polarisation d’une entrée et la logique du programme.
+    </p>
+    <div class="footer-label">Exercice 3 — Programme et résultats attendus</div>
+  </section>
+
+  <section class="page">
+    <p class="section-kicker">05 — Exercice 4 · 5 points</p>
+    <h2>Contrôle angulaire d’un servomoteur</h2>
+
+    <p><strong>Objectif.</strong> Lire le potentiomètre sur A0, convertir la plage 0–1023 en un angle de 0–180° et transmettre cette consigne au servomoteur connecté à D9.</p>
+    <div>
+      <span class="tag">Arduino Uno R3</span>
+      <span class="tag">POT-HG</span>
+      <span class="tag">MOTOR-SERVO</span>
+      <span class="tag">Servo.h</span>
+    </div>
+
+    <div class="diagram">
+      <p class="diagram-title">Schéma de câblage du servomoteur</p>
+      <svg viewBox="0 0 900 370" role="img" aria-label="Potentiomètre A0 et servomoteur D9">
+        <line x1="70" y1="46" x2="830" y2="46" stroke="#cf3348" stroke-width="5"/>
+        <text x="25" y="52" fill="#cf3348" font-size="20" font-weight="700">5 V</text>
+        <line x1="70" y1="320" x2="830" y2="320" stroke="#172033" stroke-width="5"/>
+        <text x="16" y="326" fill="#172033" font-size="20" font-weight="700">GND</text>
+
+        <rect x="345" y="92" width="225" height="180" rx="16" fill="#eaf2ff" stroke="#105bd8" stroke-width="4"/>
+        <text x="458" y="132" text-anchor="middle" fill="#105bd8" font-size="27" font-weight="700">ARDUINO UNO</text>
+        <text x="360" y="198" font-size="21" font-weight="700">A0</text>
+        <text x="530" y="198" font-size="21" font-weight="700">D9</text>
+        <line x1="458" y1="92" x2="458" y2="46" stroke="#cf3348" stroke-width="4"/>
+        <line x1="458" y1="272" x2="458" y2="320" stroke="#172033" stroke-width="4"/>
+
+        <rect x="105" y="105" width="110" height="145" rx="9" fill="#fff" stroke="#59657a" stroke-width="4"/>
+        <text x="160" y="135" text-anchor="middle" font-size="20" font-weight="700">POT-HG</text>
+        <path d="M160 148 L142 160 L178 175 L142 190 L178 205 L160 220" fill="none" stroke="#59657a" stroke-width="4"/>
+        <line x1="160" y1="105" x2="160" y2="46" stroke="#cf3348" stroke-width="4"/>
+        <line x1="160" y1="250" x2="160" y2="320" stroke="#172033" stroke-width="4"/>
+        <line x1="215" y1="195" x2="345" y2="195" stroke="#105bd8" stroke-width="5"/>
+        <text x="280" y="182" text-anchor="middle" fill="#105bd8" font-size="18" font-weight="700">curseur → A0</text>
+
+        <rect x="685" y="115" width="130" height="140" rx="20" fill="#f2f4f8" stroke="#59657a" stroke-width="4"/>
+        <circle cx="750" cy="170" r="35" fill="#fff" stroke="#59657a" stroke-width="4"/>
+        <line x1="750" y1="170" x2="792" y2="133" stroke="#105bd8" stroke-width="9" stroke-linecap="round"/>
+        <text x="750" y="238" text-anchor="middle" font-size="20" font-weight="700">SERVO</text>
+        <line x1="570" y1="195" x2="685" y2="195" stroke="#f0a000" stroke-width="5"/>
+        <text x="625" y="182" text-anchor="middle" fill="#b07200" font-size="18" font-weight="700">signal D9</text>
+        <line x1="720" y1="115" x2="720" y2="46" stroke="#cf3348" stroke-width="4"/>
+        <text x="728" y="78" fill="#cf3348" font-size="16">VCC</text>
+        <line x1="780" y1="255" x2="780" y2="320" stroke="#172033" stroke-width="4"/>
+        <text x="787" y="289" fill="#172033" font-size="16">GND</text>
+      </svg>
+      <p class="figure-caption">Le potentiomètre et le servo partagent le 5 V et la masse de l’Arduino ; le signal de commande du servo est relié à D9.</p>
+    </div>
+
+    <table>
+      <tr><th>Élément</th><th>Connexion</th></tr>
+      <tr><td>Potentiomètre</td><td>Extrémités à 5 V et GND ; curseur à A0.</td></tr>
+      <tr><td>Servomoteur</td><td>Signal à D9 ; VCC à 5 V ; GND à la masse commune.</td></tr>
+    </table>
+
+    <div class="notice">
+      <strong>Montage réel.</strong> Un servomoteur peut demander plus de courant
+      que la sortie 5 V de la carte ne peut en fournir. En pratique, utiliser si
+      nécessaire une alimentation 5 V régulée externe et relier impérativement
+      sa masse à celle de l’Arduino. Cette précaution n’empêche pas la simulation
+      Proteus demandée.
+    </div>
+    <div class="footer-label">Exercice 4 — Contrôle du servomoteur</div>
+  </section>
+
+  <section class="page">
+    <p class="section-kicker">05 — Exercice 4 · Programme et validation</p>
+    <h2>Conversion mesure–angle</h2>
+
+    <h3>Programme Arduino</h3>
+    <pre><span class="kw">#include</span> &lt;Servo.h&gt;
+
+<span class="kw">const byte</span> BROCHE_POTENTIOMETRE = A0;
+<span class="kw">const byte</span> BROCHE_SERVO = <span class="num">9</span>;
+Servo servomoteur;
+
+<span class="kw">void</span> <span class="fn">setup</span>() {
+  servomoteur.<span class="fn">attach</span>(BROCHE_SERVO);
+}
+
+<span class="kw">void</span> <span class="fn">loop</span>() {
+  <span class="kw">const int</span> valeur =
+    <span class="fn">analogRead</span>(BROCHE_POTENTIOMETRE);
+  <span class="kw">const int</span> angle =
+    <span class="fn">map</span>(valeur, <span class="num">0</span>, <span class="num">1023</span>, <span class="num">0</span>, <span class="num">180</span>);
+  servomoteur.<span class="fn">write</span>(angle);
+  <span class="fn">delay</span>(<span class="num">15</span>);
+}</pre>
+
+    <div class="flow">
+      <div class="node">Position du potentiomètre</div>
+      <div class="arrow">→</div>
+      <div class="node"><code>analogRead(A0)</code><br>0…1023</div>
+      <div class="arrow">→</div>
+      <div class="node"><code>map()</code><br>0…180°</div>
+      <div class="arrow">→</div>
+      <div class="node"><code>servo.write()</code></div>
+    </div>
+
+    <h3>Relation de conversion et points de contrôle</h3>
+    <p>La conversion est linéaire : <strong>angle ≈ valeur × 180 / 1023</strong>. La fonction <code>map()</code> effectue un calcul entier.</p>
+    <table>
+      <tr><th>Valeur A0</th><th>Position relative</th><th>Angle commandé attendu</th></tr>
+      <tr><td>0</td><td>0 %</td><td>0°</td></tr>
+      <tr><td>256</td><td>≈ 25 %</td><td>≈ 45°</td></tr>
+      <tr><td>512</td><td>≈ 50 %</td><td>≈ 90°</td></tr>
+      <tr><td>768</td><td>≈ 75 %</td><td>≈ 135°</td></tr>
+      <tr><td>1023</td><td>100 %</td><td>180°</td></tr>
+    </table>
+
+    <div class="screenshot-slot">
+      <div>
+        <strong>Insérer ici les captures Proteus du servo</strong><br>
+        Montrer au minimum les positions proches de 0°, 90° et 180°,
+        avec le potentiomètre visible.
+      </div>
+    </div>
+
+    <h3>Conclusion de l’exercice 4</h3>
+    <p>
+      La position du potentiomètre devient une consigne angulaire continue entre
+      0° et 180°. La bibliothèque <code>Servo</code> produit le signal de commande
+      nécessaire, tandis que <code>map()</code> adapte simplement les deux plages.
+      Le point médian, environ 512, doit positionner l’axe près de 90°. Cet
+      exercice relie ainsi acquisition analogique, mise à l’échelle et commande
+      d’un actionneur.
+    </p>
+    <div class="footer-label">Exercice 4 — Programme et résultats attendus</div>
+  </section>
+
+  <section class="page">
+    <p class="section-kicker">06 — Synthèse</p>
+    <h2>Conclusion générale</h2>
+
+    <p class="lead">
+      Les quatre montages couvrent une chaîne de traitement complète :
+      acquisition d’une information, décision ou conversion par programme,
+      puis commande d’un indicateur ou d’un actionneur.
+    </p>
+
+    <div class="grid-2">
+      <div class="card">
+        <h4>Exercice 1</h4>
+        <p>Une mesure analogique est comparée à un seuil précis. La valeur frontière 512 reste dans l’état éteint.</p>
+      </div>
+      <div class="card">
+        <h4>Exercice 2</h4>
+        <p>Trois sorties sont coordonnées dans une séquence exclusive et répétitive de 7 secondes.</p>
+      </div>
+      <div class="card">
+        <h4>Exercice 3</h4>
+        <p>Une entrée numérique est stabilisée par pull-down et commande directement une LED.</p>
+      </div>
+      <div class="card">
+        <h4>Exercice 4</h4>
+        <p>La plage 0–1023 est convertie en 0–180° pour piloter la position d’un servomoteur.</p>
+      </div>
+    </div>
+
+    <h3>Problèmes possibles et solutions</h3>
+    <table>
+      <tr><th>Symptôme</th><th>Cause probable</th><th>Correction</th></tr>
+      <tr><td>Une LED ne s’allume pas</td><td>Polarité inversée, résistance mal raccordée ou mauvaise broche.</td><td>Vérifier anode/cathode, continuité vers GND et numéro de broche.</td></tr>
+      <tr><td>La mesure A0 ne varie pas</td><td>Curseur du potentiomètre non relié à A0 ou alimentation incomplète.</td><td>Relier les extrémités à 5 V/GND et le curseur à A0.</td></tr>
+      <tr><td>Le bouton commute seul</td><td>Entrée D2 flottante ou pull-down mal placé.</td><td>Mettre 10 kΩ entre le nœud D2 et GND.</td></tr>
+      <tr><td>Le servo ne suit pas</td><td>Signal, alimentation ou masse commune manquante.</td><td>Contrôler D9, VCC et GND ; vérifier <code>Servo.h</code>.</td></tr>
+      <tr><td>Proteus ne démarre pas le programme</td><td>Fichier compilé non chargé ou mauvaise fréquence.</td><td>Associer le bon fichier à l’Uno et conserver les paramètres du modèle.</td></tr>
+    </table>
+
+    <h3>Checklist avant remise</h3>
+    <ul class="checklist">
+      <li>Compléter la filière, le nom et le prénom sur la page de garde.</li>
+      <li>Remplacer les cadres par des captures lisibles de vos simulations Proteus.</li>
+      <li>Vérifier que les captures confirment les résultats décrits dans les tableaux.</li>
+      <li>Relire et personnaliser l’introduction, les analyses et les difficultés rencontrées.</li>
+      <li>Exporter au format PDF sous le nom <code>Nom_Prenom_Examen_TP_Arduino.pdf</code>.</li>
+      <li>Utiliser l’objet de mail : <code>Examen TP Arduino – Nom Prénom</code>.</li>
+    </ul>
+
+    <div class="notice">
+      Ce document fournit les solutions, les schémas de référence et les résultats
+      théoriquement attendus. Les affirmations expérimentales finales doivent
+      correspondre à vos propres observations dans Proteus.
+    </div>
+    <div class="footer-label">Conclusion et vérifications finales</div>
+  </section>
+</body>
+</html>

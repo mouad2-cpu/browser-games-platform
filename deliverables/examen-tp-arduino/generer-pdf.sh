@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+DOSSIER="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SOURCE="$DOSSIER/compte-rendu.html"
+SORTIE="${1:-$DOSSIER/Nom_Prenom_Examen_TP_Arduino.pdf}"
+CHROME="${CHROME_BIN:-$(command -v google-chrome || command -v chromium || true)}"
+
+if [[ -z "$CHROME" ]]; then
+  echo "Erreur : Google Chrome ou Chromium est requis pour générer le PDF." >&2
+  exit 1
+fi
+
+"$CHROME" \
+  --headless \
+  --no-sandbox \
+  --disable-gpu \
+  --no-pdf-header-footer \
+  --print-to-pdf="$SORTIE" \
+  "file://$SOURCE"
+
+echo "PDF généré : $SORTIE"
