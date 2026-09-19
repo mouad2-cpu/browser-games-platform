@@ -1,0 +1,1881 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Projet Gestion de Production et Supply Chain — Jorf Moaad</title>
+  <style>
+    :root {
+      --navy: #12324b;
+      --navy-2: #1f4c68;
+      --teal: #0f8b83;
+      --teal-light: #e8f5f3;
+      --amber: #e7a323;
+      --amber-light: #fff6df;
+      --red: #c64f4a;
+      --red-light: #fceceb;
+      --green: #367b52;
+      --green-light: #eaf5ee;
+      --ink: #20303c;
+      --muted: #5f7080;
+      --line: #d7e0e6;
+      --paper: #ffffff;
+      --soft: #f4f7f9;
+    }
+
+    * { box-sizing: border-box; }
+
+    @page {
+      size: A4;
+      margin: 14mm 14mm 16mm;
+    }
+
+    html {
+      background: #dfe5e8;
+      font-family: "Arial", "Helvetica Neue", sans-serif;
+      color: var(--ink);
+      font-size: 10.2pt;
+      line-height: 1.42;
+    }
+
+    body {
+      margin: 0 auto;
+      max-width: 210mm;
+      background: var(--paper);
+    }
+
+    h1, h2, h3, h4, p { margin-top: 0; }
+    h1, h2, h3, h4 { color: var(--navy); line-height: 1.18; }
+
+    h1 {
+      font-size: 25pt;
+      letter-spacing: -0.5px;
+      margin-bottom: 6mm;
+    }
+
+    h2 {
+      font-size: 19pt;
+      padding-bottom: 2.5mm;
+      margin: 0 0 5mm;
+      border-bottom: 2px solid var(--teal);
+    }
+
+    h3 {
+      font-size: 13.5pt;
+      margin: 6mm 0 3mm;
+    }
+
+    h4 {
+      font-size: 10.5pt;
+      margin: 4mm 0 2mm;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    p { margin-bottom: 3mm; }
+    ul, ol { margin: 1.5mm 0 3mm; padding-left: 5.5mm; }
+    li { margin-bottom: 1.3mm; }
+    strong { color: var(--navy); }
+
+    .page {
+      min-height: 267mm;
+      padding: 0;
+      position: relative;
+      break-after: page;
+      page-break-after: always;
+    }
+
+    .page:last-child {
+      break-after: auto;
+      page-break-after: auto;
+    }
+
+    .cover {
+      min-height: 267mm;
+      display: flex;
+      flex-direction: column;
+      padding: 7mm 4mm 3mm;
+      overflow: hidden;
+    }
+
+    .cover-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding-bottom: 8mm;
+      border-bottom: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 9pt;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+
+    .cover-mark {
+      width: 18mm;
+      height: 18mm;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: var(--navy);
+      color: white;
+      font-weight: 800;
+      letter-spacing: 0;
+    }
+
+    .cover-main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 13mm 5mm 8mm;
+    }
+
+    .eyebrow {
+      color: var(--teal);
+      font-size: 10pt;
+      font-weight: 800;
+      letter-spacing: 1.7px;
+      text-transform: uppercase;
+      margin-bottom: 5mm;
+    }
+
+    .cover h1 {
+      max-width: 165mm;
+      font-size: 30pt;
+      line-height: 1.07;
+      margin-bottom: 7mm;
+    }
+
+    .cover-subtitle {
+      max-width: 155mm;
+      font-size: 15pt;
+      color: var(--navy-2);
+      border-left: 4px solid var(--amber);
+      padding-left: 5mm;
+      margin-bottom: 13mm;
+    }
+
+    .cover-chain {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 6mm;
+      align-items: center;
+      margin: 4mm 0 13mm;
+    }
+
+    .cover-node {
+      background: var(--soft);
+      border: 1px solid var(--line);
+      border-radius: 3mm;
+      min-height: 20mm;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      color: var(--navy);
+      font-size: 8.5pt;
+      font-weight: 700;
+      position: relative;
+      padding: 2mm;
+    }
+
+    .cover-node:not(:last-child)::after {
+      content: "→";
+      position: absolute;
+      right: -5.5mm;
+      color: var(--teal);
+      font-size: 15pt;
+    }
+
+    .identity {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 7mm;
+      border-top: 1px solid var(--line);
+      padding-top: 7mm;
+    }
+
+    .identity-box {
+      background: var(--soft);
+      border-radius: 3mm;
+      padding: 5mm;
+      min-height: 26mm;
+    }
+
+    .identity-label {
+      color: var(--muted);
+      font-size: 8pt;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 1.5mm;
+    }
+
+    .identity-value {
+      color: var(--navy);
+      font-size: 12pt;
+      font-weight: 800;
+    }
+
+    .cover-footer {
+      display: flex;
+      justify-content: space-between;
+      color: var(--muted);
+      font-size: 9pt;
+      padding-top: 6mm;
+    }
+
+    .section-tag {
+      display: inline-block;
+      background: var(--teal);
+      color: white;
+      border-radius: 10mm;
+      font-size: 8pt;
+      font-weight: 800;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      padding: 1.5mm 4mm;
+      margin-bottom: 4mm;
+    }
+
+    .page-kicker {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: var(--muted);
+      font-size: 8pt;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      margin-bottom: 5mm;
+      padding-bottom: 2mm;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .lead {
+      font-size: 11.5pt;
+      color: var(--navy-2);
+      line-height: 1.55;
+    }
+
+    .callout {
+      border-left: 4px solid var(--teal);
+      background: var(--teal-light);
+      border-radius: 0 2mm 2mm 0;
+      padding: 4mm 5mm;
+      margin: 4mm 0;
+      break-inside: avoid;
+    }
+
+    .callout.amber {
+      border-color: var(--amber);
+      background: var(--amber-light);
+    }
+
+    .callout.red {
+      border-color: var(--red);
+      background: var(--red-light);
+    }
+
+    .callout.green {
+      border-color: var(--green);
+      background: var(--green-light);
+    }
+
+    .formula {
+      font-family: "Courier New", monospace;
+      background: var(--navy);
+      color: white;
+      border-radius: 2mm;
+      padding: 3mm 4mm;
+      margin: 3mm 0;
+      line-height: 1.5;
+      break-inside: avoid;
+    }
+
+    .formula strong { color: #fff3bd; }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5mm;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 4mm;
+    }
+
+    .card {
+      border: 1px solid var(--line);
+      border-radius: 3mm;
+      padding: 4mm;
+      break-inside: avoid;
+      background: white;
+    }
+
+    .card h3, .card h4 { margin-top: 0; }
+
+    .metric {
+      text-align: center;
+      padding: 5mm 2mm;
+    }
+
+    .metric-number {
+      color: var(--teal);
+      font-size: 24pt;
+      font-weight: 900;
+      line-height: 1;
+      margin-bottom: 2mm;
+    }
+
+    .metric-label {
+      color: var(--muted);
+      font-size: 8.5pt;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 3mm 0 5mm;
+      font-size: 8.7pt;
+      break-inside: avoid;
+    }
+
+    thead { display: table-header-group; }
+
+    th {
+      background: var(--navy);
+      color: white;
+      text-align: left;
+      padding: 2.4mm 2.2mm;
+      font-weight: 700;
+      vertical-align: middle;
+    }
+
+    td {
+      border-bottom: 1px solid var(--line);
+      padding: 2.2mm;
+      vertical-align: top;
+    }
+
+    tbody tr:nth-child(even) td { background: var(--soft); }
+    tr { break-inside: avoid; }
+
+    .num { text-align: right; white-space: nowrap; }
+    .center { text-align: center; }
+    .small { font-size: 8.2pt; color: var(--muted); }
+    .tiny { font-size: 7.4pt; }
+    .nowrap { white-space: nowrap; }
+
+    .badge {
+      display: inline-block;
+      min-width: 7mm;
+      padding: 0.7mm 2mm;
+      border-radius: 5mm;
+      text-align: center;
+      font-size: 7.5pt;
+      font-weight: 800;
+      color: white;
+    }
+
+    .badge.a, .badge.high { background: var(--red); }
+    .badge.b, .badge.medium { background: var(--amber); color: #46320b; }
+    .badge.c, .badge.low { background: var(--green); }
+
+    .chart {
+      border: 1px solid var(--line);
+      border-radius: 3mm;
+      padding: 3mm;
+      margin: 3mm 0 5mm;
+      break-inside: avoid;
+    }
+
+    .chart-title {
+      color: var(--navy);
+      font-weight: 800;
+      margin-bottom: 2mm;
+    }
+
+    .bar-row {
+      display: grid;
+      grid-template-columns: 25mm 1fr 17mm;
+      gap: 3mm;
+      align-items: center;
+      margin: 2.4mm 0;
+    }
+
+    .bar-track {
+      height: 7mm;
+      background: var(--soft);
+      border-radius: 1.5mm;
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--teal), #51b8ae);
+      color: white;
+      display: flex;
+      align-items: center;
+      padding-left: 2mm;
+      font-size: 7.5pt;
+      font-weight: 700;
+    }
+
+    .bar-fill.bottleneck {
+      background: linear-gradient(90deg, var(--red), #df7771);
+    }
+
+    .toc {
+      display: grid;
+      gap: 3mm;
+      margin-top: 6mm;
+    }
+
+    .toc-item {
+      display: grid;
+      grid-template-columns: 12mm 1fr auto;
+      gap: 4mm;
+      align-items: center;
+      border-bottom: 1px dotted #a8b6c0;
+      padding-bottom: 2.5mm;
+    }
+
+    .toc-n {
+      width: 10mm;
+      height: 10mm;
+      display: grid;
+      place-items: center;
+      background: var(--navy);
+      color: white;
+      border-radius: 50%;
+      font-weight: 800;
+    }
+
+    .toc-title { font-weight: 700; color: var(--navy); }
+    .toc-meta { color: var(--muted); font-size: 8.5pt; }
+
+    .supply-map {
+      display: grid;
+      grid-template-columns: 1.1fr 20mm 1fr 20mm 1.1fr;
+      align-items: stretch;
+      gap: 2mm;
+      margin: 4mm 0;
+      break-inside: avoid;
+    }
+
+    .supply-col {
+      border: 1px solid var(--line);
+      border-radius: 3mm;
+      overflow: hidden;
+      background: white;
+    }
+
+    .supply-title {
+      background: var(--navy);
+      color: white;
+      text-align: center;
+      padding: 2.5mm;
+      font-weight: 800;
+    }
+
+    .supply-body { padding: 3mm; }
+
+    .supply-body div {
+      background: var(--soft);
+      border-radius: 1.5mm;
+      padding: 2mm;
+      margin-bottom: 2mm;
+      text-align: center;
+      font-size: 8.2pt;
+    }
+
+    .flow-arrow {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: var(--teal);
+      font-weight: 900;
+      text-align: center;
+      font-size: 18pt;
+    }
+
+    .flow-arrow span {
+      font-size: 6.5pt;
+      color: var(--muted);
+      font-weight: 600;
+      line-height: 1.25;
+    }
+
+    .risk-matrix {
+      display: grid;
+      grid-template-columns: 20mm repeat(3, 1fr);
+      grid-template-rows: 10mm repeat(3, 32mm);
+      gap: 1.5mm;
+      margin: 4mm 0;
+      break-inside: avoid;
+    }
+
+    .risk-axis {
+      display: grid;
+      place-items: center;
+      text-align: center;
+      color: var(--muted);
+      font-size: 7.5pt;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .risk-cell {
+      border-radius: 2mm;
+      padding: 2mm;
+      font-size: 7.3pt;
+      overflow: hidden;
+    }
+
+    .risk-cell.low { background: #dff1e5; }
+    .risk-cell.mid { background: #fff0bd; }
+    .risk-cell.high { background: #f7cfcb; }
+    .risk-cell.critical { background: #eaa39d; }
+    .risk-cell strong { display: block; margin-bottom: 1mm; }
+
+    .oee-chain {
+      display: grid;
+      grid-template-columns: repeat(7, auto);
+      gap: 2mm;
+      align-items: center;
+      justify-content: center;
+      margin: 5mm 0;
+      break-inside: avoid;
+    }
+
+    .oee-box {
+      min-width: 29mm;
+      background: var(--soft);
+      border-radius: 3mm;
+      padding: 4mm 2mm;
+      text-align: center;
+    }
+
+    .oee-box.final {
+      background: var(--navy);
+      color: white;
+    }
+
+    .oee-value {
+      display: block;
+      font-size: 17pt;
+      font-weight: 900;
+      color: var(--teal);
+    }
+
+    .oee-box.final .oee-value { color: #fff3bd; }
+    .times { color: var(--muted); font-size: 15pt; font-weight: 900; }
+
+    .priority {
+      display: inline-grid;
+      place-items: center;
+      width: 7mm;
+      height: 7mm;
+      border-radius: 50%;
+      color: white;
+      background: var(--navy);
+      font-weight: 900;
+    }
+
+    .timeline {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 3mm;
+      margin: 4mm 0;
+    }
+
+    .phase {
+      border-top: 4px solid var(--teal);
+      background: var(--soft);
+      border-radius: 2mm;
+      padding: 3mm;
+      break-inside: avoid;
+    }
+
+    .phase:nth-child(2) { border-color: var(--amber); }
+    .phase:nth-child(3) { border-color: var(--green); }
+
+    .phase-title {
+      color: var(--navy);
+      font-weight: 800;
+      margin-bottom: 2mm;
+    }
+
+    .executive {
+      border: 2px solid var(--navy);
+      border-radius: 3mm;
+      padding: 6mm;
+      background: linear-gradient(145deg, #fff 0%, #f5f9fa 100%);
+    }
+
+    .signature {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 7mm;
+      padding-top: 3mm;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 8.5pt;
+    }
+
+    .page-number {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      color: #91a0aa;
+      font-size: 8pt;
+    }
+
+    @media print {
+      html, body { background: white; }
+      body { max-width: none; }
+      .page { min-height: 267mm; }
+    }
+  </style>
+</head>
+<body>
+  <section class="page cover">
+    <div class="cover-top">
+      <div>
+        École Nationale des Sciences Appliquées<br>
+        Kénitra
+      </div>
+      <div class="cover-mark">SC</div>
+    </div>
+
+    <div class="cover-main">
+      <div class="eyebrow">Projet individuel · Étude de cas</div>
+      <h1>Gestion de Production<br>et Supply Chain Management</h1>
+      <div class="cover-subtitle">
+        Optimisation de la chaîne logistique d’une PME industrielle : le cas MécaPlus
+      </div>
+
+      <div class="cover-chain" aria-label="Chaîne logistique">
+        <div class="cover-node">Fournisseurs</div>
+        <div class="cover-node">Approvisionner</div>
+        <div class="cover-node">Produire</div>
+        <div class="cover-node">Distribuer</div>
+        <div class="cover-node">Clients</div>
+      </div>
+
+      <div class="identity">
+        <div class="identity-box">
+          <div class="identity-label">Réalisé par</div>
+          <div class="identity-value">Jorf Moaad</div>
+        </div>
+        <div class="identity-box">
+          <div class="identity-label">Encadré par</div>
+          <div class="identity-value">Pr. Anaya Asma</div>
+        </div>
+      </div>
+
+      <div class="identity-box" style="margin-top: 5mm;">
+        <div class="identity-label">Filière</div>
+        <div class="identity-value" style="font-size: 10.5pt;">
+          Systèmes Automatisés et Intelligence Artificielle pour l’Industrie 4.0
+        </div>
+      </div>
+    </div>
+
+    <div class="cover-footer">
+      <span>Année universitaire 2026–2027</span>
+      <span>Rapport d’analyse et recommandations</span>
+    </div>
+  </section>
+
+  <section class="page">
+    <div class="page-kicker"><span>MécaPlus · Rapport d’étude</span><span>Repères</span></div>
+    <span class="section-tag">Vue d’ensemble</span>
+    <h1>Sommaire & hypothèses</h1>
+
+    <div class="toc">
+      <div class="toc-item">
+        <div class="toc-n">1</div>
+        <div>
+          <div class="toc-title">Analyse de la production</div>
+          <div class="toc-meta">Goulot, capacité, planification, MRP et amélioration du cycle</div>
+        </div>
+        <span>Partie 1</span>
+      </div>
+      <div class="toc-item">
+        <div class="toc-n">2</div>
+        <div>
+          <div class="toc-title">Logistique et gestion des stocks</div>
+          <div class="toc-meta">Point de commande, ABC, Wilson et Juste-à-Temps</div>
+        </div>
+        <span>Partie 2</span>
+      </div>
+      <div class="toc-item">
+        <div class="toc-n">3</div>
+        <div>
+          <div class="toc-title">Supply chain et performance</div>
+          <div class="toc-meta">SCOR, risques, OEE, Lean et logistique durable</div>
+        </div>
+        <span>Partie 3</span>
+      </div>
+      <div class="toc-item">
+        <div class="toc-n">4</div>
+        <div>
+          <div class="toc-title">Note de synthèse au dirigeant</div>
+          <div class="toc-meta">Diagnostic consolidé, priorités et impacts attendus</div>
+        </div>
+        <span>Conclusion</span>
+      </div>
+    </div>
+
+    <h3>Hypothèses de calcul retenues</h3>
+    <table>
+      <thead>
+        <tr><th>Élément</th><th>Hypothèse</th><th>Justification</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Temps disponible</td>
+          <td>480 min/jour, 5 jours/semaine</td>
+          <td>L’énoncé précise un fonctionnement de 8 h par jour.</td>
+        </tr>
+        <tr>
+          <td>Capacité</td>
+          <td>Capacité théorique entière, sans panne ni rebut</td>
+          <td>Les pertes ne sont pas fournies dans la partie capacité.</td>
+        </tr>
+        <tr>
+          <td>Stock de sécurité</td>
+          <td>1 semaine = 5 jours ouvrés</td>
+          <td>Cohérent avec le calendrier de production de l’atelier.</td>
+        </tr>
+        <tr>
+          <td>ABC</td>
+          <td>A jusqu’à 80 %, B de 80 à 95 %, C au-delà</td>
+          <td>Règle cumulative standard ; ordre d’origine conservé en cas d’égalité.</td>
+        </tr>
+        <tr>
+          <td>EOQ</td>
+          <td>300 jours de consommation/an</td>
+          <td>12 000 unités/an ÷ 40 unités/jour = 300 jours.</td>
+        </tr>
+        <tr>
+          <td>Estimations vertes</td>
+          <td>Fourchettes-cibles, à valider par un bilan carbone</td>
+          <td>L’énoncé ne fournit ni tonnage, ni distance, ni facteur d’émission.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout amber">
+      <strong>Point de vigilance.</strong> La production annuelle annoncée (120 000 pièces) n’est pas
+      compatible avec la capacité de la ligne décrite (60 pièces/jour × 220 jours = 13 200 pièces/an).
+      Les calculs demandés s’appuient donc sur la ligne et les temps de cycle fournis, comme le requiert
+      l’étude de cas.
+    </div>
+    <div class="page-number">02</div>
+  </section>
+
+  <section class="page">
+    <div class="page-kicker"><span>Partie 1</span><span>Analyse de la production</span></div>
+    <span class="section-tag">Question 1</span>
+    <h2>Analyse des goulots</h2>
+
+    <p class="lead">
+      La capacité d’un poste est le temps ouvrable divisé par son temps de cycle. Le débit de la ligne
+      est limité par le poste ayant la plus faible capacité.
+    </p>
+
+    <div class="formula">
+      Capacité/jour = 480 min ÷ temps de cycle<br>
+      Capacité/semaine = capacité/jour × 5 jours
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Poste</th>
+          <th>Opération</th>
+          <th class="num">Cycle</th>
+          <th class="num">Capacité/jour</th>
+          <th class="num">Capacité/semaine</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>P1</strong></td><td>Découpe</td><td class="num">5 min</td>
+          <td class="num">480 ÷ 5 = <strong>96</strong></td><td class="num"><strong>480</strong></td>
+        </tr>
+        <tr>
+          <td><strong>P2</strong></td><td>Usinage CNC</td><td class="num">8 min</td>
+          <td class="num">480 ÷ 8 = <strong>60</strong></td><td class="num"><strong>300</strong></td>
+        </tr>
+        <tr>
+          <td><strong>P3</strong></td><td>Perçage</td><td class="num">4 min</td>
+          <td class="num">480 ÷ 4 = <strong>120</strong></td><td class="num"><strong>600</strong></td>
+        </tr>
+        <tr>
+          <td><strong>P4</strong></td><td>Contrôle</td><td class="num">3 min</td>
+          <td class="num">480 ÷ 3 = <strong>160</strong></td><td class="num"><strong>800</strong></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="chart">
+      <div class="chart-title">Capacités journalières comparées (pièces/jour)</div>
+      <div class="bar-row">
+        <strong>P1 · Découpe</strong>
+        <div class="bar-track"><div class="bar-fill" style="width:60%;">96</div></div><span>96</span>
+      </div>
+      <div class="bar-row">
+        <strong>P2 · Usinage</strong>
+        <div class="bar-track"><div class="bar-fill bottleneck" style="width:37.5%;">60</div></div><span>60</span>
+      </div>
+      <div class="bar-row">
+        <strong>P3 · Perçage</strong>
+        <div class="bar-track"><div class="bar-fill" style="width:75%;">120</div></div><span>120</span>
+      </div>
+      <div class="bar-row">
+        <strong>P4 · Contrôle</strong>
+        <div class="bar-track"><div class="bar-fill" style="width:100%;">160</div></div><span>160</span>
+      </div>
+    </div>
+
+    <div class="grid-3">
+      <div class="card metric">
+        <div class="metric-number">P2</div>
+        <div class="metric-label">Goulot d’étranglement</div>
+      </div>
+      <div class="card metric">
+        <div class="metric-number">60</div>
+        <div class="metric-label">Pièces par jour</div>
+      </div>
+      <div class="card metric">
+        <div class="metric-number">300</div>
+        <div class="metric-label">Pièces par semaine</div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <strong>Conclusion.</strong> P2 est le goulot, car son cycle de 8 minutes est le plus long et sa
+      capacité de 60 pièces/jour est la plus faible. La capacité maximale de toute la ligne est donc
+      <strong>60 pièces/jour</strong>, soit <strong>300 pièces/semaine</strong>.
+    </div>
+    <div class="page-number">03</div>
+  </section>
+
+  <section class="page">
+    <div class="page-kicker"><span>Partie 1</span><span>Analyse de la production</span></div>
+    <span class="section-tag">Question 2</span>
+    <h2>Planification de la production</h2>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Semaine</th><th class="num">Commande</th><th class="num">Capacité</th>
+          <th class="num">Écart</th><th class="num">Charge P2 requise</th><th>Diagnostic</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>S1</td><td class="num">450</td><td class="num">300</td><td class="num">−150</td><td class="num">60 h</td><td><span class="badge high">Non</span></td></tr>
+        <tr><td>S2</td><td class="num">520</td><td class="num">300</td><td class="num">−220</td><td class="num">69 h 20</td><td><span class="badge high">Non</span></td></tr>
+        <tr><td>S3</td><td class="num">480</td><td class="num">300</td><td class="num">−180</td><td class="num">64 h</td><td><span class="badge high">Non</span></td></tr>
+        <tr><td>S4</td><td class="num">400</td><td class="num">300</td><td class="num">−100</td><td class="num">53 h 20</td><td><span class="badge high">Non</span></td></tr>
+        <tr>
+          <td><strong>Total</strong></td><td class="num"><strong>1 850</strong></td>
+          <td class="num"><strong>1 200</strong></td><td class="num"><strong>−650</strong></td>
+          <td class="num"><strong>246 h 40</strong></td><td><strong>35,1 % manquants</strong></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="formula">
+      Capacité manquante = 1 850 − (300 × 4) = <strong>650 pièces</strong><br>
+      Taux de couverture = 1 200 ÷ 1 850 = <strong>64,9 %</strong>
+    </div>
+
+    <h3>Solution 1 — Renfort temporaire ciblé au poste P2</h3>
+    <p>
+      Ajouter exactement les heures CNC correspondant au déficit, en deuxième équipe ou en heures
+      supplémentaires. La charge additionnelle de P2 est :
+    </p>
+    <table>
+      <thead><tr><th>S1</th><th>S2</th><th>S3</th><th>S4</th><th>Total P2 additionnel</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>150 × 8 = 20 h</td><td>220 × 8 = 29 h 20</td>
+          <td>180 × 8 = 24 h</td><td>100 × 8 = 13 h 20</td>
+          <td><strong>86 h 40</strong></td>
+        </tr>
+      </tbody>
+    </table>
+    <p>
+      P1 peut fournir jusqu’à 480 pièces/semaine ; seule S2 dépasse cette limite. Il faut donc ajouter
+      <strong>40 découpes × 5 min = 3 h 20</strong> à P1 en S2. P3 et P4 disposent déjà d’une capacité
+      suffisante. Cette solution couvre les 1 850 pièces sans surinvestissement permanent.
+    </p>
+
+    <h3>Solution 2 — Capacité externe sécurisée</h3>
+    <div class="grid-2">
+      <div class="card">
+        <h4>Sous-traitance planifiée</h4>
+        <p>
+          Sous-traiter les <strong>650 opérations d’usinage manquantes</strong> :
+          150 en S1, 220 en S2, 180 en S3 et 100 en S4.
+        </p>
+      </div>
+      <div class="card">
+        <h4>Contrôle interne maintenu</h4>
+        <p>
+          Conserver le contrôle P4 chez MécaPlus, contractualiser délai et capabilité, et ajouter
+          <strong>3 h 20</strong> de découpe P1 en S2 si les pièces sont fournies découpées.
+        </p>
+      </div>
+    </div>
+
+    <div class="callout amber">
+      <strong>Décision recommandée.</strong> Pour un pic ponctuel, le renfort ciblé ou la sous-traitance
+      sont préférables. Si ce niveau de demande devient récurrent, une deuxième CNC porterait P2 à
+      120 pièces/jour ; P1 deviendrait alors le goulot à 96 pièces/jour et devrait aussi être renforcé.
+    </div>
+    <div class="page-number">04</div>
+  </section>
+
+  <section class="page">
+    <div class="page-kicker"><span>Partie 1</span><span>Analyse de la production</span></div>
+    <span class="section-tag">Question 3</span>
+    <h2>MRP et nomenclature de P001</h2>
+
+    <p class="lead">
+      Les besoins bruts sont obtenus par explosion de la nomenclature pour 500 pièces finies. Les
+      besoins nets correspondent aux besoins bruts diminués des stocks disponibles.
+    </p>
+
+    <div class="formula">
+      Besoin brut = quantité de P001 à produire × quantité par P001<br>
+      Besoin net = max(0 ; besoin brut − stock disponible)
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Code</th><th>Désignation</th><th class="num">Qté/P001</th>
+          <th class="num">Besoin brut (500)</th><th class="num">Stock</th>
+          <th class="num">Besoin net</th><th class="num">Couverture</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>M001</strong></td><td>Acier</td><td class="num">2,5 kg</td>
+          <td class="num">1 250 kg</td><td class="num">500 kg</td>
+          <td class="num"><strong>750 kg</strong></td><td class="num">40 %</td>
+        </tr>
+        <tr>
+          <td><strong>M002</strong></td><td>Aluminium</td><td class="num">0,8 kg</td>
+          <td class="num">400 kg</td><td class="num">200 kg</td>
+          <td class="num"><strong>200 kg</strong></td><td class="num">50 %</td>
+        </tr>
+        <tr>
+          <td><strong>C001</strong></td><td>Vis</td><td class="num">4 unités</td>
+          <td class="num">2 000 u.</td><td class="num">1 200 u.</td>
+          <td class="num"><strong>800 u.</strong></td><td class="num">60 %</td>
+        </tr>
+        <tr>
+          <td><strong>C002</strong></td><td>Écrous</td><td class="num">4 unités</td>
+          <td class="num">2 000 u.</td><td class="num">1 000 u.</td>
+          <td class="num"><strong>1 000 u.</strong></td><td class="num">50 %</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="grid-2">
+      <div class="card">
+        <h3>Exemple de calcul</h3>
+        <p><strong>Acier :</strong> 500 × 2,5 = 1 250 kg bruts.</p>
+        <p>Après consommation des 500 kg en stock :</p>
+        <div class="formula" style="margin-bottom:0;">1 250 − 500 = <strong>750 kg nets</strong></div>
+      </div>
+      <div class="card">
+        <h3>Ordres d’achat à lancer</h3>
+        <ul>
+          <li>750 kg d’acier ;</li>
+          <li>200 kg d’aluminium ;</li>
+          <li>800 vis ;</li>
+          <li>1 000 écrous.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout green">
+      <strong>Résultat.</strong> Aucun composant ne dispose d’un stock suffisant pour couvrir les
+      500 pièces. Le MRP doit intégrer les délais d’approvisionnement et dater les lancements d’achat
+      en conséquence ; les besoins nets ci-dessus n’incluent pas de stock de sécurité supplémentaire.
+    </div>
+
+    <h3>Lecture managériale</h3>
+    <p>
+      Le stock de vis offre la meilleure couverture (60 %), tandis que l’acier ne couvre que 40 % du
+      besoin. L’acier combine un besoin net important et un délai de trois semaines : il doit donc être
+      priorisé lors du lancement des approvisionnements.
+    </p>
+    <div class="page-number">05</div>
+  </section>
+
+  <section class="page">
+    <div class="page-kicker"><span>Partie 1</span><span>Analyse de la production</span></div>
+    <span class="section-tag">Question 4</span>
+    <h2>Temps de cycle et amélioration</h2>
+
+    <h3>1. Situation actuelle</h3>
+    <div class="grid-2">
+      <div class="card">
+        <h4>Temps de traversée théorique</h4>
+        <div class="metric-number">20 min</div>
+        <p>5 + 8 + 4 + 3 = 20 minutes de travail cumulé par pièce.</p>
+      </div>
+      <div class="card">
+        <h4>Cycle de sortie de la ligne</h4>
+        <div class="metric-number">8 min</div>
+        <p>En régime établi, une pièce sort toutes les 8 minutes, rythme imposé par P2.</p>
+      </div>
+    </div>
+
+    <div class="callout">
+      L’expression « temps de cycle de la ligne » peut désigner le temps cumulé de traitement
+      (<strong>20 min</strong>) ou l’intervalle entre deux sorties (<strong>8 min/pièce</strong>).
+      Les deux indicateurs sont distingués pour éviter toute ambiguïté.
+    </div>
+
+    <h3>2. Après réduction de l’usinage de 8 à 6 minutes</h3>
+    <table>
+      <thead><tr><th>Poste</th><th class="num">Nouveau cycle</th><th class="num">Capacité/jour</th><th>Effet</th></tr></thead>
+      <tbody>
+        <tr><td>P1 · Découpe</td><td class="num">5 min</td><td class="num">96</td><td>Inchangé</td></tr>
+        <tr><td>P2 · Usinage</td><td class="num"><strong>6 min</strong></td><td class="num"><strong>80</strong></td><td>+33,3 %</td></tr>
+        <tr><td>P3 · Perçage</td><td class="num">4 min</td><td class="num">120</td><td>Inchangé</td></tr>
+        <tr><td>P4 · Contrôle</td><td class="num">3 min</td><td class="num">160</td><td>Inchangé</td></tr>
+      </tbody>
+    </table>
+
+    <div class="formula">
+      Nouvelle capacité de la ligne = min(96 ; 80 ; 120 ; 160)<br>
+      = <strong>80 pièces/jour</strong> = <strong>400 pièces/semaine</strong>
+    </div>
+
+    <h3>3. Gain de production</h3>
+    <div class="grid-3">
+      <div class="card metric">
+        <div class="metric-number">+20</div>
+        <div class="metric-label">Pièces/jour</div>
+      </div>
+      <div class="card metric">
+        <div class="metric-number">+100</div>
+        <div class="metric-label">Pièces/semaine</div>
+      </div>
+      <div class="card metric">
+        <div class="metric-number">+33,3 %</div>
+        <div class="metric-label">Gain de débit</div>
+      </div>
+    </div>
+
+    <p>
+      Le temps de traitement cumulé baisse de 20 à <strong>18 minutes</strong>. P2 reste le goulot,
+      mais son intervalle de sortie passe à 6 minutes. Malgré cette amélioration, les commandes S1 à S3
+      restent supérieures à 400 pièces/semaine ; S4 devient juste réalisable.
+    </p>
+
+    <div class="callout amber">
+      <strong>Étape suivante.</strong> Une nouvelle réduction de P2 sous 5 minutes déplacerait le
+      goulot vers P1. L’investissement doit donc être accompagné d’un plan de capacité global, et non
+      analysé poste par poste.
+    </div>
+    <div class="page-number">06</div>
+  </section>
+
+  <section class="page">
+    <div class="page-kicker"><span>Partie 2</span><span>Logistique et gestion des stocks</span></div>
+    <span class="section-tag">Question 1</span>
+    <h2>Point de commande et stock de sécurité</h2>
+
+    <div class="formula">
+      Consommation/jour = consommation/semaine ÷ 5<br>
+      Stock de sécurité = consommation/jour × jours de sécurité<br>
+      Point de commande = demande pendant le délai + stock de sécurité
+    </div>
+
+    <table class="tiny">
+      <thead>
+        <tr>
+          <th>Article</th><th class="num">Conso./sem.</th><th class="num">Conso./jour</th>
+          <th class="num">Délai</th><th class="num">Demande délai</th>
+          <th class="num">Sécurité</th><th class="num">Point de commande</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Acier</strong></td><td class="num">500 kg</td><td class="num">100 kg</td>
+          <td class="num">3 sem.</td><td class="num">1 500 kg</td>
+          <td class="num">15 j × 100 = 1 500 kg</td><td class="num"><strong>3 000 kg</strong></td>
+        </tr>
+        <tr>
+          <td><strong>Aluminium</strong></td><td class="num">200 kg</td><td class="num">40 kg</td>
+          <td class="num">4 sem.</td><td class="num">800 kg</td>
+          <td class="num">20 j × 40 = 800 kg</td><td class="num"><strong>1 600 kg</strong></td>
+        </tr>
+        <tr>
+          <td><strong>Vis</strong></td><td class="num">2 000 u.</td><td class="num">400 u.</td>
+          <td class="num">1 sem.</td><td class="num">2 000 u.</td>
+          <td class="num">2 j × 400 = 800 u.</td><td class="num"><strong>2 800 u.</strong></td>
+        </tr>
+        <tr>
+          <td><strong>Écrous</strong></td><td class="num">1 500 u.</td><td class="num">300 u.</td>
+          <td class="num">1 sem.</td><td class="num">1 500 u.</td>
+          <td class="num">2 j × 300 = 600 u.</td><td class="num"><strong>2 100 u.</strong></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Décision concernant l’acier</h3>
+    <div class="grid-2">
+      <div class="card metric">
+        <div class="metric-number">1 800 kg</div>
+        <div class="metric-label">Stock disponible</div>
+      </div>
+      <div class="card metric">
+        <div class="metric-number">3 000 kg</div>
+        <div class="metric-label">Seuil de commande</div>
+      </div>
+    </div>
+
+    <div class="callout red">
+      <strong>Oui, il faut commander.</strong> Le stock d’acier de 1 800 kg est inférieur au point de
+      commande de 3 000 kg. Sans commande, les 1 500 kg de stock de sécurité seraient entamés pendant
+      le délai fournisseur. L’écart au seuil est de <strong>1 200 kg</strong> ; ce n’est toutefois pas
+      automatiquement la quantité à commander, qui doit être fixée selon lot, coût et stock cible.
+    </div>
+
+    <h3>Stocks de sécurité obtenus</h3>
+    <div class="grid-2">
+      <div class="card"><strong>Acier :</strong> 1 500 kg<br><strong>Aluminium :</strong> 800 kg</div>
+      <div class="card"><strong>Vis :</strong> 800 unités<br><strong>Écrous :</strong> 600 unités</div>
+    </div>
+
+    <p class="small" style="margin-top:4mm;">
+      Les seuils sont exprimés en jours ouvrés. Une politique en jours calendaires produirait des
+      valeurs différentes et devrait être harmonisée dans l’ERP.
+    </p>
+    <div class="page-number">07</div>
+  </section>
+
+  <section class="page">
+    <div class="page-kicker"><span>Partie 2</span><span>Logistique et gestion des stocks</span></div>
+    <span class="section-tag">Question 2</span>
+    <h2>Classement ABC</h2>
+
+    <div class="formula">
+      Valeur annuelle = quantité vendue × prix unitaire<br>
+      % valeur = valeur de la référence ÷ valeur totale (1 492 500 €)
+    </div>
+
+    <table class="tiny">
+      <thead>
+        <tr>
+          <th>Rang</th><th>Réf.</th><th class="num">Quantité</th><th class="num">Prix</th>
+          <th class="num">Valeur totale</th><th class="num">% valeur</th>
+          <th class="num">% cumulé</th><th class="center">Cat.</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td>A001</td><td class="num">2 000</td><td class="num">150 €</td><td class="num">300 000 €</td><td class="num">20,10 %</td><td class="num">20,10 %</td><td class="center"><span class="badge a">A</span></td></tr>
+        <tr><td>2</td><td>B002</td><td class="num">5 000</td><td class="num">45 €</td><td class="num">225 000 €</td><td class="num">15,08 %</td><td class="num">35,18 %</td><td class="center"><span class="badge a">A</span></td></tr>
+        <tr><td>3</td><td>C003</td><td class="num">8 000</td><td class="num">20 €</td><td class="num">160 000 €</td><td class="num">10,72 %</td><td class="num">45,90 %</td><td class="center"><span class="badge a">A</span></td></tr>
+        <tr><td>4</td><td>G007</td><td class="num">3 500</td><td class="num">35 €</td><td class="num">122 500 €</td><td class="num">8,21 %</td><td class="num">54,10 %</td><td class="center"><span class="badge a">A</span></td></tr>
+        <tr><td>5</td><td>D004</td><td class="num">1 500</td><td class="num">80 €</td><td class="num">120 000 €</td><td class="num">8,04 %</td><td class="num">62,14 %</td><td class="center"><span class="badge a">A</span></td></tr>
+        <tr><td>6</td><td>E005</td><td class="num">12 000</td><td class="num">10 €</td><td class="num">120 000 €</td><td class="num">8,04 %</td><td class="num">70,18 %</td><td class="center"><span class="badge a">A</span></td></tr>
+        <tr><td>7</td><td>F006</td><td class="num">600</td><td class="num">200 €</td><td class="num">120 000 €</td><td class="num">8,04 %</td><td class="num">78,22 %</td><td class="center"><span class="badge a">A</span></td></tr>
+        <tr><td>8</td><td>J010</td><td class="num">1 000</td><td class="num">120 €</td><td class="num">120 000 €</td><td class="num">8,04 %</td><td class="num">86,26 %</td><td class="center"><span class="badge b">B</span></td></tr>
+        <tr><td>9</td><td>H008</td><td class="num">7 000</td><td class="num">15 €</td><td class="num">105 000 €</td><td class="num">7,04 %</td><td class="num">93,30 %</td><td class="center"><span class="badge b">B</span></td></tr>
+        <tr><td>10</td><td>I009</td><td class="num">4 000</td><td class="num">25 €</td><td class="num">100 000 €</td><td class="num">6,70 %</td><td class="num">100,00 %</td><td class="center"><span class="badge c">C</span></td></tr>
+        <tr><td colspan="4"><strong>Total</strong></td><td class="num"><strong>1 492 500 €</strong></td><td class="num"><strong>100 %</strong></td><td colspan="2"></td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout">
+      <strong>Gestion stricte :</strong> A001, B002, C003, G007, D004, E005 et F006 représentent
+      <strong>78,22 %</strong> de la valeur. Ils exigent inventaires fréquents, prévisions fines,
+      suivi fournisseur et validation managériale des écarts.
+    </div>
+
+    <table>
+      <thead><tr><th>Catégorie</th><th>Références</th><th>Stratégie recommandée</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><span class="badge a">A</span></td><td>A001, B002, C003, G007, D004, E005, F006</td>
+          <td>Revue hebdomadaire, inventaire tournant mensuel, prévision par référence, stock réduit mais fiabilisé, double sourcing critique.</td>
+        </tr>
+        <tr>
+          <td><span class="badge b">B</span></td><td>J010, H008</td>
+          <td>Revue mensuelle, inventaire trimestriel, paramètres min–max et contrôle par exception.</td>
+        </tr>
+        <tr>
+          <td><span class="badge c">C</span></td><td>I009</td>
+          <td>Gestion simple à deux bacs, commandes groupées, inventaire semestriel, priorité au faible coût administratif.</td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="small">
+      D004, E005, F006 et J010 ont la même valeur annuelle. La coupure cumulative place J010 en B ;
+      une règle interne « ne pas séparer les ex æquo » pourrait classer les quatre en A.
+    </p>
+    <div class="page-number">08</div>
+  </section>
+
+  <section class="page">
+    <div class="page-kicker"><span>Partie 2</span><span>Logistique et gestion des stocks</span></div>
+    <span class="section-tag">Question 3</span>
+    <h2>Modèle de Wilson (EOQ)</h2>
+
+    <div class="grid-3">
+      <div class="card metric"><div class="metric-number">12 000</div><div class="metric-label">Demande annuelle D</div></div>
+      <div class="card metric"><div class="metric-number">150 €</div><div class="metric-label">Coût de commande S</div></div>
+      <div class="card metric"><div class="metric-number">4 €</div><div class="metric-label">Possession H/u./an</div></div>
+    </div>
+
+    <h3>1. Quantité économique de commande</h3>
+    <div class="formula">
+      EOQ = √(2 × D × S ÷ H)<br>
+      EOQ = √(2 × 12 000 × 150 ÷ 4) = √900 000<br>
+      EOQ = <strong>948,68 ≈ 949 unités</strong>
+    </div>
+
+    <h3>2. Point de commande</h3>
+    <div class="formula">
+      Point de commande = demande/jour × délai + stock de sécurité<br>
+      = 40 × 5 + 30 = <strong>230 unités</strong>
+    </div>
+    <p>
+      Une commande de 949 unités doit être lancée lorsque la position de stock atteint 230 unités
+      (stock disponible + commandes en cours − besoins engagés).
+    </p>
+
+    <h3>3. Fréquence des commandes</h3>
+    <table>
+      <thead><tr><th>Indicateur</th><th>Calcul</th><th class="num">Résultat</th></tr></thead>
+      <tbody>
+        <tr><td>Nombre théorique/an</td><td>12 000 ÷ 948,68</td><td class="num"><strong>12,65</strong></td></tr>
+        <tr><td>Nombre opérationnel</td><td>Arrondi de planification</td><td class="num"><strong>≈ 13 commandes/an</strong></td></tr>
+        <tr><td>Intervalle moyen</td><td>948,68 ÷ 40</td><td class="num"><strong>23,72 jours de consommation</strong></td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout amber">
+      <strong>Cohérence des données.</strong> Une demande annuelle de 12 000 unités à 40 unités/jour
+      correspond à 300 jours de consommation. L’intervalle cohérent avec ces données est donc environ
+      <strong>24 jours de consommation</strong>. Avec 220 jours ouvrés, la demande journalière serait
+      54,55 unités et non 40 ; il faudrait alors recalibrer le point de commande.
+    </div>
+
+    <h3>Interprétation</h3>
+    <p>
+      Wilson équilibre le coût de passation et le coût de possession sous hypothèses de demande stable,
+      délai constant et absence de rupture. Le stock de sécurité de 30 unités protège séparément contre
+      la variabilité et n’entre pas dans la formule de l’EOQ.
+    </p>
+    <div class="page-number">09</div>
+  </section>
+
+  <section class="page">
+    <div class="page-kicker"><span>Partie 2</span><span>Logistique et gestion des stocks</span></div>
+    <span class="section-tag">Question 4</span>
+    <h2>Transition vers le Juste-à-Temps</h2>
+
+    <h3>Cinq conditions de réussite</h3>
+    <div class="grid-2">
+      <div class="card"><strong>1. Demande nivelée</strong><br>Prévisions fiables, horizon gelé et lissage des volumes par famille.</div>
+      <div class="card"><strong>2. Processus capables</strong><br>Qualité à la source, standards, faible taux de rebut et poka-yoke.</div>
+      <div class="card"><strong>3. Équipements fiables</strong><br>TPM, maintenance préventive, SMED et polyvalence des opérateurs.</div>
+      <div class="card"><strong>4. Fournisseurs synchronisés</strong><br>Délais courts, qualité certifiée, livraisons fréquentes et visibilité partagée.</div>
+      <div class="card"><strong>5. Pilotage tiré</strong><br>Kanban, petits lots, flux continus, données ERP exactes et logistique cadencée.</div>
+    </div>
+
+    <h3>Risques propres à MécaPlus</h3>
+    <table>
+      <thead><tr><th>Risque</th><th>Pourquoi il est élevé</th><th>Mesure de maîtrise</th></tr></thead>
+      <tbody>
+        <tr><td>Dépendance aux délais longs</td><td>17 fournisseurs asiatiques, délai de 6 à 8 semaines</td><td>Dual sourcing, fournisseurs européens, buffers ciblés</td></tr>
+        <tr><td>Rupture liée à la qualité</td><td>15 % de pièces rejetées</td><td>Qualité à la source, capabilité, audit fournisseur</td></tr>
+        <tr><td>Arrêt de flux</td><td>1,5 panne/semaine × 2 h</td><td>TPM, pièces critiques, maintenance autonome</td></tr>
+        <tr><td>Variabilité client</td><td>3 comptes représentent 60 % du CA</td><td>Prévisions collaboratives, horizon ferme</td></tr>
+        <tr><td>Surcoût logistique</td><td>Petits lots et expéditions fréquentes</td><td>Milk-run, consolidation, fréquence différenciée</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Plan de transition progressif</h3>
+    <div class="timeline">
+      <div class="phase">
+        <div class="phase-title">Phase 1 · Stabiliser</div>
+        <ul>
+          <li>VSM et fiabilisation des données ;</li>
+          <li>5S, standards, TPM sur P2 ;</li>
+          <li>rebut 15 % → moins de 8 % ;</li>
+          <li>segmenter articles et fournisseurs.</li>
+        </ul>
+      </div>
+      <div class="phase">
+        <div class="phase-title">Phase 2 · Piloter</div>
+        <ul>
+          <li>Pilote sur une famille A ;</li>
+          <li>Kanban P1–P2–P3 ;</li>
+          <li>réduction graduelle du lot ;</li>
+          <li>fournisseur européen proche.</li>
+        </ul>
+      </div>
+      <div class="phase">
+        <div class="phase-title">Phase 3 · Étendre</div>
+        <ul>
+          <li>Milk-run et EDI fournisseurs ;</li>
+          <li>heijunka multi-familles ;</li>
+          <li>réduction des buffers prouvée ;</li>
+          <li>revue mensuelle OTIF/OEE/stock.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout red">
+      <strong>Principe directeur.</strong> Réduire les causes de variabilité avant de réduire les stocks.
+      Un passage immédiat au « zéro stock » exposerait MécaPlus aux aléas fournisseurs, aux pannes et
+      aux défauts déjà présents.
+    </div>
+    <div class="page-number">10</div>
+  </section>
+
+  <section class="page">
+    <div class="page-kicker"><span>Partie 3</span><span>Supply chain et performance</span></div>
+    <span class="section-tag">Question 1</span>
+    <h2>Carte de la supply chain</h2>
+
+    <div class="supply-map">
+      <div class="supply-col">
+        <div class="supply-title">Fournisseurs</div>
+        <div class="supply-body">
+          <div>8 européens<br><strong>1–2 semaines</strong></div>
+          <div>17 asiatiques<br><strong>6–8 semaines</strong></div>
+          <div>Acier · Aluminium<br>Vis · Écrous</div>
+        </div>
+      </div>
+      <div class="flow-arrow">→<span>routier<br>maritime<br>aérien</span></div>
+      <div class="supply-col">
+        <div class="supply-title">MécaPlus</div>
+        <div class="supply-body">
+          <div><strong>PLAN</strong> · S&amp;OP / MRP</div>
+          <div><strong>SOURCE</strong> · Achats / réception</div>
+          <div><strong>MAKE</strong> · P1 → P2 → P3 → P4</div>
+          <div><strong>DELIVER</strong> · Stock / expédition</div>
+          <div><strong>RETURN</strong> · Retours / non-conformités</div>
+        </div>
+      </div>
+      <div class="flow-arrow">→<span>3<br>transporteurs</span></div>
+      <div class="supply-col">
+        <div class="supply-title">Clients</div>
+        <div class="supply-body">
+          <div>45 clients industriels</div>
+          <div>3 grands comptes<br><strong>60 % du CA</strong></div>
+          <div>Commandes · prévisions<br>réclamations · paiements</div>
+        </div>
+      </div>
+    </div>
+
+    <h3>Les trois familles de flux</h3>
+    <table>
+      <thead><tr><th>Flux</th><th>Sens principal</th><th>Contenu</th><th>Pilotage</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>Physiques</strong></td><td>Fournisseurs → MécaPlus → Clients</td>
+          <td>Matières, composants, en-cours, produits finis ; retours en sens inverse</td>
+          <td>MRP, stocks, transport, traçabilité</td>
+        </tr>
+        <tr>
+          <td><strong>Informationnels</strong></td><td>Bidirectionnel</td>
+          <td>Prévisions, commandes, confirmations, ASN, qualité, plans de livraison</td>
+          <td>ERP, EDI, S&amp;OP, tableaux de bord</td>
+        </tr>
+        <tr>
+          <td><strong>Financiers</strong></td><td>Clients → MécaPlus → Fournisseurs</td>
+          <td>Factures, paiements, crédits, taxes, assurances ; avoirs en retour</td>
+          <td>Trésorerie, conditions de paiement, coût complet</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout">
+      <strong>Lecture SCOR.</strong> MécaPlus doit relier les décisions de planification
+      (<em>Plan</em>) aux achats (<em>Source</em>), à la capacité du goulot (<em>Make</em>), aux
+      promesses client (<em>Deliver</em>) et aux boucles de retour (<em>Return</em>). La visibilité
+      de bout en bout est le lien entre ces processus.
+    </div>
+    <div class="page-number">11</div>
+  </section>
+
+  <section class="page">
+    <div class="page-kicker"><span>Partie 3 · Question 1</span><span>Cartographie des risques</span></div>
+    <span class="section-tag">Matrice 3 × 3</span>
+    <h2>Probabilité × impact</h2>
+
+    <div class="risk-matrix">
+      <div></div>
+      <div class="risk-axis">Impact faible</div>
+      <div class="risk-axis">Impact moyen</div>
+      <div class="risk-axis">Impact fort</div>
+
+      <div class="risk-axis">Probabilité<br>forte</div>
+      <div class="risk-cell mid"><strong>Surstock local</strong>Mauvais paramètres et lente rotation.</div>
+      <div class="risk-cell high"><strong>Pannes machines</strong>1,5/semaine, arrêt moyen 2 h.<br><strong>Mouvements inutiles</strong>12 % du temps.</div>
+      <div class="risk-cell critical"><strong>Retards Asie / maritime</strong>6–8 semaines.<br><strong>Défauts qualité</strong>15 % de rejets.</div>
+
+      <div class="risk-axis">Probabilité<br>moyenne</div>
+      <div class="risk-cell low"><strong>Erreur documentaire</strong>Retard administratif isolé.</div>
+      <div class="risk-cell mid"><strong>Capacité transport</strong>Disponibilité des 3 transporteurs.<br><strong>Inflation énergie</strong>Coûts logistiques.</div>
+      <div class="risk-cell high"><strong>Concentration clients</strong>3 comptes = 60 % CA.<br><strong>Prix / change matières</strong>Exposition internationale.</div>
+
+      <div class="risk-axis">Probabilité<br>faible</div>
+      <div class="risk-cell low"><strong>Incident mineur</strong>Sans arrêt de flux.</div>
+      <div class="risk-cell low"><strong>Défaillance fournisseur UE</strong>Délai plus court, substitution possible.</div>
+      <div class="risk-cell high"><strong>Cyberattaque / perte ERP</strong>Faible fréquence, impact transversal fort.</div>
+    </div>
+
+    <h3>Priorités de traitement</h3>
+    <table>
+      <thead><tr><th>Priorité</th><th>Risque</th><th>Réponse immédiate</th><th>KPI de surveillance</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><span class="priority">1</span></td><td>Retards fournisseurs asiatiques</td>
+          <td>Double source UE, suivi OTIF fournisseur, couverture différenciée</td><td>OTIF fournisseur, jours de couverture</td>
+        </tr>
+        <tr>
+          <td><span class="priority">2</span></td><td>Défauts qualité (15 %)</td>
+          <td>Pareto défauts, 8D, contrôle au poste, audits processus</td><td>PPM, FPY, coût de non-qualité</td>
+        </tr>
+        <tr>
+          <td><span class="priority">3</span></td><td>Pannes au goulot P2</td>
+          <td>TPM, préventif, stock de pièces critiques, suivi MTBF/MTTR</td><td>Disponibilité, MTBF, MTTR, OEE</td>
+        </tr>
+        <tr>
+          <td><span class="priority">4</span></td><td>Concentration grands comptes</td>
+          <td>Prévisions collaboratives, contrats-cadres, diversification commerciale</td><td>Erreur prévision, part top 3</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout amber">
+      La matrice est qualitative. Une étape de maturité supérieure consiste à noter chaque risque de
+      1 à 3 en probabilité et impact, affecter un propriétaire, fixer une date de mitigation et suivre
+      le risque résiduel après action.
+    </div>
+    <div class="page-number">12</div>
+  </section>
+
+  <section class="page">
+    <div class="page-kicker"><span>Partie 3</span><span>Supply chain et performance</span></div>
+    <span class="section-tag">Question 2</span>
+    <h2>Calcul et interprétation de l’OEE</h2>
+
+    <h3>Calcul des trois composantes</h3>
+    <table>
+      <thead><tr><th>Facteur</th><th>Calcul</th><th class="num">Valeur</th><th>Perte observée</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>Disponibilité</strong></td>
+          <td>(480 − 45 − 35) ÷ 480 = 400 ÷ 480</td><td class="num"><strong>83,33 %</strong></td>
+          <td>80 min de pannes et changements</td>
+        </tr>
+        <tr>
+          <td><strong>Performance</strong></td>
+          <td>72 pièces réelles ÷ 80 théoriques</td><td class="num"><strong>90,00 %</strong></td>
+          <td>8 pièces de perte de vitesse</td>
+        </tr>
+        <tr>
+          <td><strong>Qualité</strong></td>
+          <td>68 pièces bonnes ÷ 72 produites</td><td class="num"><strong>94,44 %</strong></td>
+          <td>4 pièces non conformes</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="oee-chain">
+      <div class="oee-box"><span class="oee-value">83,33 %</span>Disponibilité</div>
+      <div class="times">×</div>
+      <div class="oee-box"><span class="oee-value">90,00 %</span>Performance</div>
+      <div class="times">×</div>
+      <div class="oee-box"><span class="oee-value">94,44 %</span>Qualité</div>
+      <div class="times">=</div>
+      <div class="oee-box final"><span class="oee-value">70,83 %</span>OEE calculé</div>
+    </div>
+
+    <div class="callout red">
+      <strong>Interprétation.</strong> Sur 100 unités de capacité théorique, seulement 70,8 deviennent
+      des pièces bonnes au rythme attendu. Le résultat ponctuel est légèrement supérieur à la valeur
+      actuelle du tableau (68 %), mais reste <strong>14,17 points</strong> sous l’objectif de 85 %.
+    </div>
+
+    <h3>Trois actions prioritaires</h3>
+    <table>
+      <thead><tr><th>Levier</th><th>Action</th><th>Cible opérationnelle</th><th>Effet OEE</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>Disponibilité</strong></td><td>TPM sur P2, préventif selon criticité, maintenance autonome</td>
+          <td>Pannes 45 → 20 min</td><td>Réduit les arrêts non planifiés</td>
+        </tr>
+        <tr>
+          <td><strong>Changements</strong></td><td>Chantier SMED : préparer outils hors machine, standardiser réglages</td>
+          <td>35 → 15 min</td><td>Récupère 20 min productives</td>
+        </tr>
+        <tr>
+          <td><strong>Qualité</strong></td><td>Pareto, SPC, poka-yoke et validation première pièce</td>
+          <td>Qualité ≥ 99 %</td><td>Réduit rebut et retouche</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="formula">
+      Scénario cible : disponibilité 92 % × performance 94 % × qualité 99 %<br>
+      OEE potentiel = <strong>85,6 %</strong> → objectif de 85 % atteint
+    </div>
+    <div class="page-number">13</div>
+  </section>
+
+  <section class="page">
+    <div class="page-kicker"><span>Partie 3 · Question 2</span><span>Tableau de bord</span></div>
+    <span class="section-tag">Performance</span>
+    <h2>Écarts aux objectifs et plan OTIF</h2>
+
+    <table>
+      <thead><tr><th>Indicateur</th><th class="num">Actuel</th><th class="num">Objectif</th><th class="num">Écart</th><th>Lecture</th></tr></thead>
+      <tbody>
+        <tr><td>OTIF</td><td class="num">88 %</td><td class="num">95 %</td><td class="num">−7 pts</td><td>12 commandes sur 100 non conformes en date ou quantité</td></tr>
+        <tr><td>Taux de service</td><td class="num">92 %</td><td class="num">98 %</td><td class="num">−6 pts</td><td>Ruptures ou livraisons partielles</td></tr>
+        <tr><td>Rotation des stocks</td><td class="num">3,5×</td><td class="num">5×</td><td class="num">−1,5×</td><td>Environ 104 jours de stock contre une cible de 73 jours</td></tr>
+        <tr><td>OEE</td><td class="num">68 %</td><td class="num">85 %</td><td class="num">−17 pts</td><td>Capacité, vitesse et qualité insuffisantes</td></tr>
+        <tr><td>Délai moyen</td><td class="num">12 j</td><td class="num">7 j</td><td class="num">+5 j</td><td>Réduction requise de 41,7 %</td></tr>
+        <tr><td>Coût logistique / CA</td><td class="num">18 %</td><td class="num">12 %</td><td class="num">+6 pts</td><td>1,53 M€ actuellement contre 1,02 M€ à CA constant</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Plan d’amélioration de l’OTIF : 88 % → 95 %</h3>
+    <div class="grid-2">
+      <div class="card">
+        <h4>1. Mesurer la vraie cause</h4>
+        <p>Coder chaque échec : matière, panne, capacité, qualité, transport, promesse commerciale. Pareto hebdomadaire par client et référence.</p>
+      </div>
+      <div class="card">
+        <h4>2. Promettre sur capacité réelle</h4>
+        <p>ATP/CTP tenant compte des 300 pièces/semaine du goulot, calendrier gelé et arbitrage S&amp;OP des priorités.</p>
+      </div>
+      <div class="card">
+        <h4>3. Fiabiliser l’amont</h4>
+        <p>OTIF fournisseur, visibilité 8 semaines, double source des A, stock de sécurité dynamique pour les délais asiatiques.</p>
+      </div>
+      <div class="card">
+        <h4>4. Sécuriser l’exécution</h4>
+        <p>TPM P2, contrôle en cours de procédé, créneau transport réservé et alerte 48 h avant tout risque de retard.</p>
+      </div>
+    </div>
+
+    <h3>Boucle de pilotage</h3>
+    <div class="timeline">
+      <div class="phase">
+        <div class="phase-title">Chaque jour</div>
+        Top 10 commandes à risque, panne, manque matière, plan de rattrapage.
+      </div>
+      <div class="phase">
+        <div class="phase-title">Chaque semaine</div>
+        Pareto OTIF, adhérence au planning, capacité P2, performance fournisseurs.
+      </div>
+      <div class="phase">
+        <div class="phase-title">Chaque mois</div>
+        S&amp;OP, paramètres de stock, charge/capacité, portefeuille de risques.
+      </div>
+    </div>
+
+    <div class="callout green">
+      À chiffre d’affaires constant de 8,5 M€, passer le coût logistique de 18 % à 12 % représente un
+      potentiel brut de <strong>510 000 € par an</strong>. Ce montant est une enveloppe d’écart, pas une
+      économie garantie : les coûts de mise en œuvre doivent être déduits.
+    </div>
+    <div class="page-number">14</div>
+  </section>
+
+  <section class="page">
+    <div class="page-kicker"><span>Partie 3</span><span>Supply chain et performance</span></div>
+    <span class="section-tag">Question 3</span>
+    <h2>Les 7 gaspillages Lean</h2>
+
+    <table>
+      <thead><tr><th>Rang</th><th>Gaspillage</th><th>Manifestation chez MécaPlus</th><th>Pourquoi cette priorité</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><span class="priority">1</span></td><td><strong>Défauts</strong></td>
+          <td>15 % des pièces rejetées au contrôle</td><td>Perte de matière, capacité et délai ; impact client direct</td>
+        </tr>
+        <tr>
+          <td><span class="priority">2</span></td><td><strong>Attentes</strong></td>
+          <td>1,5 panne/semaine × 2 h = 3 h d’arrêt/semaine</td><td>Très critique si le goulot P2 est touché</td>
+        </tr>
+        <tr>
+          <td><span class="priority">3</span></td><td><strong>Stocks</strong></td>
+          <td>800 pièces d’en-cours + 2 500 produits finis</td><td>Cash immobilisé, surface, masquage des problèmes</td>
+        </tr>
+        <tr>
+          <td><span class="priority">4</span></td><td><strong>Surproduction</strong></td>
+          <td>2 500 produits finis invendus</td><td>Production déconnectée de la demande réelle</td>
+        </tr>
+        <tr>
+          <td><span class="priority">5</span></td><td><strong>Mouvements</strong></td>
+          <td>12 % du temps à rechercher les outils</td><td>Perte récurrente, résolution rapide par 5S</td>
+        </tr>
+        <tr>
+          <td><span class="priority">6</span></td><td><strong>Transports</strong></td>
+          <td>En-cours déplacés entre quatre postes fonctionnels</td><td>À confirmer par diagramme spaghetti</td>
+        </tr>
+        <tr>
+          <td><span class="priority">7</span></td><td><strong>Surtraitement</strong></td>
+          <td>Contrôle final pouvant répéter des vérifications tardives</td><td>Hypothèse à confirmer par VSM et audit des contrôles</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout amber">
+      Les cinq premiers gaspillages sont directement chiffrés ou explicitement observés. Le transport
+      et le surtraitement sont des hypothèses de diagnostic, plausibles dans un atelier fonctionnel,
+      mais doivent être vérifiés sur le terrain avant investissement.
+    </div>
+
+    <h3>Impact quantifié disponible</h3>
+    <div class="grid-3">
+      <div class="card metric">
+        <div class="metric-number">15 %</div><div class="metric-label">Rejets qualité</div>
+      </div>
+      <div class="card metric">
+        <div class="metric-number">12 %</div><div class="metric-label">Temps de recherche</div>
+      </div>
+      <div class="card metric">
+        <div class="metric-number">3 300</div><div class="metric-label">Pièces en stock/en-cours</div>
+      </div>
+    </div>
+
+    <p style="margin-top:5mm;">
+      Le classement combine impact sur le client, capacité du goulot, trésorerie et facilité d’action.
+      La qualité vient en premier : un défaut consomme inutilement les quatre postes et peut imposer
+      retouche, rebut ou retard. La panne arrive ensuite car elle réduit directement le débit disponible.
+    </p>
+    <div class="page-number">15</div>
+  </section>
+
+  <section class="page">
+    <div class="page-kicker"><span>Partie 3 · Question 3</span><span>Plan Lean</span></div>
+    <span class="section-tag">Amélioration continue</span>
+    <h2>Plan d’élimination des gaspillages</h2>
+
+    <table class="tiny">
+      <thead><tr><th>Gaspillage</th><th>Outils Lean</th><th>Actions concrètes</th><th>Cible proposée</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>Défauts</strong></td>
+          <td>Pareto, 5 pourquoi, Ishikawa, SPC, poka-yoke</td>
+          <td>Analyser les 3 défauts majeurs, qualité au poste, validation première pièce</td>
+          <td>15 % → &lt; 5 %, puis &lt; 2 %</td>
+        </tr>
+        <tr>
+          <td><strong>Attentes / pannes</strong></td>
+          <td>TPM, maintenance autonome, Andon</td>
+          <td>Criticité P2, check-list quotidienne, pièces de rechange, mesure MTBF/MTTR</td>
+          <td>1,5 → 0,5 panne/sem. ; MTTR 2 h → 1 h</td>
+        </tr>
+        <tr>
+          <td><strong>Stocks</strong></td>
+          <td>VSM, Kanban, FIFO, flux pièce à pièce</td>
+          <td>Limiter chaque buffer, couloir FIFO, calculer cartes Kanban</td>
+          <td>En-cours 800 → 300 pièces</td>
+        </tr>
+        <tr>
+          <td><strong>Surproduction</strong></td>
+          <td>Pull, heijunka, S&amp;OP</td>
+          <td>Produire sur signal client, geler un horizon court, revoir les obsolètes</td>
+          <td>Finis 2 500 → 1 000 pièces</td>
+        </tr>
+        <tr>
+          <td><strong>Mouvements</strong></td>
+          <td>5S, management visuel, standard work</td>
+          <td>Panneaux silhouettes, emplacement au point d’usage, audit 5S</td>
+          <td>Recherche 12 % → &lt; 3 %</td>
+        </tr>
+        <tr>
+          <td><strong>Transports</strong></td>
+          <td>Diagramme spaghetti, implantation cellulaire</td>
+          <td>Mesurer les mètres/pièce, rapprocher P1–P4, standardiser contenants</td>
+          <td>Distance interne −30 %</td>
+        </tr>
+        <tr>
+          <td><strong>Surtraitement</strong></td>
+          <td>VSM, AMDEC processus, qualité à la source</td>
+          <td>Supprimer contrôles redondants après démonstration de capabilité</td>
+          <td>Temps de contrôle sans valeur −25 %</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Séquence de déploiement</h3>
+    <div class="timeline">
+      <div class="phase">
+        <div class="phase-title">0–30 jours · Rendre visible</div>
+        <p>VSM, Pareto défauts, marquage 5S, OEE quotidien sur P2, photographie des stocks.</p>
+      </div>
+      <div class="phase">
+        <div class="phase-title">31–90 jours · Stabiliser</div>
+        <p>TPM, standards, poka-yoke, SMED, FIFO et Kanban pilote entre P1 et P2.</p>
+      </div>
+      <div class="phase">
+        <div class="phase-title">Après 90 jours · Pérenniser</div>
+        <p>Flux tiré étendu, heijunka, audits, rituels SQCDP et nouveaux chantiers kaizen.</p>
+      </div>
+    </div>
+
+    <h3>Gouvernance recommandée</h3>
+    <ul>
+      <li><strong>Quotidien :</strong> point SQCDP de 10 minutes au tableau de l’atelier.</li>
+      <li><strong>Hebdomadaire :</strong> revue OEE, rebut, incidents et actions A3.</li>
+      <li><strong>Mensuel :</strong> comité direction sur OTIF, stocks, coût et gains validés.</li>
+      <li><strong>Responsable :</strong> un propriétaire et une échéance pour chaque action.</li>
+    </ul>
+
+    <div class="callout green">
+      Le premier objectif n’est pas de « faire du Lean », mais de libérer du débit au goulot, livrer
+      plus juste et réduire le cash immobilisé. Chaque chantier doit donc être relié à un KPI avant/après.
+    </div>
+    <div class="page-number">16</div>
+  </section>
+
+  <section class="page">
+    <div class="page-kicker"><span>Partie 3</span><span>Supply chain et performance</span></div>
+    <span class="section-tag">Question 4</span>
+    <h2>Supply chain durable</h2>
+
+    <p class="lead">
+      En l’absence de données de tonnage, kilomètres et modes actuels, les impacts ci-dessous sont des
+      objectifs de cadrage. Ils devront être validés par un bilan carbone selon la méthode
+      <em>activité × facteur d’émission</em>.
+    </p>
+
+    <table>
+      <thead><tr><th>Action</th><th>Mise en œuvre</th><th>Impact cible estimé</th><th>KPI</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>1. Repenser les approvisionnements lointains</strong></td>
+          <td>Relocaliser 20 % des volumes asiatiques critiques vers l’Europe ; privilégier mer/rail à l’aérien ; consolider les conteneurs.</td>
+          <td>−15 à −30 % d’émissions du transport amont ; délai de 6–8 à 1–2 semaines sur les flux relocalisés ; moins d’urgences.</td>
+          <td>kgCO₂e/t.km, % aérien, taux de remplissage, délai</td>
+        </tr>
+        <tr>
+          <td><strong>2. Mutualiser transport et livraisons</strong></td>
+          <td>Milk-runs fournisseurs, groupage clients par zone, TMS, remplissage cible de 85 %, éco-conduite.</td>
+          <td>−15 à −20 % de trajets ; −10 à −15 % d’émissions et de coût de transport.</td>
+          <td>km/expédition, remplissage, €/pièce, CO₂e/commande</td>
+        </tr>
+        <tr>
+          <td><strong>3. Boucler emballages et verdir l’entrepôt</strong></td>
+          <td>Bacs réutilisables, reprise client, standardisation ; LED, détection, arrêt des équipements et engins électriques.</td>
+          <td>−50 % de déchets d’emballage ; −20 à −30 % d’électricité d’entrepôt ; −3 à −7 % de coût logistique concerné.</td>
+          <td>kg déchets/1 000 pièces, kWh/m², taux de réemploi</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Conditions pour éviter les effets rebond</h3>
+    <div class="grid-2">
+      <div class="card">
+        <h4>Mesurer le cycle complet</h4>
+        <p>Comparer CO₂, coût, délai et risque. Une source européenne peut être plus chère à l’achat mais meilleure en coût total.</p>
+      </div>
+      <div class="card">
+        <h4>Ne pas multiplier les petits trajets</h4>
+        <p>Le JAT doit être couplé au groupage ; sinon la fréquence de livraison peut annuler le gain de stock.</p>
+      </div>
+      <div class="card">
+        <h4>Contractualiser les données</h4>
+        <p>Demander aux transporteurs distance, mode, masse, remplissage et facteur d’émission vérifiable.</p>
+      </div>
+      <div class="card">
+        <h4>Piloter en coût total</h4>
+        <p>Inclure stock, qualité, urgence aérienne, douane, obsolescence et risque de rupture.</p>
+      </div>
+    </div>
+
+    <div class="callout green">
+      <strong>Cible consolidée prudente :</strong> réduire de 20 % les émissions logistiques par pièce
+      et de 10 % le coût de transport sur le périmètre pilote, sans dégrader l’OTIF. La validation exige
+      une année de référence et des données d’activité traçables.
+    </div>
+    <div class="page-number">17</div>
+  </section>
+
+  <section class="page">
+    <div class="page-kicker"><span>Conclusion</span><span>Note au dirigeant</span></div>
+    <span class="section-tag">Synthèse exécutive</span>
+    <h2>Faire du goulot le point de départ de la transformation</h2>
+
+    <div class="executive">
+      <p><strong>À l’attention de la Direction de MécaPlus</strong></p>
+      <p>
+        MécaPlus dispose d’atouts solides : une base de 45 clients, une offre diversifiée de 350
+        références, un réseau de 25 fournisseurs et une maîtrise interne des opérations de découpe,
+        usinage, perçage et contrôle. Les fournisseurs européens offrent en outre un levier de proximité
+        pour sécuriser les composants critiques.
+      </p>
+      <p>
+        Le diagnostic révèle cependant un déséquilibre majeur. Le poste d’usinage P2 limite la ligne à
+        60 pièces/jour, soit 300/semaine, alors que le carnet demande 400 à 520 pièces. Le déficit du
+        mois atteint 650 pièces. Cette contrainte est aggravée par 15 % de rejets, 3 heures de panne par
+        semaine, 800 pièces d’en-cours et 2 500 produits finis invendus. Les délais de 6 à 8 semaines
+        auprès de 17 fournisseurs asiatiques et la concentration de 60 % du chiffre d’affaires sur trois
+        clients augmentent encore l’exposition. Les résultats le confirment : OTIF à 88 %, OEE autour de
+        68–71 %, délai moyen de 12 jours et coût logistique égal à 18 % du CA.
+      </p>
+      <p>
+        <strong>Trois priorités sont recommandées.</strong> Premièrement, sécuriser le débit : renforcer
+        temporairement P2 de 86 h 40 sur le mois, lancer TPM et SMED, puis réduire son cycle de 8 à
+        6 minutes afin d’atteindre 80 pièces/jour. Deuxièmement, restaurer la qualité et le flux :
+        Pareto des défauts, poka-yoke, 5S, Kanban pilote et plafonnement des en-cours. Troisièmement,
+        fiabiliser la supply chain : S&amp;OP fondé sur la capacité réelle, ABC, double sourcing européen
+        des articles A, OTIF fournisseur et transport consolidé.
+      </p>
+      <p>
+        Les impacts attendus sont un OEE supérieur à 85 % dans un scénario combinant 92 % de
+        disponibilité, 94 % de performance et 99 % de qualité ; un OTIF de 95 % ; une réduction du
+        délai vers 7 jours ; et une rotation portée de 3,5 à 5 fois/an. L’écart entre le coût logistique
+        actuel et la cible représente jusqu’à 510 k€ par an à chiffre d’affaires constant, avant coûts
+        de transformation. Sur l’environnement, une baisse de 20 % des émissions logistiques par pièce
+        constitue une première cible mesurable.
+      </p>
+      <p>
+        La mise en œuvre doit rester progressive : stabiliser les processus avant de réduire les stocks,
+        tester les solutions sur une famille de produits, puis étendre seulement après preuve par les KPI.
+        Un rituel quotidien SQCDP, une revue hebdomadaire OTIF/OEE et un S&amp;OP mensuel permettront de
+        tenir les gains.
+      </p>
+      <div class="signature">
+        <span>Jorf Moaad</span>
+        <span>Projet Gestion de Production & Supply Chain Management</span>
+      </div>
+    </div>
+
+    <div class="grid-3" style="margin-top:6mm;">
+      <div class="card metric"><div class="metric-number">+33,3 %</div><div class="metric-label">Débit avec P2 à 6 min</div></div>
+      <div class="card metric"><div class="metric-number">95 %</div><div class="metric-label">Cible OTIF</div></div>
+      <div class="card metric"><div class="metric-number">−20 %</div><div class="metric-label">Cible CO₂e / pièce</div></div>
+    </div>
+    <div class="page-number">18</div>
+  </section>
+</body>
+</html>
