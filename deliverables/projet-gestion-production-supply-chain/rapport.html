@@ -90,6 +90,39 @@
       page-break-after: auto;
     }
 
+    .page.compact {
+      font-size: 9.3pt;
+      line-height: 1.32;
+    }
+
+    .page.compact h2 { margin-bottom: 3mm; }
+    .page.compact h3 { margin: 3.5mm 0 2mm; }
+    .page.compact p { margin-bottom: 2mm; }
+    .page.compact .card { padding: 3mm; }
+    .page.compact .metric { padding: 3mm 2mm; }
+    .page.compact table { margin: 2mm 0 3mm; font-size: 8.2pt; }
+    .page.compact th, .page.compact td { padding: 1.7mm 2mm; }
+    .page.compact .callout { padding: 3mm 4mm; margin: 2.5mm 0; }
+
+    .page.tight {
+      font-size: 8.6pt;
+      line-height: 1.23;
+    }
+
+    .page.tight h2 { margin-bottom: 2.5mm; }
+    .page.tight h3 { margin: 2.8mm 0 1.5mm; }
+    .page.tight p { margin-bottom: 1.5mm; }
+    .page.tight ul { margin: 1mm 0 1.5mm; padding-left: 4.5mm; }
+    .page.tight li { margin-bottom: 0.6mm; }
+    .page.tight .grid-2 { gap: 2.5mm; }
+    .page.tight .card { padding: 2.4mm 3mm; }
+    .page.tight table { margin: 1.5mm 0 2.5mm; font-size: 7.7pt; }
+    .page.tight th, .page.tight td { padding: 1.35mm 1.7mm; }
+    .page.tight .timeline { gap: 2mm; margin: 2mm 0; }
+    .page.tight .phase { padding: 2mm; }
+    .page.tight .phase-title { margin-bottom: 1mm; }
+    .page.tight .callout { padding: 2.7mm 4mm; margin: 2mm 0; }
+
     .cover {
       min-height: 267mm;
       display: flex;
@@ -740,7 +773,7 @@
         <tr>
           <td>Temps disponible</td>
           <td>480 min/jour, 5 jours/semaine</td>
-          <td>L’énoncé précise un fonctionnement de 8 h par jour.</td>
+          <td>La question précise 8 h/jour. La fiche générale mentionne 2 équipes, mais cette donnée contradictoire n’est pas retenue pour le calcul demandé.</td>
         </tr>
         <tr>
           <td>Capacité</td>
@@ -867,7 +900,7 @@
     <div class="page-number">03</div>
   </section>
 
-  <section class="page">
+  <section class="page compact">
     <div class="page-kicker"><span>Partie 1</span><span>Analyse de la production</span></div>
     <span class="section-tag">Question 2</span>
     <h2>Planification de la production</h2>
@@ -913,6 +946,9 @@
       </tbody>
     </table>
     <p>
+      En S2, les 29 h 20 supplémentaires représentent 5 h 52 par jour : il faut donc une
+      <strong>plage temporaire de deuxième équipe</strong>, avec opérateur et maintenance disponibles,
+      et non imposer cette durée en heures supplémentaires individuelles.
       P1 peut fournir jusqu’à 480 pièces/semaine ; seule S2 dépasse cette limite. Il faut donc ajouter
       <strong>40 découpes × 5 min = 3 h 20</strong> à P1 en S2. P3 et P4 disposent déjà d’une capacité
       suffisante. Cette solution couvre les 1 850 pièces sans surinvestissement permanent.
@@ -931,7 +967,8 @@
         <h4>Contrôle interne maintenu</h4>
         <p>
           Conserver le contrôle P4 chez MécaPlus, contractualiser délai et capabilité, et ajouter
-          <strong>3 h 20</strong> de découpe P1 en S2 si les pièces sont fournies découpées.
+          <strong>3 h 20</strong> de découpe P1 en S2 si la découpe reste interne. Aucun renfort P1
+          n’est requis si le sous-traitant fournit un lot déjà découpé.
         </p>
       </div>
     </div>
@@ -1024,7 +1061,7 @@
     <div class="page-number">05</div>
   </section>
 
-  <section class="page">
+  <section class="page compact">
     <div class="page-kicker"><span>Partie 1</span><span>Analyse de la production</span></div>
     <span class="section-tag">Question 4</span>
     <h2>Temps de cycle et amélioration</h2>
@@ -1287,7 +1324,7 @@
     <div class="page-number">09</div>
   </section>
 
-  <section class="page">
+  <section class="page tight">
     <div class="page-kicker"><span>Partie 2</span><span>Logistique et gestion des stocks</span></div>
     <span class="section-tag">Question 4</span>
     <h2>Transition vers le Juste-à-Temps</h2>
@@ -1518,6 +1555,8 @@
       <strong>Interprétation.</strong> Sur 100 unités de capacité théorique, seulement 70,8 deviennent
       des pièces bonnes au rythme attendu. Le résultat ponctuel est légèrement supérieur à la valeur
       actuelle du tableau (68 %), mais reste <strong>14,17 points</strong> sous l’objectif de 85 %.
+      Le calcul suppose que les 80 pièces théoriques correspondent aux 400 minutes de fonctionnement ;
+      sinon, multiplier encore par la disponibilité compterait deux fois les arrêts.
     </div>
 
     <h3>Trois actions prioritaires</h3>
@@ -1845,7 +1884,8 @@
       <p>
         <strong>Trois priorités sont recommandées.</strong> Premièrement, sécuriser le débit : renforcer
         temporairement P2 de 86 h 40 sur le mois, lancer TPM et SMED, puis réduire son cycle de 8 à
-        6 minutes afin d’atteindre 80 pièces/jour. Deuxièmement, restaurer la qualité et le flux :
+        6 minutes afin d’atteindre 80 pièces/jour. Cette amélioration réduit le déficit, mais laisse encore
+        250 pièces manquantes sur S1 à S3. Deuxièmement, restaurer la qualité et le flux :
         Pareto des défauts, poka-yoke, 5S, Kanban pilote et plafonnement des en-cours. Troisièmement,
         fiabiliser la supply chain : S&amp;OP fondé sur la capacité réelle, ABC, double sourcing européen
         des articles A, OTIF fournisseur et transport consolidé.

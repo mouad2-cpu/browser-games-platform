@@ -5,7 +5,9 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SOURCE="${SCRIPT_DIR}/rapport.html"
 OUTPUT="${1:-${SCRIPT_DIR}/Jorf_Moaad_Projet_Gestion_Production_Supply_Chain.pdf}"
 
-if command -v chromium >/dev/null 2>&1; then
+if [[ -x /opt/google/chrome/chrome ]]; then
+  BROWSER="/opt/google/chrome/chrome"
+elif command -v chromium >/dev/null 2>&1; then
   BROWSER="chromium"
 elif command -v chromium-browser >/dev/null 2>&1; then
   BROWSER="chromium-browser"
