@@ -667,6 +667,358 @@
       font-size: 8pt;
     }
 
+    /* Mise en page volontairement proche du sujet fourni */
+    :root {
+      --navy: #1f4e79;
+      --navy-2: #1f4e79;
+      --teal: #1f4e79;
+      --teal-light: #edf3f8;
+      --amber: #1f4e79;
+      --amber-light: #f5f7f9;
+      --red: #555;
+      --red-light: #f5f5f5;
+      --green: #1f4e79;
+      --green-light: #edf3f8;
+      --ink: #111;
+      --muted: #333;
+      --line: #9fb5c8;
+      --soft: #f5f7f9;
+    }
+
+    html {
+      background: white;
+      color: #111;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 8.6pt;
+      line-height: 1.34;
+    }
+
+    body { max-width: 210mm; }
+
+    .page,
+    .page.compact,
+    .page.tight {
+      min-height: 267mm;
+      font-size: 8.6pt;
+      line-height: 1.34;
+    }
+
+    .page::after {
+      content: "Pr. ANAYA ASMA";
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      color: #222;
+      font-size: 6.3pt;
+    }
+
+    h1 {
+      color: #1f4e79;
+      font-size: 14pt;
+      letter-spacing: 0;
+      margin-bottom: 4mm;
+    }
+
+    h2,
+    .page.compact h2,
+    .page.tight h2 {
+      color: #1f4e79;
+      font-size: 10pt;
+      border-bottom: 0.5pt solid #1f4e79;
+      padding-bottom: 1.2mm;
+      margin: 0 0 3mm;
+    }
+
+    h3,
+    .page.compact h3,
+    .page.tight h3 {
+      color: #111;
+      font-size: 8.8pt;
+      margin: 4mm 0 1.5mm;
+    }
+
+    h4 {
+      color: #111;
+      font-size: 8pt;
+      letter-spacing: 0;
+      text-transform: none;
+      margin: 2mm 0 1mm;
+    }
+
+    p,
+    .page.compact p,
+    .page.tight p { margin-bottom: 2.2mm; }
+
+    ul, ol,
+    .page.tight ul {
+      margin: 1mm 0 2.5mm;
+      padding-left: 5mm;
+    }
+
+    li,
+    .page.tight li { margin-bottom: 0.7mm; }
+
+    strong { color: inherit; }
+
+    .page-kicker {
+      display: flex;
+      justify-content: flex-start;
+      gap: 1mm;
+      color: #1f4e79;
+      font-size: 8.4pt;
+      font-weight: 700;
+      letter-spacing: 0;
+      text-transform: uppercase;
+      border-bottom: 0.6pt solid #1f4e79;
+      margin-bottom: 4mm;
+      padding-bottom: 1.2mm;
+    }
+
+    .page-kicker span:first-child::after { content: " :"; }
+
+    .section-tag {
+      display: inline;
+      background: none;
+      color: #1f4e79;
+      border-radius: 0;
+      font-size: 8.5pt;
+      font-weight: 700;
+      letter-spacing: 0;
+      text-transform: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .section-tag::after { content: " :"; }
+
+    .section-tag + h2 {
+      display: inline;
+      color: #1f4e79;
+      font-size: 8.5pt;
+      border: 0;
+      padding: 0;
+      margin: 0;
+    }
+
+    .section-tag + h2::after {
+      content: "";
+      display: block;
+      margin-bottom: 3mm;
+    }
+
+    .lead {
+      color: #111;
+      font-size: 8.6pt;
+      line-height: 1.34;
+    }
+
+    table,
+    .page.compact table,
+    .page.tight table {
+      font-size: 7.7pt;
+      margin: 2mm 0 4mm;
+      border: 0.5pt solid #9fb5c8;
+    }
+
+    th,
+    .page.compact th,
+    .page.compact td,
+    .page.tight th,
+    .page.tight td {
+      background: #dce6f1;
+      color: #111;
+      border: 0.5pt solid #9fb5c8;
+      padding: 1.5mm 1.8mm;
+    }
+
+    td {
+      border: 0.5pt solid #9fb5c8;
+      padding: 1.5mm 1.8mm;
+    }
+
+    tbody tr:nth-child(even) td { background: #f7f9fb; }
+    tbody tr:nth-child(odd) td { background: white; }
+
+    .callout,
+    .callout.amber,
+    .callout.red,
+    .callout.green,
+    .page.compact .callout,
+    .page.tight .callout {
+      color: #111;
+      background: #f5f7f9;
+      border: 0.5pt solid #9fb5c8;
+      border-left: 2pt solid #1f4e79;
+      border-radius: 0;
+      padding: 2.5mm 3mm;
+      margin: 3mm 0;
+    }
+
+    .formula {
+      color: #111;
+      background: #edf3f8;
+      border: 0.5pt solid #9fb5c8;
+      border-radius: 0;
+      font-family: "Courier New", monospace;
+      padding: 2.3mm 3mm;
+      margin: 2.5mm 0;
+    }
+
+    .formula strong { color: #111; }
+
+    .card,
+    .page.compact .card,
+    .page.tight .card {
+      color: #111;
+      background: white;
+      border: 0.5pt solid #9fb5c8;
+      border-radius: 0;
+      padding: 2.5mm;
+    }
+
+    .metric,
+    .page.compact .metric { padding: 2.5mm 1.5mm; }
+
+    .metric-number {
+      color: #1f4e79;
+      font-size: 16pt;
+    }
+
+    .metric-label {
+      color: #222;
+      font-size: 7pt;
+    }
+
+    .chart {
+      border: 0.5pt solid #9fb5c8;
+      border-radius: 0;
+      padding: 3mm;
+    }
+
+    .bar-track { background: #eef1f3; border-radius: 0; }
+    .bar-fill,
+    .bar-fill.bottleneck { background: #5b9bd5; }
+
+    .badge,
+    .badge.a,
+    .badge.b,
+    .badge.c,
+    .badge.high,
+    .badge.medium,
+    .badge.low {
+      min-width: auto;
+      padding: 0;
+      color: #1f4e79;
+      background: none;
+      font-size: 7.7pt;
+    }
+
+    .supply-col {
+      border: 0.5pt solid #9fb5c8;
+      border-radius: 0;
+    }
+
+    .supply-title {
+      color: #111;
+      background: #dce6f1;
+    }
+
+    .supply-body div { background: #f7f9fb; border-radius: 0; }
+    .flow-arrow { color: #1f4e79; }
+
+    .risk-cell { border-radius: 0; border: 0.5pt solid #bbb; }
+    .risk-cell.low { background: #f4f6f8; }
+    .risk-cell.mid { background: #e9eef3; }
+    .risk-cell.high { background: #dce6f1; }
+    .risk-cell.critical { background: #c8d8e8; }
+
+    .oee-box {
+      background: white;
+      border: 0.5pt solid #9fb5c8;
+      border-radius: 0;
+    }
+
+    .oee-box.final {
+      color: #111;
+      background: #dce6f1;
+    }
+
+    .oee-value,
+    .oee-box.final .oee-value { color: #1f4e79; }
+
+    .priority {
+      display: inline;
+      width: auto;
+      height: auto;
+      color: #1f4e79;
+      background: none;
+    }
+
+    .phase,
+    .page.tight .phase {
+      background: white;
+      border: 0.5pt solid #9fb5c8;
+      border-top: 1.5pt solid #1f4e79;
+      border-radius: 0;
+      padding: 2mm;
+    }
+
+    .phase:nth-child(2),
+    .phase:nth-child(3) { border-color: #1f4e79; }
+
+    .executive {
+      background: white;
+      border: 0.7pt solid #1f4e79;
+      border-radius: 0;
+      padding: 5mm;
+    }
+
+    .signature { color: #222; }
+
+    .page-number {
+      left: 50%;
+      right: auto;
+      bottom: 0;
+      color: #222;
+      font-size: 6.3pt;
+    }
+
+    .source-cover {
+      padding-top: 6mm;
+    }
+
+    .document-heading {
+      text-align: center;
+      margin-bottom: 7mm;
+    }
+
+    .document-type {
+      color: #1f4e79;
+      font-size: 10pt;
+      font-weight: 700;
+      margin-bottom: 1.5mm;
+    }
+
+    .document-title {
+      color: #111;
+      font-size: 13pt;
+      font-weight: 700;
+      margin-bottom: 1.5mm;
+    }
+
+    .document-subtitle {
+      color: #111;
+      font-size: 9.5pt;
+      font-weight: 700;
+    }
+
+    .student-meta {
+      width: 100%;
+      margin: 0 0 7mm;
+    }
+
+    .student-meta td:first-child { width: 37mm; }
+
     @media print {
       html, body { background: white; }
       body { max-width: none; }
@@ -675,96 +1027,63 @@
   </style>
 </head>
 <body>
-  <section class="page cover">
-    <div class="cover-top">
-      <div>
-        École Nationale des Sciences Appliquées<br>
-        Kénitra
-      </div>
-      <div class="cover-mark">SC</div>
+  <section class="page source-cover">
+    <div class="document-heading">
+      <div class="document-type">Projet</div>
+      <div class="document-title">Gestion de Production et Supply Chain Management</div>
+      <div class="document-subtitle">Étude de cas : Optimisation de la chaîne logistique d’une PME industrielle</div>
     </div>
 
-    <div class="cover-main">
-      <div class="eyebrow">Projet individuel · Étude de cas</div>
-      <h1>Gestion de Production<br>et Supply Chain Management</h1>
-      <div class="cover-subtitle">
-        Optimisation de la chaîne logistique d’une PME industrielle : le cas MécaPlus
-      </div>
+    <table class="student-meta">
+      <tbody>
+        <tr><td><strong>Réalisé par</strong></td><td>Jorf Moaad</td></tr>
+        <tr><td><strong>Filière</strong></td><td>Systèmes Automatisés et Intelligence Artificielle pour l’Industrie 4.0</td></tr>
+        <tr><td><strong>Encadré par</strong></td><td>Pr. Anaya Asma</td></tr>
+        <tr><td><strong>Année universitaire</strong></td><td>2026–2027</td></tr>
+      </tbody>
+    </table>
 
-      <div class="cover-chain" aria-label="Chaîne logistique">
-        <div class="cover-node">Fournisseurs</div>
-        <div class="cover-node">Approvisionner</div>
-        <div class="cover-node">Produire</div>
-        <div class="cover-node">Distribuer</div>
-        <div class="cover-node">Clients</div>
-      </div>
+    <h2>Présentation du contexte</h2>
+    <p>
+      MécaPlus est une PME familiale spécialisée dans la fabrication de pièces métalliques pour
+      l’industrie automobile. Fondée en 1995, elle emploie aujourd’hui 45 personnes. Elle dispose
+      d’un atelier de production de 2 500 m² et d’un entrepôt de stockage de 1 000 m².
+    </p>
 
-      <div class="identity">
-        <div class="identity-box">
-          <div class="identity-label">Réalisé par</div>
-          <div class="identity-value">Jorf Moaad</div>
-        </div>
-        <div class="identity-box">
-          <div class="identity-label">Encadré par</div>
-          <div class="identity-value">Pr. Anaya Asma</div>
-        </div>
-      </div>
+    <h3>Données générales de l’entreprise</h3>
+    <table>
+      <thead><tr><th>Information</th><th>Valeur</th></tr></thead>
+      <tbody>
+        <tr><td>Effectif</td><td>45 personnes</td></tr>
+        <tr><td>Chiffre d’affaires</td><td>8,5 millions €</td></tr>
+        <tr><td>Production annuelle annoncée</td><td>120 000 pièces</td></tr>
+        <tr><td>Nombre de références</td><td>350</td></tr>
+        <tr><td>Fournisseurs</td><td>25 fournisseurs (8 en Europe, 17 en Asie)</td></tr>
+        <tr><td>Clients</td><td>45 clients, dont 3 grands comptes représentant 60 % du CA</td></tr>
+        <tr><td>Jours ouvrés</td><td>220 jours/an</td></tr>
+      </tbody>
+    </table>
 
-      <div class="identity-box" style="margin-top: 5mm;">
-        <div class="identity-label">Filière</div>
-        <div class="identity-value" style="font-size: 10.5pt;">
-          Systèmes Automatisés et Intelligence Artificielle pour l’Industrie 4.0
-        </div>
-      </div>
-    </div>
-
-    <div class="cover-footer">
-      <span>Année universitaire 2026–2027</span>
-      <span>Rapport d’analyse et recommandations</span>
-    </div>
+    <h3>Organisation actuelle de l’atelier</h3>
+    <table>
+      <thead><tr><th>Poste</th><th>Opération</th><th>Machine</th><th>Temps de cycle</th></tr></thead>
+      <tbody>
+        <tr><td>P1</td><td>Découpe</td><td>Scie à ruban</td><td>5 min/pièce</td></tr>
+        <tr><td>P2</td><td>Usinage</td><td>Tour CNC</td><td>8 min/pièce</td></tr>
+        <tr><td>P3</td><td>Perçage</td><td>Perceuse</td><td>4 min/pièce</td></tr>
+        <tr><td>P4</td><td>Contrôle</td><td>Instruments de mesure</td><td>3 min/pièce</td></tr>
+      </tbody>
+    </table>
+    <div class="page-number">01</div>
   </section>
 
   <section class="page">
-    <div class="page-kicker"><span>MécaPlus · Rapport d’étude</span><span>Repères</span></div>
-    <span class="section-tag">Vue d’ensemble</span>
-    <h1>Sommaire et choix de calcul</h1>
-
-    <div class="toc">
-      <div class="toc-item">
-        <div class="toc-n">1</div>
-        <div>
-          <div class="toc-title">Analyse de la production</div>
-          <div class="toc-meta">Goulot, capacité, planification, MRP et amélioration du cycle</div>
-        </div>
-        <span>Partie 1</span>
-      </div>
-      <div class="toc-item">
-        <div class="toc-n">2</div>
-        <div>
-          <div class="toc-title">Logistique et gestion des stocks</div>
-          <div class="toc-meta">Point de commande, ABC, Wilson et Juste-à-Temps</div>
-        </div>
-        <span>Partie 2</span>
-      </div>
-      <div class="toc-item">
-        <div class="toc-n">3</div>
-        <div>
-          <div class="toc-title">Supply chain et performance</div>
-          <div class="toc-meta">SCOR, risques, OEE, Lean et logistique durable</div>
-        </div>
-        <span>Partie 3</span>
-      </div>
-      <div class="toc-item">
-        <div class="toc-n">4</div>
-        <div>
-          <div class="toc-title">Note de synthèse au dirigeant</div>
-          <div class="toc-meta">Diagnostic consolidé, priorités et impacts attendus</div>
-        </div>
-        <span>Conclusion</span>
-      </div>
-    </div>
-
-    <h3>Hypothèses de calcul retenues</h3>
+    <div class="page-kicker"><span>Méthode</span><span>Hypothèses de calcul</span></div>
+    <h2>Hypothèses de calcul retenues</h2>
+    <p>
+      Les réponses suivent le même ordre que les questions de l’énoncé. Avant de commencer les calculs,
+      les hypothèses suivantes ont été retenues afin de traiter les quelques données contradictoires.
+    </p>
     <table>
       <thead>
         <tr><th>Élément</th><th>Hypothèse</th><th>Justification</th></tr>
