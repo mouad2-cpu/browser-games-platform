@@ -727,7 +727,7 @@
   <section class="page">
     <div class="page-kicker"><span>MécaPlus · Rapport d’étude</span><span>Repères</span></div>
     <span class="section-tag">Vue d’ensemble</span>
-    <h1>Sommaire & hypothèses</h1>
+    <h1>Sommaire et choix de calcul</h1>
 
     <div class="toc">
       <div class="toc-item">
@@ -804,10 +804,10 @@
     </table>
 
     <div class="callout amber">
-      <strong>Point de vigilance.</strong> La production annuelle annoncée (120 000 pièces) n’est pas
-      compatible avec la capacité de la ligne décrite (60 pièces/jour × 220 jours = 13 200 pièces/an).
-      Les calculs demandés s’appuient donc sur la ligne et les temps de cycle fournis, comme le requiert
-      l’étude de cas.
+      <strong>Remarque sur les données.</strong> J’ai relevé une incohérence dans l’énoncé : les
+      120 000 pièces annoncées par an ne correspondent pas à la capacité de la ligne décrite
+      (60 pièces/jour × 220 jours = 13 200 pièces/an). Pour la suite, j’ai donc utilisé les temps de
+      cycle donnés dans les questions, car ce sont eux qui permettent de faire les calculs demandés.
     </div>
     <div class="page-number">02</div>
   </section>
@@ -818,8 +818,8 @@
     <h2>Analyse des goulots</h2>
 
     <p class="lead">
-      La capacité d’un poste est le temps ouvrable divisé par son temps de cycle. Le débit de la ligne
-      est limité par le poste ayant la plus faible capacité.
+      Pour trouver le goulot, j’ai commencé par calculer combien de pièces chaque poste peut traiter
+      pendant les 480 minutes disponibles. Le poste qui produit le moins limite toute la ligne.
     </p>
 
     <div class="formula">
@@ -893,9 +893,10 @@
     </div>
 
     <div class="callout">
-      <strong>Conclusion.</strong> P2 est le goulot, car son cycle de 8 minutes est le plus long et sa
-      capacité de 60 pièces/jour est la plus faible. La capacité maximale de toute la ligne est donc
-      <strong>60 pièces/jour</strong>, soit <strong>300 pièces/semaine</strong>.
+      <strong>Ce que l’on constate.</strong> P2 est bien le goulot : avec 8 minutes par pièce, il ne
+      peut en usiner que 60 par jour. Même si les trois autres postes peuvent aller plus vite, la ligne
+      complète reste donc limitée à <strong>60 pièces/jour</strong>, soit
+      <strong>300 pièces/semaine</strong>.
     </div>
     <div class="page-number">03</div>
   </section>
@@ -932,8 +933,8 @@
 
     <h3>Solution 1 — Renfort temporaire ciblé au poste P2</h3>
     <p>
-      Ajouter exactement les heures CNC correspondant au déficit, en deuxième équipe ou en heures
-      supplémentaires. La charge additionnelle de P2 est :
+      Une première possibilité est d’ouvrir une plage de travail supplémentaire sur la CNC, uniquement
+      pendant ce pic de commandes. Le besoin supplémentaire se répartit ainsi :
     </p>
     <table>
       <thead><tr><th>S1</th><th>S2</th><th>S3</th><th>S4</th><th>Total P2 additionnel</th></tr></thead>
@@ -974,9 +975,10 @@
     </div>
 
     <div class="callout amber">
-      <strong>Décision recommandée.</strong> Pour un pic ponctuel, le renfort ciblé ou la sous-traitance
-      sont préférables. Si ce niveau de demande devient récurrent, une deuxième CNC porterait P2 à
-      120 pièces/jour ; P1 deviendrait alors le goulot à 96 pièces/jour et devrait aussi être renforcé.
+      <strong>Mon choix.</strong> Si ce carnet de commandes est exceptionnel, je privilégierais le
+      renfort temporaire ou la sous-traitance. Acheter tout de suite une deuxième CNC serait difficile
+      à justifier. En revanche, si cette demande devient habituelle, cet achat peut être étudié :
+      P2 passerait à 120 pièces/jour, mais P1 deviendrait alors le nouveau goulot avec 96 pièces/jour.
     </div>
     <div class="page-number">04</div>
   </section>
@@ -987,8 +989,8 @@
     <h2>MRP et nomenclature de P001</h2>
 
     <p class="lead">
-      Les besoins bruts sont obtenus par explosion de la nomenclature pour 500 pièces finies. Les
-      besoins nets correspondent aux besoins bruts diminués des stocks disponibles.
+      Pour le MRP, j’ai d’abord multiplié la quantité de chaque matière par les 500 pièces à produire.
+      J’ai ensuite retiré ce qui est déjà disponible en stock pour obtenir le besoin réellement à acheter.
     </p>
 
     <div class="formula">
@@ -1047,9 +1049,9 @@
     </div>
 
     <div class="callout green">
-      <strong>Résultat.</strong> Aucun composant ne dispose d’un stock suffisant pour couvrir les
-      500 pièces. Le MRP doit intégrer les délais d’approvisionnement et dater les lancements d’achat
-      en conséquence ; les besoins nets ci-dessus n’incluent pas de stock de sécurité supplémentaire.
+      <strong>Résultat.</strong> Le stock actuel ne suffit pour aucun des quatre articles. Il faut donc
+      lancer les achats en tenant compte des délais fournisseurs. Les quantités ci-dessus correspondent
+      au besoin strict pour les 500 pièces, sans ajouter de stock de sécurité.
     </div>
 
     <h3>Lecture managériale</h3>
@@ -1081,9 +1083,9 @@
     </div>
 
     <div class="callout">
-      L’expression « temps de cycle de la ligne » peut désigner le temps cumulé de traitement
-      (<strong>20 min</strong>) ou l’intervalle entre deux sorties (<strong>8 min/pièce</strong>).
-      Les deux indicateurs sont distingués pour éviter toute ambiguïté.
+      L’expression « temps de cycle de la ligne » peut être comprise de deux façons. J’ai donc gardé
+      les deux résultats : <strong>20 minutes</strong> de travail cumulé sur une pièce, et une sortie
+      toutes les <strong>8 minutes</strong> lorsque la ligne tourne normalement.
     </div>
 
     <h3>2. Après réduction de l’usinage de 8 à 6 minutes</h3>
@@ -1125,9 +1127,9 @@
     </p>
 
     <div class="callout amber">
-      <strong>Étape suivante.</strong> Une nouvelle réduction de P2 sous 5 minutes déplacerait le
-      goulot vers P1. L’investissement doit donc être accompagné d’un plan de capacité global, et non
-      analysé poste par poste.
+      <strong>À retenir.</strong> Si P2 descend ensuite sous 5 minutes, le problème ne disparaît pas :
+      il se déplace vers P1. Il faut donc regarder l’équilibre de toute la ligne avant de décider d’un
+      nouvel investissement.
     </div>
     <div class="page-number">06</div>
   </section>
@@ -1188,10 +1190,10 @@
     </div>
 
     <div class="callout red">
-      <strong>Oui, il faut commander.</strong> Le stock d’acier de 1 800 kg est inférieur au point de
-      commande de 3 000 kg. Sans commande, les 1 500 kg de stock de sécurité seraient entamés pendant
-      le délai fournisseur. L’écart au seuil est de <strong>1 200 kg</strong> ; ce n’est toutefois pas
-      automatiquement la quantité à commander, qui doit être fixée selon lot, coût et stock cible.
+      <strong>Oui, la commande doit être lancée.</strong> Il ne reste que 1 800 kg d’acier alors que le
+      seuil est fixé à 3 000 kg. L’entreprise est donc déjà 1 200 kg sous ce seuil. Cet écart déclenche
+      la commande, mais il ne donne pas à lui seul la quantité à acheter : celle-ci dépend aussi du lot
+      fournisseur et du niveau de stock visé.
     </div>
 
     <h3>Stocks de sécurité obtenus</h3>
@@ -1241,9 +1243,9 @@
     </table>
 
     <div class="callout">
-      <strong>Gestion stricte :</strong> A001, B002, C003, G007, D004, E005 et F006 représentent
-      <strong>78,22 %</strong> de la valeur. Ils exigent inventaires fréquents, prévisions fines,
-      suivi fournisseur et validation managériale des écarts.
+      <strong>Produits à suivre de près :</strong> A001, B002, C003, G007, D004, E005 et F006
+      représentent à eux seuls <strong>78,22 %</strong> de la valeur. Une erreur de stock sur ces
+      références coûte donc beaucoup plus cher ; elles doivent être contrôlées plus souvent.
     </div>
 
     <table>
@@ -1309,10 +1311,10 @@
     </table>
 
     <div class="callout amber">
-      <strong>Cohérence des données.</strong> Une demande annuelle de 12 000 unités à 40 unités/jour
-      correspond à 300 jours de consommation. L’intervalle cohérent avec ces données est donc environ
-      <strong>24 jours de consommation</strong>. Avec 220 jours ouvrés, la demande journalière serait
-      54,55 unités et non 40 ; il faudrait alors recalibrer le point de commande.
+      <strong>Petite incohérence dans l’énoncé.</strong> À raison de 40 unités par jour, 12 000 unités
+      représentent 300 jours de consommation. J’ai donc retenu un intervalle d’environ
+      <strong>24 jours de consommation</strong>. Si l’on appliquait plutôt les 220 jours ouvrés de
+      l’entreprise, la consommation serait 54,55 unités/jour et le seuil devrait être recalculé.
     </div>
 
     <h3>Interprétation</h3>
@@ -1382,9 +1384,9 @@
     </div>
 
     <div class="callout red">
-      <strong>Principe directeur.</strong> Réduire les causes de variabilité avant de réduire les stocks.
-      Un passage immédiat au « zéro stock » exposerait MécaPlus aux aléas fournisseurs, aux pannes et
-      aux défauts déjà présents.
+      <strong>Pourquoi avancer progressivement ?</strong> MécaPlus ne peut pas supprimer ses stocks du
+      jour au lendemain alors que les pannes, les défauts et les retards fournisseurs sont encore
+      fréquents. Il faut d’abord stabiliser ces points, puis réduire les stocks étape par étape.
     </div>
     <div class="page-number">10</div>
   </section>
@@ -1448,10 +1450,9 @@
     </table>
 
     <div class="callout">
-      <strong>Lecture SCOR.</strong> MécaPlus doit relier les décisions de planification
-      (<em>Plan</em>) aux achats (<em>Source</em>), à la capacité du goulot (<em>Make</em>), aux
-      promesses client (<em>Deliver</em>) et aux boucles de retour (<em>Return</em>). La visibilité
-      de bout en bout est le lien entre ces processus.
+      <strong>Lecture avec le modèle SCOR.</strong> Le schéma montre que les cinq étapes ne peuvent pas
+      être gérées séparément. Par exemple, une promesse faite au client (<em>Deliver</em>) doit tenir
+      compte du stock acheté (<em>Source</em>) et de la capacité réelle de P2 (<em>Make</em>).
     </div>
     <div class="page-number">11</div>
   </section>
@@ -1507,9 +1508,9 @@
     </table>
 
     <div class="callout amber">
-      La matrice est qualitative. Une étape de maturité supérieure consiste à noter chaque risque de
-      1 à 3 en probabilité et impact, affecter un propriétaire, fixer une date de mitigation et suivre
-      le risque résiduel après action.
+      Cette première matrice reste qualitative. Pour l’utiliser au quotidien, MécaPlus pourra attribuer
+      à chaque risque une note de 1 à 3, désigner une personne responsable et vérifier régulièrement
+      si les actions engagées font réellement baisser le niveau de risque.
     </div>
     <div class="page-number">12</div>
   </section>
@@ -1552,9 +1553,10 @@
     </div>
 
     <div class="callout red">
-      <strong>Interprétation.</strong> Sur 100 unités de capacité théorique, seulement 70,8 deviennent
-      des pièces bonnes au rythme attendu. Le résultat ponctuel est légèrement supérieur à la valeur
-      actuelle du tableau (68 %), mais reste <strong>14,17 points</strong> sous l’objectif de 85 %.
+      <strong>Interprétation.</strong> En pratique, un OEE de 70,83 % signifie qu’un peu plus de
+      29 % du potentiel est perdu à cause des arrêts, de la baisse de vitesse ou des défauts. Le résultat
+      calculé ici est un peu meilleur que les 68 % du tableau, mais il reste
+      <strong>14,17 points</strong> sous l’objectif de 85 %.
       Le calcul suppose que les 80 pièces théoriques correspondent aux 400 minutes de fonctionnement ;
       sinon, multiplier encore par la disponibilité compterait deux fois les arrêts.
     </div>
@@ -1639,9 +1641,9 @@
     </div>
 
     <div class="callout green">
-      À chiffre d’affaires constant de 8,5 M€, passer le coût logistique de 18 % à 12 % représente un
-      potentiel brut de <strong>510 000 € par an</strong>. Ce montant est une enveloppe d’écart, pas une
-      économie garantie : les coûts de mise en œuvre doivent être déduits.
+      Avec un chiffre d’affaires inchangé de 8,5 M€, l’écart entre 18 % et 12 % représente
+      <strong>510 000 € par an</strong>. Il s’agit d’un potentiel théorique, et non d’une économie
+      automatique : il faudra retirer le coût des actions mises en place.
     </div>
     <div class="page-number">14</div>
   </section>
@@ -1686,9 +1688,9 @@
     </table>
 
     <div class="callout amber">
-      Les cinq premiers gaspillages sont directement chiffrés ou explicitement observés. Le transport
-      et le surtraitement sont des hypothèses de diagnostic, plausibles dans un atelier fonctionnel,
-      mais doivent être vérifiés sur le terrain avant investissement.
+      Les cinq premiers gaspillages apparaissent clairement dans les données. Pour le transport et le
+      surtraitement, l’énoncé ne donne pas de mesure précise : je les ai donc indiqués comme pistes à
+      vérifier dans l’atelier, et non comme faits déjà démontrés.
     </div>
 
     <h3>Impact quantifié disponible</h3>
@@ -1790,8 +1792,9 @@
     </ul>
 
     <div class="callout green">
-      Le premier objectif n’est pas de « faire du Lean », mais de libérer du débit au goulot, livrer
-      plus juste et réduire le cash immobilisé. Chaque chantier doit donc être relié à un KPI avant/après.
+      L’objectif n’est pas d’appliquer des outils Lean uniquement pour la forme. Chaque action doit
+      résoudre un problème visible : gagner du temps sur P2, diminuer les retards ou éviter du stock
+      inutile. Un indicateur avant/après permettra de vérifier le résultat.
     </div>
     <div class="page-number">16</div>
   </section>
@@ -1802,10 +1805,9 @@
     <h2>Supply chain durable</h2>
 
     <p class="lead">
-      En l’absence de données de tonnage, kilomètres et modes actuels, les impacts ci-dessous sont des
-      objectifs de cadrage. Ils devront être validés par un bilan carbone selon la méthode
-      <em>activité × facteur d’émission</em>.
-    </p>
+      L’énoncé ne donne ni les tonnages transportés, ni les distances exactes. Il est donc impossible de
+      calculer une économie de CO₂ précise. Les valeurs ci-dessous sont des objectifs réalistes à
+      confirmer ensuite par un bilan carbone (<em>activité × facteur d’émission</em>).
 
     <table>
       <thead><tr><th>Action</th><th>Mise en œuvre</th><th>Impact cible estimé</th><th>KPI</th></tr></thead>
@@ -1852,9 +1854,9 @@
     </div>
 
     <div class="callout green">
-      <strong>Cible consolidée prudente :</strong> réduire de 20 % les émissions logistiques par pièce
-      et de 10 % le coût de transport sur le périmètre pilote, sans dégrader l’OTIF. La validation exige
-      une année de référence et des données d’activité traçables.
+      <strong>Objectif proposé :</strong> commencer par viser −20 % d’émissions logistiques par pièce et
+      −10 % de coût de transport sur un périmètre pilote, sans détériorer l’OTIF. Ces résultats devront
+      être comparés à une année de référence avec des données de transport vérifiables.
     </div>
     <div class="page-number">17</div>
   </section>
@@ -1867,42 +1869,39 @@
     <div class="executive">
       <p><strong>À l’attention de la Direction de MécaPlus</strong></p>
       <p>
-        MécaPlus dispose d’atouts solides : une base de 45 clients, une offre diversifiée de 350
-        références, un réseau de 25 fournisseurs et une maîtrise interne des opérations de découpe,
-        usinage, perçage et contrôle. Les fournisseurs européens offrent en outre un levier de proximité
-        pour sécuriser les composants critiques.
+        Après avoir étudié les données de MécaPlus, je retiens d’abord plusieurs points positifs :
+        l’entreprise possède un vrai savoir-faire industriel, travaille avec 45 clients et dispose déjà
+        d’un réseau de 25 fournisseurs. Les huit fournisseurs européens sont aussi un atout pour
+        sécuriser plus rapidement les composants importants.
       </p>
       <p>
-        Le diagnostic révèle cependant un déséquilibre majeur. Le poste d’usinage P2 limite la ligne à
-        60 pièces/jour, soit 300/semaine, alors que le carnet demande 400 à 520 pièces. Le déficit du
-        mois atteint 650 pièces. Cette contrainte est aggravée par 15 % de rejets, 3 heures de panne par
-        semaine, 800 pièces d’en-cours et 2 500 produits finis invendus. Les délais de 6 à 8 semaines
-        auprès de 17 fournisseurs asiatiques et la concentration de 60 % du chiffre d’affaires sur trois
-        clients augmentent encore l’exposition. Les résultats le confirment : OTIF à 88 %, OEE autour de
-        68–71 %, délai moyen de 12 jours et coût logistique égal à 18 % du CA.
+        Le problème principal se situe au poste d’usinage P2. Il limite la ligne à 60 pièces par jour,
+        alors que les commandes demandent entre 400 et 520 pièces par semaine. Il manque ainsi
+        650 pièces sur le mois. Les 15 % de rejets et les trois heures de panne hebdomadaires réduisent
+        encore la capacité. En parallèle, 800 pièces attendent entre les postes et 2 500 produits finis
+        restent invendus. Ces constats expliquent en grande partie l’OTIF de 88 %, l’OEE proche de 70 %
+        et le délai moyen de 12 jours.
       </p>
       <p>
-        <strong>Trois priorités sont recommandées.</strong> Premièrement, sécuriser le débit : renforcer
-        temporairement P2 de 86 h 40 sur le mois, lancer TPM et SMED, puis réduire son cycle de 8 à
-        6 minutes afin d’atteindre 80 pièces/jour. Cette amélioration réduit le déficit, mais laisse encore
-        250 pièces manquantes sur S1 à S3. Deuxièmement, restaurer la qualité et le flux :
-        Pareto des défauts, poka-yoke, 5S, Kanban pilote et plafonnement des en-cours. Troisièmement,
-        fiabiliser la supply chain : S&amp;OP fondé sur la capacité réelle, ABC, double sourcing européen
-        des articles A, OTIF fournisseur et transport consolidé.
+        Je propose de commencer par trois actions simples et ciblées. D’abord, ajouter temporairement
+        86 h 40 sur P2 pour absorber le pic, tout en lançant la maintenance TPM et un chantier SMED.
+        Ensuite, réduire les défauts avec un Pareto, des contrôles au poste et des poka-yoke. Enfin,
+        mieux relier les commandes à la capacité réelle grâce au S&amp;OP, et sécuriser les articles A
+        avec un deuxième fournisseur, de préférence européen.
       </p>
       <p>
-        Les impacts attendus sont un OEE supérieur à 85 % dans un scénario combinant 92 % de
-        disponibilité, 94 % de performance et 99 % de qualité ; un OTIF de 95 % ; une réduction du
-        délai vers 7 jours ; et une rotation portée de 3,5 à 5 fois/an. L’écart entre le coût logistique
-        actuel et la cible représente jusqu’à 510 k€ par an à chiffre d’affaires constant, avant coûts
-        de transformation. Sur l’environnement, une baisse de 20 % des émissions logistiques par pièce
-        constitue une première cible mesurable.
+        Le passage du cycle de P2 de 8 à 6 minutes ferait progresser la capacité à 80 pièces/jour, mais
+        laisserait encore 250 pièces manquantes sur S1 à S3. Il ne suffit donc pas à lui seul. En
+        combinant disponibilité, vitesse et qualité, l’OEE peut dépasser 85 %. Les autres objectifs
+        restent un OTIF de 95 %, un délai ramené à 7 jours et une rotation de stock de 5 fois/an.
+        À chiffre d’affaires constant, l’écart avec la cible de coût logistique représente jusqu’à
+        510 k€ par an avant les dépenses de mise en œuvre.
       </p>
       <p>
-        La mise en œuvre doit rester progressive : stabiliser les processus avant de réduire les stocks,
-        tester les solutions sur une famille de produits, puis étendre seulement après preuve par les KPI.
-        Un rituel quotidien SQCDP, une revue hebdomadaire OTIF/OEE et un S&amp;OP mensuel permettront de
-        tenir les gains.
+        Je conseille enfin d’avancer par étapes : tester ces mesures sur une famille de produits,
+        comparer les indicateurs avant et après, puis élargir ce qui fonctionne. Un point atelier court
+        chaque jour, une revue OTIF/OEE chaque semaine et un S&amp;OP mensuel permettront de suivre les
+        progrès sans alourdir l’organisation.
       </p>
       <div class="signature">
         <span>Jorf Moaad</span>
