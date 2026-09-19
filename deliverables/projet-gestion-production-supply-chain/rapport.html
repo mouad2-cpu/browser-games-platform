@@ -1116,8 +1116,8 @@
         </tr>
         <tr>
           <td>Estimations vertes</td>
-          <td>Fourchettes-cibles, à valider par un bilan carbone</td>
-          <td>L’énoncé ne fournit ni tonnage, ni distance, ni facteur d’émission.</td>
+          <td>Ordres de grandeur, et non résultats garantis</td>
+          <td>Les distances, les masses transportées et les facteurs d’émission ne sont pas fournis.</td>
         </tr>
       </tbody>
     </table>
@@ -1274,7 +1274,7 @@
       suffisante. Cette solution couvre les 1 850 pièces sans surinvestissement permanent.
     </p>
 
-    <h3>Solution 2 — Capacité externe sécurisée</h3>
+    <h3>Solution 2 — Sous-traiter une partie de l’usinage</h3>
     <div class="grid-2">
       <div class="card">
         <h4>Sous-traitance planifiée</h4>
@@ -1286,7 +1286,8 @@
       <div class="card">
         <h4>Contrôle interne maintenu</h4>
         <p>
-          Conserver le contrôle P4 chez MécaPlus, contractualiser délai et capabilité, et ajouter
+          MécaPlus peut garder le contrôle final P4 en interne. Le contrat devra préciser le délai et la
+          capabilité, c’est-à-dire la capacité du procédé à respecter régulièrement les tolérances. Il faut ajouter
           <strong>3 h 20</strong> de découpe P1 en S2 si la découpe reste interne. Aucun renfort P1
           n’est requis si le sous-traitant fournit un lot déjà découpé.
         </p>
@@ -1373,11 +1374,11 @@
       au besoin strict pour les 500 pièces, sans ajouter de stock de sécurité.
     </div>
 
-    <h3>Lecture managériale</h3>
+    <h3>Priorité d’achat</h3>
     <p>
-      Le stock de vis offre la meilleure couverture (60 %), tandis que l’acier ne couvre que 40 % du
-      besoin. L’acier combine un besoin net important et un délai de trois semaines : il doit donc être
-      priorisé lors du lancement des approvisionnements.
+      Je commanderais l’acier en premier. Le stock ne couvre que 40 % du besoin et le fournisseur met
+      trois semaines à livrer. Les vis sont un peu moins urgentes, puisque leur stock couvre déjà 60 %
+      du besoin.
     </p>
     <div class="page-number">05</div>
   </section>
@@ -1572,7 +1573,7 @@
       <tbody>
         <tr>
           <td><span class="badge a">A</span></td><td>A001, B002, C003, G007, D004, E005, F006</td>
-          <td>Revue hebdomadaire, inventaire tournant mensuel, prévision par référence, stock réduit mais fiabilisé, double sourcing critique.</td>
+          <td>Je propose un suivi chaque semaine et un inventaire chaque mois. Pour une pièce critique, avoir deux fournisseurs réduit le risque de rupture.</td>
         </tr>
         <tr>
           <td><span class="badge b">B</span></td><td>J010, H008</td>
@@ -1652,52 +1653,52 @@
 
     <h3>Cinq conditions de réussite</h3>
     <div class="grid-2">
-      <div class="card"><strong>1. Demande nivelée</strong><br>Prévisions fiables, horizon gelé et lissage des volumes par famille.</div>
-      <div class="card"><strong>2. Processus capables</strong><br>Qualité à la source, standards, faible taux de rebut et poka-yoke.</div>
-      <div class="card"><strong>3. Équipements fiables</strong><br>TPM, maintenance préventive, SMED et polyvalence des opérateurs.</div>
-      <div class="card"><strong>4. Fournisseurs synchronisés</strong><br>Délais courts, qualité certifiée, livraisons fréquentes et visibilité partagée.</div>
-      <div class="card"><strong>5. Pilotage tiré</strong><br>Kanban, petits lots, flux continus, données ERP exactes et logistique cadencée.</div>
+      <div class="card"><strong>1. Une demande assez régulière</strong><br>Les prévisions doivent être fiables pour éviter de changer le planning chaque jour.</div>
+      <div class="card"><strong>2. Des pièces bonnes du premier coup</strong><br>Avec 15 % de rejets, il faut d’abord corriger les principales causes de défaut.</div>
+      <div class="card"><strong>3. Des machines plus fiables</strong><br>La maintenance préventive doit réduire les pannes, surtout sur le poste P2.</div>
+      <div class="card"><strong>4. Des fournisseurs ponctuels</strong><br>Le JAT ne fonctionne pas si les composants arrivent en retard ou non conformes.</div>
+      <div class="card"><strong>5. Produire seulement quand il y a un besoin</strong><br>Le Kanban sert de signal pour lancer un petit lot ou un réapprovisionnement.</div>
     </div>
 
     <h3>Risques propres à MécaPlus</h3>
     <table>
       <thead><tr><th>Risque</th><th>Pourquoi il est élevé</th><th>Mesure de maîtrise</th></tr></thead>
       <tbody>
-        <tr><td>Dépendance aux délais longs</td><td>17 fournisseurs asiatiques, délai de 6 à 8 semaines</td><td>Dual sourcing, fournisseurs européens, buffers ciblés</td></tr>
-        <tr><td>Rupture liée à la qualité</td><td>15 % de pièces rejetées</td><td>Qualité à la source, capabilité, audit fournisseur</td></tr>
-        <tr><td>Arrêt de flux</td><td>1,5 panne/semaine × 2 h</td><td>TPM, pièces critiques, maintenance autonome</td></tr>
+        <tr><td>Dépendance aux délais longs</td><td>17 fournisseurs asiatiques, délai de 6 à 8 semaines</td><td>Garder deux fournisseurs si possible, dont un proche, et un stock de sécurité limité aux articles risqués</td></tr>
+        <tr><td>Rupture liée à la qualité</td><td>15 % de pièces rejetées</td><td>Contrôler les causes de défaut et travailler avec le fournisseur concerné</td></tr>
+        <tr><td>Arrêt de flux</td><td>1,5 panne/semaine × 2 h</td><td>Entretenir P2 avant la panne et garder les pièces de rechange indispensables</td></tr>
         <tr><td>Variabilité client</td><td>3 comptes représentent 60 % du CA</td><td>Prévisions collaboratives, horizon ferme</td></tr>
-        <tr><td>Surcoût logistique</td><td>Petits lots et expéditions fréquentes</td><td>Milk-run, consolidation, fréquence différenciée</td></tr>
+        <tr><td>Surcoût logistique</td><td>Petits lots et expéditions fréquentes</td><td>Regrouper plusieurs enlèvements dans une même tournée</td></tr>
       </tbody>
     </table>
 
     <h3>Plan de transition progressif</h3>
     <div class="timeline">
       <div class="phase">
-        <div class="phase-title">Phase 1 · Stabiliser</div>
+        <div class="phase-title">1. Commencer par les problèmes visibles</div>
         <ul>
-          <li>VSM et fiabilisation des données ;</li>
-          <li>5S, standards, TPM sur P2 ;</li>
-          <li>rebut 15 % → moins de 8 % ;</li>
-          <li>segmenter articles et fournisseurs.</li>
+          <li>mesurer les pannes et les défauts de P2 ;</li>
+          <li>ranger les outils près du poste ;</li>
+          <li>faire passer le rebut sous 8 % ;</li>
+          <li>repérer les articles les plus risqués.</li>
         </ul>
       </div>
       <div class="phase">
-        <div class="phase-title">Phase 2 · Piloter</div>
+        <div class="phase-title">2. Faire un essai limité</div>
         <ul>
-          <li>Pilote sur une famille A ;</li>
-          <li>Kanban P1–P2–P3 ;</li>
-          <li>réduction graduelle du lot ;</li>
-          <li>fournisseur européen proche.</li>
+          <li>choisir une famille de produits A ;</li>
+          <li>tester le Kanban entre P1, P2 et P3 ;</li>
+          <li>réduire les lots progressivement ;</li>
+          <li>tester un fournisseur européen.</li>
         </ul>
       </div>
       <div class="phase">
-        <div class="phase-title">Phase 3 · Étendre</div>
+        <div class="phase-title">3. Étendre si les résultats sont bons</div>
         <ul>
-          <li>Milk-run et EDI fournisseurs ;</li>
-          <li>heijunka multi-familles ;</li>
+          <li>appliquer le Kanban à d’autres familles ;</li>
+          <li>regrouper les tournées fournisseurs ;</li>
           <li>réduire les stocks après mesure ;</li>
-          <li>revue mensuelle OTIF/OEE/stock.</li>
+          <li>vérifier chaque mois OTIF, OEE et stocks.</li>
         </ul>
       </div>
     </div>
@@ -1813,7 +1814,8 @@
         </tr>
         <tr>
           <td><span class="priority">2</span></td><td>Défauts qualité (15 %)</td>
-          <td>Pareto défauts, 8D, contrôle au poste, audits processus</td><td>PPM, FPY, coût de non-qualité</td>
+          <td>Repérer d’abord les défauts les plus fréquents, chercher leur cause, puis contrôler directement au poste</td>
+          <td>Pièces bonnes du premier coup (FPY) et défauts par million (PPM)</td>
         </tr>
         <tr>
           <td><span class="priority">3</span></td><td>Pannes au goulot P2</td>
@@ -1885,15 +1887,15 @@
       <thead><tr><th>Levier</th><th>Action</th><th>Cible opérationnelle</th><th>Effet OEE</th></tr></thead>
       <tbody>
         <tr>
-          <td><strong>Disponibilité</strong></td><td>TPM sur P2, préventif selon criticité, maintenance autonome</td>
+          <td><strong>Disponibilité</strong></td><td>Entretenir P2 avant la panne et confier aux opérateurs les vérifications simples</td>
           <td>Pannes 45 → 20 min</td><td>Réduit les arrêts non planifiés</td>
         </tr>
         <tr>
-          <td><strong>Changements</strong></td><td>Chantier SMED : préparer outils hors machine, standardiser réglages</td>
+          <td><strong>Changements</strong></td><td>Avec le SMED, préparer les outils avant l’arrêt et garder le même ordre de réglage</td>
           <td>35 → 15 min</td><td>Récupère 20 min productives</td>
         </tr>
         <tr>
-          <td><strong>Qualité</strong></td><td>Pareto, SPC, poka-yoke et validation première pièce</td>
+          <td><strong>Qualité</strong></td><td>Commencer par les défauts les plus fréquents et empêcher les erreurs simples de se répéter</td>
           <td>Qualité ≥ 99 %</td><td>Réduit rebut et retouche</td>
         </tr>
       </tbody>
@@ -1926,36 +1928,36 @@
     <h3>Plan d’amélioration de l’OTIF : 88 % → 95 %</h3>
     <div class="grid-2">
       <div class="card">
-        <h4>1. Mesurer la vraie cause</h4>
-        <p>Coder chaque échec : matière, panne, capacité, qualité, transport, promesse commerciale. Pareto hebdomadaire par client et référence.</p>
+        <h4>1. Comprendre chaque retard</h4>
+        <p>Noter s’il vient d’un manque de matière, d’une panne, d’un défaut, de la production ou du transport. On pourra alors traiter les causes les plus fréquentes.</p>
       </div>
       <div class="card">
-        <h4>2. Promettre sur capacité réelle</h4>
-        <p>ATP/CTP tenant compte des 300 pièces/semaine du goulot, calendrier gelé et arbitrage S&amp;OP des priorités.</p>
+        <h4>2. Donner une date réaliste au client</h4>
+        <p>Avant de confirmer une commande, il faut vérifier le stock disponible et la capacité réelle de P2, limitée à 300 pièces par semaine.</p>
       </div>
       <div class="card">
-        <h4>3. Fiabiliser l’amont</h4>
-        <p>OTIF fournisseur, visibilité 8 semaines, double source des A, stock de sécurité dynamique pour les délais asiatiques.</p>
+        <h4>3. Mieux suivre les fournisseurs</h4>
+        <p>Comparer leurs retards, prévoir les besoins huit semaines à l’avance et garder deux sources pour les articles A les plus critiques.</p>
       </div>
       <div class="card">
-        <h4>4. Sécuriser l’exécution</h4>
-        <p>TPM P2, contrôle en cours de procédé, créneau transport réservé et alerte 48 h avant tout risque de retard.</p>
+        <h4>4. Réagir avant qu’il soit trop tard</h4>
+        <p>Surveiller P2, contrôler les pièces pendant la production et prévenir le client dès qu’un retard devient probable.</p>
       </div>
     </div>
 
-    <h3>Boucle de pilotage</h3>
+    <h3>Suivi proposé</h3>
     <div class="timeline">
       <div class="phase">
         <div class="phase-title">Chaque jour</div>
-        Top 10 commandes à risque, panne, manque matière, plan de rattrapage.
+        Faire un point court sur les commandes à risque, les pannes et les matières manquantes.
       </div>
       <div class="phase">
         <div class="phase-title">Chaque semaine</div>
-        Pareto OTIF, adhérence au planning, capacité P2, performance fournisseurs.
+        Examiner les retards de la semaine, la charge de P2 et les livraisons fournisseurs.
       </div>
       <div class="phase">
         <div class="phase-title">Chaque mois</div>
-        S&amp;OP, paramètres de stock, charge/capacité, portefeuille de risques.
+        Mettre en accord les ventes et la production, puis revoir les stocks et les risques importants.
       </div>
     </div>
 
@@ -2038,19 +2040,25 @@
     <span class="section-tag">Amélioration continue</span>
     <h2>Plan d’élimination des gaspillages</h2>
 
+    <p>
+      Je n’utiliserais pas tous les outils Lean en même temps. Chacun doit répondre à un problème
+      précis : le 5S pour les outils perdus, la TPM pour les pannes, le Kanban pour les en-cours et
+      le poka-yoke pour empêcher une erreur simple de se reproduire.
+    </p>
+
     <table class="tiny">
       <thead><tr><th>Gaspillage</th><th>Outils Lean</th><th>Actions concrètes</th><th>Cible proposée</th></tr></thead>
       <tbody>
         <tr>
           <td><strong>Défauts</strong></td>
-          <td>Pareto, 5 pourquoi, Ishikawa, SPC, poka-yoke</td>
-          <td>Analyser les 3 défauts majeurs, qualité au poste, validation première pièce</td>
+          <td>Pareto, 5 pourquoi, poka-yoke</td>
+          <td>Étudier les trois défauts les plus fréquents et vérifier la première pièce au poste</td>
           <td>15 % → &lt; 5 %, puis &lt; 2 %</td>
         </tr>
         <tr>
           <td><strong>Attentes / pannes</strong></td>
-          <td>TPM, maintenance autonome, Andon</td>
-          <td>Criticité P2, check-list quotidienne, pièces de rechange, mesure MTBF/MTTR</td>
+          <td>TPM et maintenance préventive</td>
+          <td>Vérification quotidienne de P2 et disponibilité des pièces de rechange importantes</td>
           <td>1,5 → 0,5 panne/sem. ; MTTR 2 h → 1 h</td>
         </tr>
         <tr>
@@ -2061,8 +2069,8 @@
         </tr>
         <tr>
           <td><strong>Surproduction</strong></td>
-          <td>Pull, heijunka, S&amp;OP</td>
-          <td>Produire sur signal client, geler un horizon court, revoir les obsolètes</td>
+          <td>Flux tiré et lissage de la production</td>
+          <td>Lancer la production à partir du besoin réel et traiter les produits qui ne se vendent plus</td>
           <td>Finis 2 500 → 1 000 pièces</td>
         </tr>
         <tr>
@@ -2079,8 +2087,8 @@
         </tr>
         <tr>
           <td><strong>Surtraitement</strong></td>
-          <td>VSM, AMDEC processus, qualité à la source</td>
-          <td>Supprimer contrôles redondants après démonstration de capabilité</td>
+          <td>Cartographie du flux et analyse des risques</td>
+          <td>Supprimer un contrôle seulement après avoir prouvé que le procédé reste stable</td>
           <td>Temps de contrôle sans valeur −25 %</td>
         </tr>
       </tbody>
@@ -2089,24 +2097,24 @@
     <h3>Séquence de déploiement</h3>
     <div class="timeline">
       <div class="phase">
-        <div class="phase-title">0–30 jours · Rendre visible</div>
-        <p>VSM, Pareto défauts, marquage 5S, OEE quotidien sur P2, photographie des stocks.</p>
+        <div class="phase-title">Pendant le premier mois</div>
+        <p>Mesurer les défauts, les pannes et les stocks, puis ranger les outils au poste avec le 5S.</p>
       </div>
       <div class="phase">
-        <div class="phase-title">31–90 jours · Stabiliser</div>
-        <p>TPM, standards, poka-yoke, SMED, FIFO et Kanban pilote entre P1 et P2.</p>
+        <div class="phase-title">Pendant les deux mois suivants</div>
+        <p>Tester la maintenance préventive, la réduction des changements et un Kanban entre P1 et P2.</p>
       </div>
       <div class="phase">
-        <div class="phase-title">Après 90 jours · Pérenniser</div>
-        <p>Flux tiré étendu, heijunka, audits, rituels SQCDP et nouveaux chantiers kaizen.</p>
+        <div class="phase-title">Après trois mois</div>
+        <p>Garder les solutions qui ont donné un résultat mesurable, puis les tester sur d’autres postes.</p>
       </div>
     </div>
 
-    <h3>Gouvernance recommandée</h3>
+    <h3>Comment suivre les actions</h3>
     <ul>
-      <li><strong>Quotidien :</strong> point SQCDP de 10 minutes au tableau de l’atelier.</li>
-      <li><strong>Hebdomadaire :</strong> revue OEE, rebut, incidents et actions A3.</li>
-      <li><strong>Mensuel :</strong> comité direction sur OTIF, stocks, coût et gains validés.</li>
+      <li><strong>Chaque jour :</strong> un point de 10 minutes sur sécurité, qualité, coût, délai et production.</li>
+      <li><strong>Chaque semaine :</strong> revoir l’OEE, les rebuts, les pannes et les actions en retard.</li>
+      <li><strong>Chaque mois :</strong> présenter à la direction l’OTIF, les stocks, les coûts et les gains réellement obtenus.</li>
       <li><strong>Responsable :</strong> une personne désignée et une échéance pour chaque action.</li>
     </ul>
 
@@ -2139,7 +2147,7 @@
         </tr>
         <tr>
           <td><strong>2. Mutualiser transport et livraisons</strong></td>
-          <td>Milk-runs fournisseurs, groupage clients par zone, TMS, remplissage cible de 85 %, éco-conduite.</td>
+          <td>Regrouper les enlèvements chez plusieurs fournisseurs dans une même tournée et réunir les livraisons destinées à la même zone.</td>
           <td>−15 à −20 % de trajets ; −10 à −15 % d’émissions et de coût de transport.</td>
           <td>km/expédition, remplissage, €/pièce, CO₂e/commande</td>
         </tr>
@@ -2182,8 +2190,8 @@
 
   <section class="page">
     <div class="page-kicker"><span>Conclusion</span><span>Note au dirigeant</span></div>
-    <span class="section-tag">Synthèse exécutive</span>
-    <h2>Faire du goulot le point de départ de la transformation</h2>
+    <span class="section-tag">Conclusion</span>
+    <h2>Le poste P2 est le premier problème à traiter</h2>
 
     <div class="executive">
       <p><strong>À l’attention de la Direction de MécaPlus</strong></p>
@@ -2202,12 +2210,12 @@
         et le délai moyen de 12 jours.
       </p>
       <p>
-        Je propose de commencer par trois actions simples et ciblées. D’abord, ajouter temporairement
-        86 h 40 sur P2 pour absorber le pic, ainsi que 3 h 20 sur P1 en S2, tout en lançant la
-        maintenance TPM et un chantier SMED.
-        Ensuite, réduire les défauts avec un Pareto, des contrôles au poste et des poka-yoke. Enfin,
-        mieux relier les commandes à la capacité réelle grâce au S&amp;OP, et sécuriser les articles A
-        avec un deuxième fournisseur, de préférence européen.
+        Je propose de commencer par trois actions simples. D’abord, ajouter temporairement 86 h 40 sur
+        P2 pour absorber le pic, ainsi que 3 h 20 sur P1 en S2. En parallèle, un entretien préventif
+        réduira les pannes et la préparation des outils avant l’arrêt raccourcira les changements de
+        série. Ensuite, il faut chercher les causes des défauts directement au poste. Enfin, les dates
+        promises aux clients doivent tenir compte de la capacité réelle, et les articles A les plus
+        critiques devraient avoir un deuxième fournisseur, si possible européen.
       </p>
       <p>
         Le passage du cycle de P2 de 8 à 6 minutes ferait progresser la capacité à 80 pièces/jour, mais
@@ -2220,8 +2228,8 @@
       <p>
         Je conseille enfin d’avancer par étapes : tester ces mesures sur une famille de produits,
         comparer les indicateurs avant et après, puis élargir ce qui fonctionne. Un point atelier court
-        chaque jour, une revue OTIF/OEE chaque semaine et un S&amp;OP mensuel permettront de suivre les
-        progrès sans alourdir l’organisation.
+        chaque jour, une revue OTIF/OEE chaque semaine et une réunion mensuelle entre les ventes et la
+        production permettront de suivre les progrès sans alourdir l’organisation.
       </p>
       <div class="signature">
         <span>Jorf Moaad</span>
