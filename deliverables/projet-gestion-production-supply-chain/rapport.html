@@ -1810,7 +1810,8 @@
       <tbody>
         <tr>
           <td><span class="priority">1</span></td><td>Retards fournisseurs asiatiques</td>
-          <td>Double source UE, suivi OTIF fournisseur, couverture différenciée</td><td>OTIF fournisseur, jours de couverture</td>
+          <td>Garder si possible deux fournisseurs, dont un européen, et adapter le stock au délai de chacun</td>
+          <td>Livraisons reçues à l’heure et nombre de jours de stock</td>
         </tr>
         <tr>
           <td><span class="priority">2</span></td><td>Défauts qualité (15 %)</td>
@@ -1819,7 +1820,8 @@
         </tr>
         <tr>
           <td><span class="priority">3</span></td><td>Pannes au goulot P2</td>
-          <td>TPM, préventif, stock de pièces critiques, suivi MTBF/MTTR</td><td>Disponibilité, MTBF, MTTR, OEE</td>
+          <td>Prévoir l’entretien de P2 et garder les pièces de rechange qui peuvent bloquer la machine</td>
+          <td>Nombre de pannes, temps entre deux pannes et durée moyenne d’un arrêt</td>
         </tr>
         <tr>
           <td><span class="priority">4</span></td><td>Concentration grands comptes</td>
@@ -1999,11 +2001,11 @@
         </tr>
         <tr>
           <td><span class="priority">6</span></td><td><strong>Transports</strong></td>
-          <td>En-cours déplacés entre quatre postes fonctionnels</td><td>À confirmer par diagramme spaghetti</td>
+          <td>En-cours déplacés entre quatre postes fonctionnels</td><td>À vérifier en traçant les déplacements sur le plan de l’atelier</td>
         </tr>
         <tr>
           <td><span class="priority">7</span></td><td><strong>Surtraitement</strong></td>
-          <td>Contrôle final pouvant répéter des vérifications tardives</td><td>Hypothèse à confirmer par VSM et audit des contrôles</td>
+          <td>Contrôle final pouvant répéter des vérifications tardives</td><td>Hypothèse à vérifier en suivant une pièce du début à la fin</td>
         </tr>
       </tbody>
     </table>
@@ -2059,12 +2061,12 @@
           <td><strong>Attentes / pannes</strong></td>
           <td>TPM et maintenance préventive</td>
           <td>Vérification quotidienne de P2 et disponibilité des pièces de rechange importantes</td>
-          <td>1,5 → 0,5 panne/sem. ; MTTR 2 h → 1 h</td>
+          <td>1,5 → 0,5 panne/sem. ; arrêt moyen 2 h → 1 h</td>
         </tr>
         <tr>
           <td><strong>Stocks</strong></td>
-          <td>VSM, Kanban, FIFO, flux pièce à pièce</td>
-          <td>Limiter chaque buffer, couloir FIFO, calculer cartes Kanban</td>
+          <td>Carte du flux, Kanban et couloir « premier entré, premier sorti »</td>
+          <td>Limiter le stock entre deux postes et dimensionner les cartes Kanban</td>
           <td>En-cours 800 → 300 pièces</td>
         </tr>
         <tr>
@@ -2075,14 +2077,14 @@
         </tr>
         <tr>
           <td><strong>Mouvements</strong></td>
-          <td>5S, management visuel, standard work</td>
-          <td>Panneaux silhouettes, emplacement au point d’usage, audit 5S</td>
+          <td>5S, rangement visuel et méthode de travail écrite</td>
+          <td>Panneaux avec la silhouette des outils et rangement au plus près de l’opérateur</td>
           <td>Recherche 12 % → &lt; 3 %</td>
         </tr>
         <tr>
           <td><strong>Transports</strong></td>
-          <td>Diagramme spaghetti, implantation cellulaire</td>
-          <td>Mesurer les mètres/pièce, rapprocher P1–P4, standardiser contenants</td>
+          <td>Tracé des déplacements sur le plan et rapprochement des postes</td>
+          <td>Mesurer les mètres parcourus par pièce, rapprocher P1 à P4 et utiliser les mêmes contenants</td>
           <td>Distance interne −30 %</td>
         </tr>
         <tr>
@@ -2133,8 +2135,9 @@
 
     <p class="lead">
       L’énoncé ne donne ni les tonnages transportés, ni les distances exactes. Il est donc impossible de
-      calculer une économie de CO₂ précise. Les valeurs ci-dessous sont des objectifs réalistes à
-      confirmer ensuite par un bilan carbone (<em>activité × facteur d’émission</em>).
+      calculer une économie de CO₂ précise. Les valeurs ci-dessous sont seulement des hypothèses de
+      travail à tester par un bilan carbone (<em>activité × facteur d’émission</em>), et non des gains garantis.
+    </p>
 
     <table>
       <thead><tr><th>Action</th><th>Mise en œuvre</th><th>Impact cible estimé</th><th>KPI</th></tr></thead>
@@ -2142,19 +2145,19 @@
         <tr>
           <td><strong>1. Repenser les approvisionnements lointains</strong></td>
           <td>Relocaliser 20 % des volumes asiatiques critiques vers l’Europe ; privilégier mer/rail à l’aérien ; consolider les conteneurs.</td>
-          <td>−15 à −30 % d’émissions du transport amont ; délai de 6–8 à 1–2 semaines sur les flux relocalisés ; moins d’urgences.</td>
+          <td>Hypothèse à tester : −15 à −30 % d’émissions amont et délai de 6–8 à 1–2 semaines sur les flux relocalisés.</td>
           <td>kgCO₂e/t.km, % aérien, taux de remplissage, délai</td>
         </tr>
         <tr>
           <td><strong>2. Mutualiser transport et livraisons</strong></td>
           <td>Regrouper les enlèvements chez plusieurs fournisseurs dans une même tournée et réunir les livraisons destinées à la même zone.</td>
-          <td>−15 à −20 % de trajets ; −10 à −15 % d’émissions et de coût de transport.</td>
+          <td>Hypothèse à tester : −15 à −20 % de trajets et −10 à −15 % d’émissions et de coût de transport.</td>
           <td>km/expédition, remplissage, €/pièce, CO₂e/commande</td>
         </tr>
         <tr>
-          <td><strong>3. Boucler emballages et verdir l’entrepôt</strong></td>
-          <td>Bacs réutilisables, reprise client, standardisation ; LED, détection, arrêt des équipements et engins électriques.</td>
-          <td>−50 % de déchets d’emballage ; −20 à −30 % d’électricité d’entrepôt ; −3 à −7 % de coût logistique concerné.</td>
+          <td><strong>3. Réutiliser les emballages et réduire l’énergie</strong></td>
+          <td>Utiliser des bacs réutilisables, récupérer les emballages chez les clients, passer aux LED et éteindre les équipements inutilisés.</td>
+          <td>Hypothèse à tester : −50 % de déchets d’emballage et −20 à −30 % d’électricité dans l’entrepôt.</td>
           <td>kg déchets/1 000 pièces, kWh/m², taux de réemploi</td>
         </tr>
       </tbody>
@@ -2171,19 +2174,19 @@
         <p>Le JAT doit être couplé au groupage ; sinon la fréquence de livraison peut annuler le gain de stock.</p>
       </div>
       <div class="card">
-        <h4>Contractualiser les données</h4>
+        <h4>Demander des données vérifiables</h4>
         <p>Demander aux transporteurs distance, mode, masse, remplissage et facteur d’émission vérifiable.</p>
       </div>
       <div class="card">
-        <h4>Piloter en coût total</h4>
-        <p>Inclure stock, qualité, urgence aérienne, douane, obsolescence et risque de rupture.</p>
+        <h4>Comparer tous les coûts</h4>
+        <p>Ne pas regarder seulement le prix d’achat : ajouter le stock, la qualité, la douane, les urgences et le risque de rupture.</p>
       </div>
     </div>
 
     <div class="callout green">
-      <strong>Objectif proposé :</strong> commencer par viser −20 % d’émissions logistiques par pièce et
-      −10 % de coût de transport sur un périmètre pilote, sans détériorer l’OTIF. Ces résultats devront
-      être comparés à une année de référence avec des données de transport vérifiables.
+      <strong>Hypothèse de départ :</strong> tester sur un petit périmètre si une baisse de 20 % des
+      émissions par pièce et de 10 % du coût de transport est possible sans détériorer les livraisons.
+      Seules les mesures comparées à une année de référence permettront ensuite de fixer une vraie cible.
     </div>
     <div class="page-number">17</div>
   </section>
