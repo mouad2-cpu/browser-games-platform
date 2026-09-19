@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Idempotent bootstrap for the Browser Games Platform (Next.js + Prisma + MariaDB).
-# Safe to run repeatedly: installs deps, ensures the database is up, syncs the
+# Safe to run repeatedly: ensures the database is up, installs deps, syncs the
 # Prisma schema, and seeds demo data.
 set -euo pipefail
 
@@ -9,29 +9,9 @@ cd "$(dirname "$0")/.."
 DB_NAME="browser_games"
 DB_USER="bg_user"
 DB_PASS="bg_password"
-DATADIR="/var/lib/mysql"
 
-echo "==> Ensuring MariaDB server is installed"
-if ! command -v mariadbd >/dev/null 2>&1 && ! command -v mysqld >/dev/null 2>&1; then
-  sudo apt-get update -y
-  sudo DEBIAN_FRONTEND=noninteractive apt-get install -y mariadb-server mariadb-client
-fi
-
-echo "==> Ensuring MariaDB data directory is initialized"
-sudo mkdir -p "$DATADIR" /var/run/mysqld
-sudo chown -R mysql:mysql "$DATADIR" /var/run/mysqld
-if [ ! -d "$DATADIR/mysql" ]; then
-  sudo mariadb-install-db --user=mysql --datadir="$DATADIR" >/dev/null
-fi
-
-echo "==> Starting MariaDB (if not already running)"
-if ! sudo mariadb -e "SELECT 1" >/dev/null 2>&1; then
-  sudo -b mariadbd --user=mysql --datadir="$DATADIR" >/tmp/mariadbd.log 2>&1
-  for _ in $(seq 1 30); do
-    if sudo mariadb -e "SELECT 1" >/dev/null 2>&1; then break; fi
-    sleep 1
-  done
-fi
+echo "==> Ensuring MariaDB is installed and running"
+bash "$(dirname "$0")/db-up.sh"
 sudo mariadb -e "SELECT VERSION();"
 
 echo "==> Ensuring application database and user exist"
