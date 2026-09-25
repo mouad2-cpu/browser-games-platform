@@ -14,8 +14,15 @@ Arduino_Exam_Project/
 ├── Exercise4/Exercise4.ino
 ├── Rapport/Rapport_Examen_TP_Arduino.html
 ├── Rapport/Nom_Prenom_Examen_TP_Arduino.pdf
+├── Rapport/Rapport_Examen_TP_Arduino_Version_2.html
+├── Rapport/Nom_Prenom_Examen_TP_Arduino_Version_2.pdf
 └── README.md
 ```
+
+Le dossier `Rapport` propose deux rédactions différentes du même compte rendu.
+La version 2 emploie une mise en page verte et une formulation entièrement
+réorganisée. Il faut choisir une seule version, la personnaliser avec les
+résultats réels, puis supprimer le suffixe de version lors du renommage final.
 
 ## Règles de câblage communes
 
