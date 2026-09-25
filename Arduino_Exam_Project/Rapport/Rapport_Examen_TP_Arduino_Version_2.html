@@ -1,0 +1,690 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Compte rendu Arduino et Proteus — Version 2</title>
+  <style>
+    :root {
+      --green: #175c4c;
+      --mint: #e8f3ef;
+      --purple: #5a3c78;
+      --sand: #f7f2e8;
+      --text: #202723;
+      --grey: #64706a;
+      --border: #b9c8c1;
+    }
+
+    @page {
+      size: A4;
+      margin: 16mm 17mm 18mm;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      color: var(--text);
+      font-family: "Trebuchet MS", Arial, sans-serif;
+      font-size: 10.4pt;
+      line-height: 1.48;
+    }
+
+    h1, h2, h3 {
+      page-break-after: avoid;
+    }
+
+    h1 {
+      margin: 5mm 0;
+      color: white;
+      font-size: 27pt;
+      line-height: 1.15;
+    }
+
+    h2 {
+      margin: 7mm 0 4mm;
+      padding: 2mm 0 2mm 4mm;
+      border-left: 5px solid var(--purple);
+      color: var(--green);
+      font-size: 18pt;
+      line-height: 1.2;
+    }
+
+    h3 {
+      margin: 5mm 0 2mm;
+      color: var(--purple);
+      font-size: 12.5pt;
+    }
+
+    p {
+      margin: 0 0 3mm;
+      text-align: justify;
+    }
+
+    ul, ol {
+      margin: 2mm 0 4mm;
+      padding-left: 7mm;
+    }
+
+    li {
+      margin-bottom: 1.2mm;
+    }
+
+    code, pre {
+      font-family: "DejaVu Sans Mono", Consolas, monospace;
+    }
+
+    pre {
+      margin: 3mm 0 5mm;
+      padding: 4mm;
+      border: 1px solid #9db0a7;
+      border-radius: 4px;
+      background: #f4f8f6;
+      font-size: 8.5pt;
+      line-height: 1.4;
+      white-space: pre-wrap;
+      page-break-inside: avoid;
+    }
+
+    table {
+      width: 100%;
+      margin: 3mm 0 5mm;
+      border-collapse: collapse;
+      page-break-inside: avoid;
+    }
+
+    th, td {
+      padding: 2.3mm 2.7mm;
+      border: 1px solid var(--border);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      color: white;
+      background: var(--green);
+    }
+
+    tr:nth-child(even) td {
+      background: #f6f9f7;
+    }
+
+    .cover {
+      height: 259mm;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      page-break-after: always;
+    }
+
+    .institution {
+      padding: 5mm 4mm;
+      border-bottom: 2px solid var(--green);
+      color: var(--green);
+      text-align: center;
+    }
+
+    .institution p {
+      margin: 1mm 0;
+      text-align: center;
+    }
+
+    .title-panel {
+      align-self: center;
+      padding: 18mm 13mm;
+      border-radius: 5px;
+      background: var(--green);
+      box-shadow: 9px 9px 0 var(--mint);
+      text-align: center;
+    }
+
+    .title-panel p {
+      margin: 0;
+      color: #dcece6;
+      font-size: 14pt;
+      text-align: center;
+    }
+
+    .title-panel .tag {
+      display: inline-block;
+      margin-bottom: 4mm;
+      padding: 1.5mm 4mm;
+      border-radius: 20px;
+      color: var(--green);
+      background: white;
+      font-size: 9.5pt;
+      font-weight: bold;
+      letter-spacing: 0.7px;
+      text-transform: uppercase;
+    }
+
+    .student-card {
+      padding: 6mm 8mm;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      background: var(--sand);
+    }
+
+    .student-card p {
+      margin: 2.5mm 0;
+      text-align: left;
+    }
+
+    .new-page, .exercise {
+      page-break-before: always;
+    }
+
+    .lead {
+      margin: 3mm 0 5mm;
+      padding: 4mm 5mm;
+      border-radius: 4px;
+      color: #20312b;
+      background: var(--mint);
+    }
+
+    .component-line {
+      margin: 3mm 0 4mm;
+      padding: 3mm 4mm;
+      border-left: 4px solid var(--green);
+      background: #f6f9f7;
+    }
+
+    .logic {
+      margin: 3mm 0 5mm;
+      padding: 4mm 5mm;
+      border: 1px solid #cbbbd9;
+      border-radius: 4px;
+      background: #f8f4fb;
+    }
+
+    .evidence {
+      min-height: 42mm;
+      margin: 3mm 0 5mm;
+      padding: 6mm;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px dashed #85958d;
+      border-radius: 4px;
+      color: var(--grey);
+      background: #fbfcfb;
+      text-align: center;
+    }
+
+    .notes {
+      min-height: 28mm;
+      margin: 3mm 0 5mm;
+      padding: 4mm;
+      border: 1px dotted var(--grey);
+      color: var(--grey);
+      background: #fff;
+    }
+
+    .conclusion {
+      margin: 4mm 0;
+      padding: 4mm 5mm;
+      border-top: 2px solid var(--purple);
+      background: var(--sand);
+    }
+
+    .important {
+      margin: 4mm 0;
+      padding: 4mm;
+      border: 1px solid #c7aa70;
+      background: #fff8e7;
+    }
+
+    .small {
+      color: var(--grey);
+      font-size: 9.2pt;
+    }
+  </style>
+</head>
+<body>
+  <section class="cover">
+    <div class="institution">
+      <p><strong>Université Ibn-Tofaïl</strong></p>
+      <p>École Nationale des Sciences Appliquées de Kénitra</p>
+      <p>Filière : [À renseigner]</p>
+      <p>Module M3 — Instrumentation et Informatique Industrielle</p>
+    </div>
+
+    <div class="title-panel">
+      <span class="tag">Examen pratique</span>
+      <h1>Arduino Uno<br>avec Proteus ISIS</h1>
+      <p>Compte rendu des quatre manipulations</p>
+    </div>
+
+    <div class="student-card">
+      <p><strong>Étudiant(e) :</strong> [Nom et prénom]</p>
+      <p><strong>Année universitaire :</strong> [À renseigner]</p>
+      <p><strong>Encadrant :</strong> M. Aymane BOUMEZZOUGH</p>
+      <p><strong>Date de réalisation :</strong> [À renseigner]</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Présentation du travail</h2>
+    <p>
+      Ce TP consiste à développer quatre petites applications autour d'une carte
+      Arduino Uno. Elles sont d'abord programmées dans Arduino IDE, puis prévues
+      pour être testées dans Proteus ISIS après chargement du fichier HEX. Chaque
+      manipulation cible une notion différente : la mesure analogique, les
+      temporisations, l'entrée numérique et la commande d'un servomoteur.
+    </p>
+    <p>
+      La démarche suivie est la même pour chaque partie. Le montage est câblé
+      conformément au sujet, les broches sont déclarées dans le programme, puis
+      le comportement attendu est comparé aux observations de la simulation.
+      Cette comparaison permet de repérer une erreur de câblage ou de logique.
+    </p>
+
+    <h3>Objectifs pédagogiques</h3>
+    <ul>
+      <li>acquérir une valeur avec <code>analogRead()</code> ;</li>
+      <li>utiliser <code>digitalRead()</code> et <code>digitalWrite()</code> ;</li>
+      <li>produire une séquence temporelle avec <code>delay()</code> ;</li>
+      <li>stabiliser une entrée grâce à une résistance pull-down ;</li>
+      <li>commander un servo avec <code>Servo.h</code> et <code>map()</code>.</li>
+    </ul>
+
+    <h3>Outils utilisés</h3>
+    <table>
+      <tr><th>Outil</th><th>Rôle dans le TP</th></tr>
+      <tr><td>Arduino IDE</td><td>Écriture, vérification et export du programme au format HEX</td></tr>
+      <tr><td>Proteus ISIS</td><td>Réalisation du schéma et observation du fonctionnement simulé</td></tr>
+      <tr><td>Arduino Uno R3</td><td>Carte cible commune aux quatre exercices</td></tr>
+    </table>
+
+    <div class="important">
+      <strong>État du document :</strong> les programmes ont été compilés pour
+      Arduino Uno. Les simulations Proteus n'ont pas été exécutées dans
+      l'environnement de préparation. Les zones réservées doivent donc recevoir
+      uniquement les captures et mesures réellement obtenues par l'étudiant.
+    </div>
+  </section>
+
+  <section class="exercise">
+    <h2>Manipulation 1 — Détection d'un seuil</h2>
+    <div class="lead">
+      <strong>But :</strong> utiliser le potentiomètre comme entrée analogique et
+      commander une LED rouge lorsque la mesure dépasse strictement 512.
+    </div>
+
+    <h3>Matériel et câblage</h3>
+    <div class="component-line">
+      <strong>Composants Proteus :</strong> ARDUINO UNO R3, POT-HG, LED-RED et
+      MINIRES 220 Ω.
+    </div>
+    <table>
+      <tr><th>Point du circuit</th><th>Raccordement</th></tr>
+      <tr><td>Deux extrémités du POT-HG</td><td>Une au 5 V et l'autre au GND</td></tr>
+      <tr><td>Curseur du POT-HG</td><td>Entrée analogique A0</td></tr>
+      <tr><td>Commande de la LED</td><td>D8 → résistance 220 Ω → anode de LED</td></tr>
+      <tr><td>Retour de la LED</td><td>Cathode vers GND</td></tr>
+    </table>
+
+    <h3>Emplacement du schéma</h3>
+    <div class="evidence">
+      [Insérer la capture Proteus de l'exercice 1]<br>
+      Les connexions A0, D8, 5 V et GND doivent être lisibles.
+    </div>
+
+    <h3>Programme employé</h3>
+    <pre><code>const int potentiometerPin = A0;
+const int ledPin = 8;
+
+void setup() {
+  // La LED est commandée par la broche 8.
+  pinMode(ledPin, OUTPUT);
+}
+
+void loop() {
+  // Lecture du potentiomètre entre 0 et 1023.
+  int analogValue = analogRead(potentiometerPin);
+
+  // La LED s'allume seulement au-dessus du seuil 512.
+  if (analogValue &gt; 512) {
+    digitalWrite(ledPin, HIGH);
+  } else {
+    digitalWrite(ledPin, LOW);
+  }
+}</code></pre>
+
+    <h3>Lecture du fonctionnement</h3>
+    <div class="logic">
+      <strong>Chaîne logique :</strong> position du potentiomètre → conversion
+      analogique sur 10 bits → comparaison à 512 → choix de l'état de D8.
+    </div>
+    <p>
+      L'entrée A0 fournit un nombre de 0 à 1023. La condition utilise le signe
+      « supérieur à » et non « supérieur ou égal ». Par conséquent, la mesure
+      512 laisse la LED éteinte ; la première valeur qui l'allume est 513.
+    </p>
+
+    <h3>Prévision et relevé expérimental</h3>
+    <table>
+      <tr><th>Valeur A0</th><th>État prévu</th><th>État observé</th></tr>
+      <tr><td>0 à 512</td><td>LED éteinte</td><td>[À compléter]</td></tr>
+      <tr><td>513 à 1023</td><td>LED allumée</td><td>[À compléter]</td></tr>
+    </table>
+    <div class="evidence">[Insérer une capture du résultat de simulation]</div>
+    <div class="notes">
+      <strong>Analyse personnelle :</strong> indiquer les valeurs testées,
+      l'instant du changement d'état et l'accord ou l'écart avec la prévision.
+      [...]
+    </div>
+
+    <div class="conclusion">
+      <strong>Bilan de la manipulation 1.</strong> La solution logicielle réalise
+      une commande tout-ou-rien à partir d'une mesure analogique. Elle respecte
+      le seuil strict fixé par l'énoncé. La validation du basculement entre 512
+      et 513 est à compléter avec les observations Proteus. Difficulté réelle :
+      [à renseigner].
+    </div>
+  </section>
+
+  <section class="exercise">
+    <h2>Manipulation 2 — Séquence d'un feu tricolore</h2>
+    <div class="lead">
+      <strong>But :</strong> répéter automatiquement l'ordre vert, jaune, rouge
+      avec des durées respectives de 3 s, 1 s et 3 s.
+    </div>
+
+    <h3>Matériel et câblage</h3>
+    <div class="component-line">
+      <strong>Composants Proteus :</strong> ARDUINO UNO R3, LED-GREEN,
+      LED-YELLOW, LED-RED et trois MINIRES 220 Ω.
+    </div>
+    <table>
+      <tr><th>Couleur</th><th>Broche</th><th>Branchement</th></tr>
+      <tr><td>Rouge</td><td>D13</td><td>D13 → 220 Ω → anode ; cathode → GND</td></tr>
+      <tr><td>Jaune</td><td>D12</td><td>D12 → 220 Ω → anode ; cathode → GND</td></tr>
+      <tr><td>Vert</td><td>D11</td><td>D11 → 220 Ω → anode ; cathode → GND</td></tr>
+    </table>
+
+    <h3>Emplacement du schéma</h3>
+    <div class="evidence">
+      [Insérer la capture Proteus de l'exercice 2]<br>
+      Identifier clairement les trois sorties et les trois résistances.
+    </div>
+
+    <h3>Programme employé</h3>
+    <pre><code>const int redLedPin = 13;
+const int yellowLedPin = 12;
+const int greenLedPin = 11;
+
+void setup() {
+  pinMode(redLedPin, OUTPUT);
+  pinMode(yellowLedPin, OUTPUT);
+  pinMode(greenLedPin, OUTPUT);
+}
+
+void loop() {
+  // Feu vert pendant 3 secondes.
+  digitalWrite(greenLedPin, HIGH);
+  digitalWrite(yellowLedPin, LOW);
+  digitalWrite(redLedPin, LOW);
+  delay(3000);
+
+  // Feu jaune pendant 1 seconde.
+  digitalWrite(greenLedPin, LOW);
+  digitalWrite(yellowLedPin, HIGH);
+  digitalWrite(redLedPin, LOW);
+  delay(1000);
+
+  // Feu rouge pendant 3 secondes.
+  digitalWrite(greenLedPin, LOW);
+  digitalWrite(yellowLedPin, LOW);
+  digitalWrite(redLedPin, HIGH);
+  delay(3000);
+}</code></pre>
+
+    <h3>Lecture du fonctionnement</h3>
+    <div class="logic">
+      <strong>Séquence :</strong> VERT/HIGH pendant 3000 ms → JAUNE/HIGH pendant
+      1000 ms → ROUGE/HIGH pendant 3000 ms → retour au début de
+      <code>loop()</code>.
+    </div>
+    <p>
+      Chaque étape allume une couleur et force les deux autres à LOW. Cette
+      écriture explicite empêche le maintien accidentel de deux feux. La fonction
+      <code>delay()</code> conserve l'état pendant la durée demandée. La période
+      du cycle complet vaut 7 secondes.
+    </p>
+
+    <h3>Prévision et relevé expérimental</h3>
+    <table>
+      <tr><th>Temps dans le cycle</th><th>Couleur prévue</th><th>Observation</th></tr>
+      <tr><td>0–3 s</td><td>Vert uniquement</td><td>[À compléter]</td></tr>
+      <tr><td>3–4 s</td><td>Jaune uniquement</td><td>[À compléter]</td></tr>
+      <tr><td>4–7 s</td><td>Rouge uniquement</td><td>[À compléter]</td></tr>
+    </table>
+    <div class="evidence">[Insérer les captures des trois phases du feu]</div>
+    <div class="notes">
+      <strong>Analyse personnelle :</strong> relever l'ordre, les durées et la
+      présence éventuelle d'un chevauchement entre deux couleurs. [...]
+    </div>
+
+    <div class="conclusion">
+      <strong>Bilan de la manipulation 2.</strong> Le programme construit une
+      séquence cyclique à trois états et traduit les secondes en millisecondes
+      dans <code>delay()</code>. Le contrôle final doit montrer le cycle
+      vert-jaune-rouge sans allumage simultané. Difficulté réelle : [à renseigner].
+    </div>
+  </section>
+
+  <section class="exercise">
+    <h2>Manipulation 3 — Éclairage commandé par bouton</h2>
+    <div class="lead">
+      <strong>But :</strong> obtenir une action non maintenue : la LED bleue est
+      active pendant l'appui et s'éteint dès que le bouton est relâché.
+    </div>
+
+    <h3>Matériel et câblage</h3>
+    <div class="component-line">
+      <strong>Composants Proteus :</strong> ARDUINO UNO R3, BUTTON, LED-BLUE,
+      une MINIRES 10 kΩ et une MINIRES 220 Ω.
+    </div>
+    <table>
+      <tr><th>Élément</th><th>Raccordement</th></tr>
+      <tr><td>Bouton</td><td>Entre le 5 V et l'entrée D2</td></tr>
+      <tr><td>Pull-down</td><td>10 kΩ entre D2 et GND</td></tr>
+      <tr><td>LED bleue</td><td>D7 → 220 Ω → anode ; cathode → GND</td></tr>
+    </table>
+
+    <h3>Emplacement du schéma</h3>
+    <div class="evidence">
+      [Insérer la capture Proteus de l'exercice 3]<br>
+      Faire apparaître la résistance 10 kΩ entre D2 et la masse.
+    </div>
+
+    <h3>Programme employé</h3>
+    <pre><code>const int buttonPin = 2;
+const int ledPin = 7;
+
+void setup() {
+  // Le bouton utilise une résistance pull-down externe de 10 kΩ.
+  pinMode(buttonPin, INPUT);
+  pinMode(ledPin, OUTPUT);
+}
+
+void loop() {
+  // La lecture vaut HIGH uniquement pendant l'appui.
+  int buttonState = digitalRead(buttonPin);
+
+  if (buttonState == HIGH) {
+    digitalWrite(ledPin, HIGH);
+  } else {
+    digitalWrite(ledPin, LOW);
+  }
+}</code></pre>
+
+    <h3>Lecture du fonctionnement</h3>
+    <div class="logic">
+      <strong>Au repos :</strong> la résistance impose 0 V sur D2, donc LOW et
+      LED éteinte.<br>
+      <strong>Pendant l'appui :</strong> le bouton applique 5 V sur D2, donc HIGH
+      et LED allumée.
+    </div>
+    <p>
+      La broche 2 est déclarée en <code>INPUT</code>, car le montage contient
+      déjà une résistance de rappel externe. Le programme recopie le sens logique
+      du bouton sur la LED sans mémoriser l'état précédent.
+    </p>
+
+    <h3>Prévision et relevé expérimental</h3>
+    <table>
+      <tr><th>Situation</th><th>D2 attendu</th><th>D7 attendu</th><th>Observation</th></tr>
+      <tr><td>Bouton libre</td><td>LOW</td><td>LOW</td><td>[À compléter]</td></tr>
+      <tr><td>Bouton maintenu</td><td>HIGH</td><td>HIGH</td><td>[À compléter]</td></tr>
+      <tr><td>Bouton relâché</td><td>LOW</td><td>LOW</td><td>[À compléter]</td></tr>
+    </table>
+    <div class="evidence">[Insérer les captures bouton relâché et bouton appuyé]</div>
+    <div class="notes">
+      <strong>Analyse personnelle :</strong> décrire la réaction pendant l'appui
+      et au relâchement. Indiquer si l'entrée reste stable au repos. [...]
+    </div>
+
+    <div class="conclusion">
+      <strong>Bilan de la manipulation 3.</strong> Le montage illustre le rôle
+      essentiel du pull-down : fournir un niveau bas défini lorsque le contact
+      est ouvert. Le résultat recherché n'est pas un interrupteur mémorisé, mais
+      un éclairage limité à la durée de l'appui. Difficulté réelle : [à renseigner].
+    </div>
+  </section>
+
+  <section class="exercise">
+    <h2>Manipulation 4 — Positionnement d'un servomoteur</h2>
+    <div class="lead">
+      <strong>But :</strong> faire correspondre la course 0–1023 du
+      potentiomètre à une consigne angulaire allant de 0° à 180°.
+    </div>
+
+    <h3>Matériel et câblage</h3>
+    <div class="component-line">
+      <strong>Composants Proteus :</strong> ARDUINO UNO R3, POT-HG et
+      MOTOR-SERVO.
+    </div>
+    <table>
+      <tr><th>Élément</th><th>Raccordement</th></tr>
+      <tr><td>Potentiomètre</td><td>Extrémités au 5 V et GND ; curseur sur A0</td></tr>
+      <tr><td>Signal du servo</td><td>Broche PWM D9</td></tr>
+      <tr><td>Alimentation du servo</td><td>VCC au 5 V et masse au GND commun</td></tr>
+    </table>
+    <p class="small">
+      En montage réel, une alimentation 5 V séparée peut être nécessaire pour le
+      courant du servomoteur. Sa masse doit être commune avec celle de l'Arduino.
+    </p>
+
+    <h3>Emplacement du schéma</h3>
+    <div class="evidence">
+      [Insérer la capture Proteus de l'exercice 4]<br>
+      Montrer A0, D9, les alimentations et la masse commune.
+    </div>
+
+    <h3>Programme employé</h3>
+    <pre><code>#include &lt;Servo.h&gt;
+
+const int potentiometerPin = A0;
+const int servoPin = 9;
+
+Servo myServo;
+
+void setup() {
+  // Association du signal du servomoteur à la broche 9.
+  myServo.attach(servoPin);
+}
+
+void loop() {
+  // Lecture de la position du potentiomètre.
+  int analogValue = analogRead(potentiometerPin);
+
+  // Conversion de 0-1023 vers un angle de 0-180 degrés.
+  int angle = map(analogValue, 0, 1023, 0, 180);
+
+  // Application de l'angle au servomoteur.
+  myServo.write(angle);
+}</code></pre>
+
+    <h3>Lecture du fonctionnement</h3>
+    <div class="logic">
+      <strong>Traitement :</strong> mesure A0 → <code>map()</code> vers 0–180 →
+      <code>myServo.write(angle)</code> → nouvelle position du servo.
+    </div>
+    <p>
+      L'objet <code>myServo</code> est lié à D9 par <code>attach()</code>. Dans
+      la boucle, la conversion conserve les deux extrêmes : une lecture nulle
+      donne 0°, tandis que 1023 donne 180°. Une lecture proche du milieu fournit
+      un angle proche de 90°.
+    </p>
+
+    <h3>Prévision et relevé expérimental</h3>
+    <table>
+      <tr><th>Lecture A0</th><th>Angle prévu</th><th>Angle observé</th></tr>
+      <tr><td>0</td><td>0°</td><td>[À compléter]</td></tr>
+      <tr><td>Environ 512</td><td>Environ 90°</td><td>[À compléter]</td></tr>
+      <tr><td>1023</td><td>180°</td><td>[À compléter]</td></tr>
+    </table>
+    <div class="evidence">[Insérer les captures des positions 0°, 90° et 180°]</div>
+    <div class="notes">
+      <strong>Analyse personnelle :</strong> comparer les positions observées aux
+      trois consignes et commenter la continuité du mouvement. [...]
+    </div>
+
+    <div class="conclusion">
+      <strong>Bilan de la manipulation 4.</strong> La fonction
+      <code>map()</code> adapte la plage du convertisseur analogique à la plage
+      mécanique demandée. La bibliothèque Servo prend ensuite en charge le signal
+      de commande sur D9. Les positions réelles doivent être consignées après
+      simulation. Difficulté réelle : [à renseigner].
+    </div>
+  </section>
+
+  <section class="new-page">
+    <h2>Problèmes rencontrés</h2>
+    <p>
+      Cette rubrique est réservée aux incidents réellement observés. Pour chaque
+      problème, préciser le symptôme, la cause trouvée et la correction réalisée.
+    </p>
+    <div class="notes">
+      <strong>Problème n°1 :</strong> [...]<br>
+      <strong>Cause :</strong> [...]<br>
+      <strong>Correction :</strong> [...]
+    </div>
+    <div class="notes">
+      <strong>Problème n°2 :</strong> [...]<br>
+      <strong>Cause :</strong> [...]<br>
+      <strong>Correction :</strong> [...]
+    </div>
+
+    <h2>Synthèse finale</h2>
+    <p>
+      Ce TP réunit quatre usages fondamentaux de l'Arduino Uno. Le premier
+      transforme une mesure analogique en décision binaire. Le deuxième organise
+      plusieurs sorties dans le temps. Le troisième relie directement l'état
+      électrique d'un bouton à une LED, avec une résistance de rappel. Le dernier
+      convertit la position d'un potentiomètre en angle de servomoteur.
+    </p>
+    <p>
+      Les programmes respectent les affectations imposées : A0 et D8 pour le
+      seuil, D13-D12-D11 pour le feu, D2 et D7 pour le bouton, puis A0 et D9 pour
+      le servo. Les temporisations du feu sont exactement de 3000 ms, 1000 ms et
+      3000 ms. La partie restante consiste à réaliser les montages Proteus,
+      recueillir les preuves visuelles et compléter l'analyse avec les résultats
+      réellement mesurés.
+    </p>
+
+    <h3>Contrôle avant l'envoi</h3>
+    <ul>
+      <li>□ compléter l'identité, la filière et l'année universitaire ;</li>
+      <li>□ insérer des schémas Proteus nets et lisibles ;</li>
+      <li>□ renseigner toutes les colonnes « observation » ;</li>
+      <li>□ expliquer les écarts éventuels sans inventer de résultat ;</li>
+      <li>□ remplacer les rubriques de difficultés par l'expérience réelle ;</li>
+      <li>□ exporter sous le nom <code>Nom_Prenom_Examen_TP_Arduino.pdf</code>.</li>
+    </ul>
+  </section>
+</body>
+</html>
