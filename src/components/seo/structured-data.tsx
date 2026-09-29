@@ -14,6 +14,7 @@ import {
   RETRO_DRIFT_GAMEPLAY_ALT,
   RETRO_DRIFT_GAMEPLAY_IMAGE,
   RETRO_DRIFT_MAIN_ALT,
+  RETRO_DRIFT_MAIN_IMAGE,
 } from "@/lib/retro-drift-seo";
 import { translate } from "@/lib/i18n";
 import { SITE_NAME } from "@/lib/site-config";
@@ -84,7 +85,7 @@ export function GameJsonLd({
           name: game.title,
           description,
           path: gamePath,
-          image: game.thumbnail,
+          image: retroDrift ? RETRO_DRIFT_MAIN_IMAGE : game.thumbnail,
           imageAlt: retroDrift ? RETRO_DRIFT_MAIN_ALT : undefined,
           screenshots: retroDrift ? [RETRO_DRIFT_GAMEPLAY_IMAGE] : [],
           screenshotAlts: retroDrift ? [RETRO_DRIFT_GAMEPLAY_ALT] : undefined,

@@ -33,8 +33,8 @@ export function RetroDriftArticle() {
           <img
             src={RETRO_DRIFT_MAIN_IMAGE}
             alt={RETRO_DRIFT_MAIN_ALT}
-            width={640}
-            height={360}
+            width={960}
+            height={540}
             className="w-full rounded-xl"
           />
         </figure>
@@ -42,8 +42,8 @@ export function RetroDriftArticle() {
           <img
             src={RETRO_DRIFT_GAMEPLAY_IMAGE}
             alt={RETRO_DRIFT_GAMEPLAY_ALT}
-            width={640}
-            height={360}
+            width={960}
+            height={540}
             className="w-full rounded-xl"
           />
         </figure>

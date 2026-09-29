@@ -12,17 +12,14 @@ export const RETRO_DRIFT_DESCRIPTION =
 /** Single visible H1. The article heading is not repeated below the game. */
 export const RETRO_DRIFT_H1 = "Retro Drift - Play Free Online";
 
-export const RETRO_DRIFT_MAIN_IMAGE = "/game-covers/retro-drift.png";
+/** The gameplay screen supplied for this page, not the neon cover. */
+export const RETRO_DRIFT_MAIN_IMAGE = "/game-covers/retro-drift-gameplay.png";
 export const RETRO_DRIFT_MAIN_ALT =
   "Retro Drift online racing game with a car drifting around a track";
 
 export const RETRO_DRIFT_GAMEPLAY_IMAGE = "/game-covers/retro-drift-gameplay.png";
-/**
- * The gameplay view shows a pink car on a city road with tire tracks,
- * not a sharp turn, so the alt text describes what is actually visible.
- */
 export const RETRO_DRIFT_GAMEPLAY_ALT =
-  "Retro Drift gameplay showing a pink car on a city road";
+  "Retro Drift gameplay showing a car drifting through a sharp turn";
 
 export const RETRO_DRIFT_FAQS: FaqItemInput[] = [
   {
