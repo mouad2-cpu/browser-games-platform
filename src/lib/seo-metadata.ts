@@ -30,6 +30,10 @@ type BuildPageMetadataOptions = {
   description: string;
   /** Site-relative or absolute image URLs for OG/Twitter. */
   images?: string[];
+  /** Alt text applied to each social image. */
+  imageAlt?: string;
+  imageWidth?: number;
+  imageHeight?: number;
   /** When false, emit noindex. Default true. */
   index?: boolean;
   follow?: boolean;
@@ -119,6 +123,9 @@ export function buildPageMetadata({
   title,
   description,
   images,
+  imageAlt,
+  imageWidth,
+  imageHeight,
   index = true,
   follow = true,
   ogTitle,
@@ -129,7 +136,12 @@ export function buildPageMetadata({
   const resolvedOgTitle = ogTitle ?? title;
   const hasCustomImages = Boolean(images?.length);
   const ogImages = hasCustomImages
-    ? images!.map((url) => ({ url }))
+    ? images!.map((url) => ({
+        url,
+        ...(imageAlt ? { alt: imageAlt } : {}),
+        ...(imageWidth ? { width: imageWidth } : {}),
+        ...(imageHeight ? { height: imageHeight } : {}),
+      }))
     : [defaultSocialImage()];
   const metaDescription = exactDescription
     ? description.replace(/\s+/g, " ").trim()

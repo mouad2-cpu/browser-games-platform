@@ -90,6 +90,10 @@ export type VideoGameInput = {
   screenshotAlts?: Array<string | null | undefined>;
   /** Skip the generic "Unblocked Game" keyword on this entity. */
   omitUnblockedKeyword?: boolean;
+  /** Omit author when the page does not name one. */
+  omitAuthor?: boolean;
+  /** Omit a price Offer when the page does not show a price. */
+  omitOffer?: boolean;
   /** Parallel optional dimensions for screenshots (same order). */
   screenshotSizes?: Array<{ width?: number; height?: number } | null | undefined>;
   genres?: string[];

@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { getSession } from "@/lib/auth";
-import { getGameBySlug, getRelatedGames, getPopularGamesPaginated } from "@/lib/games";
+import { getGameBySlug, getRelatedGames, getPopularGamesPaginated, type GameDetail } from "@/lib/games";
 import { isStaffRole } from "@/lib/rbac";
 import { getGameVoteStats, resolveVoterId } from "@/lib/game-votes.server";
 import { SITE_URL } from "@/lib/site-config";
@@ -10,6 +10,8 @@ import {
   isRetroDriftSlug,
   RETRO_DRIFT_DESCRIPTION,
   RETRO_DRIFT_FAQS,
+  RETRO_DRIFT_GAMEPLAY_ALT,
+  RETRO_DRIFT_GAMEPLAY_IMAGE,
   RETRO_DRIFT_H1,
   RETRO_DRIFT_TITLE,
 } from "@/lib/retro-drift-seo";
@@ -20,6 +22,16 @@ import {
 } from "@/lib/seo-metadata";
 import { GameJsonLd } from "@/components/seo/structured-data";
 import { GameClient } from "./game-client";
+
+function scrubRetroDriftCopy(game: GameDetail): GameDetail {
+  const drop = (value: string | null) => (value && /unblocked/i.test(value) ? null : value);
+  return {
+    ...game,
+    description: drop(game.description),
+    metaDescription: drop(game.metaDescription),
+    metaTitle: drop(game.metaTitle),
+  };
+}
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -38,7 +50,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ogTitle: RETRO_DRIFT_TITLE,
       absoluteTitle: true,
       exactDescription: true,
-      images: game.thumbnail ? [game.thumbnail] : undefined,
+      images: [RETRO_DRIFT_GAMEPLAY_IMAGE],
+      imageAlt: RETRO_DRIFT_GAMEPLAY_ALT,
+      imageWidth: 1024,
+      imageHeight: 480,
     });
   }
 
@@ -96,7 +111,7 @@ export default async function GamePage({ params }: Props) {
         faqs={retroDrift ? RETRO_DRIFT_FAQS : seoContent!.faqs}
       />
       <GameClient
-        game={game}
+        game={retroDrift ? scrubRetroDriftCopy(game) : game}
         relatedGames={playNextGames}
         siteUrl={SITE_URL}
         showPlayCount={showPlayCount}

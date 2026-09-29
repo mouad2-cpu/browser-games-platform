@@ -89,7 +89,7 @@ export function RetroDriftArticle() {
         </h2>
         <div className="game-seo-prose">
           <p>
-            The appeal of <strong>Retro Drift</strong> comes from its combination of simple
+            The appeal of Retro Drift comes from its combination of simple
             controls and challenging arcade gameplay. You don&apos;t need to spend a long time
             learning complicated mechanics before enjoying the game.
           </p>

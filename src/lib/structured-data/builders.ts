@@ -260,19 +260,21 @@ export function buildVideoGameSchema(
     genre: input.genres?.length ? input.genres : undefined,
     // Reference the sitewide Organization — do not nest a duplicate Organization object.
     publisher: { "@id": SITE_IDS.organization },
-    author: { "@id": SITE_IDS.organization },
+    author: input.omitAuthor ? undefined : { "@id": SITE_IDS.organization },
     operatingSystem: "Web Browser",
     applicationCategory: "GameApplication",
     gamePlatform: "Web Browser",
     datePublished: toIsoDate(input.datePublished),
     dateModified: toIsoDateTime(input.dateModified) ?? toIsoDate(input.dateModified),
-    offers: {
-      "@type": "Offer",
-      price: 0,
-      priceCurrency: "USD",
-      availability: "https://schema.org/InStock",
-      category: "free",
-    },
+    offers: input.omitOffer
+      ? undefined
+      : {
+          "@type": "Offer",
+          price: 0,
+          priceCurrency: "USD",
+          availability: "https://schema.org/InStock",
+          category: "free",
+        },
     aggregateRating: aggregateRating ?? undefined,
     isAccessibleForFree: true,
   });
