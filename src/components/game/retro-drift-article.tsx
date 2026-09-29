@@ -3,51 +3,30 @@ import {
   RETRO_DRIFT_FAQS,
   RETRO_DRIFT_GAMEPLAY_ALT,
   RETRO_DRIFT_GAMEPLAY_IMAGE,
-  RETRO_DRIFT_MAIN_ALT,
-  RETRO_DRIFT_MAIN_IMAGE,
 } from "@/lib/retro-drift-seo";
 import "./game-seo-section.css";
 
 const linkClass = "font-semibold text-[var(--color-accent)] underline underline-offset-2";
 
+export function RetroDriftIntro() {
+  return (
+    <div className="max-w-3xl space-y-3 text-[0.95rem] leading-7 text-[var(--color-muted)]">
+      <p>
+        Looking for a fast <strong>drift racing game</strong>? <strong>Retro Drift</strong> puts
+        you on the road with simple controls and corners that reward good timing. Hold the line,
+        keep the car steady, and see how high you can push the score.
+      </p>
+      <p>
+        The retro style is easy to read, and a run only takes a few minutes. You can play Retro
+        Drift for a quick session or stay and chase a better score.
+      </p>
+    </div>
+  );
+}
+
 export function RetroDriftArticle() {
   return (
     <div className="game-seo">
-      <section className="game-seo-block" aria-labelledby="retro-drift-intro">
-        <div className="game-seo-prose">
-          <p id="retro-drift-intro">
-            Looking for a fast and entertaining <strong>drift racing game</strong>?{" "}
-            <strong>Retro Drift</strong> delivers a simple but challenging arcade driving
-            experience where timing, control, and precision are the keys to success. Get behind
-            the wheel, take on winding roads, master sharp turns, and see how high you can push
-            your score.
-          </p>
-          <p>
-            With its retro-inspired style and easy-to-understand gameplay, Retro Drift is a great
-            choice for players who enjoy quick racing games that are easy to start but difficult
-            to master. Whether you have a few minutes to spare or want to improve your best score,
-            you can jump straight into the action and start drifting.
-          </p>
-        </div>
-        <figure className="mt-5">
-          <img
-            src={RETRO_DRIFT_MAIN_IMAGE}
-            alt={RETRO_DRIFT_MAIN_ALT}
-            width={960}
-            height={540}
-            className="w-full rounded-xl"
-          />
-        </figure>
-        <figure className="mt-4">
-          <img
-            src={RETRO_DRIFT_GAMEPLAY_IMAGE}
-            alt={RETRO_DRIFT_GAMEPLAY_ALT}
-            width={960}
-            height={540}
-            className="w-full rounded-xl"
-          />
-        </figure>
-      </section>
 
       <section className="game-seo-block" aria-labelledby="retro-drift-play-online">
         <h2 id="retro-drift-play-online" className="game-seo-heading">
@@ -70,8 +49,9 @@ export function RetroDriftArticle() {
             your car off course.
           </p>
           <p>
-            If you enjoy <strong>Retro Drift online</strong>, you&apos;ll quickly discover that the
-            simple controls hide a surprisingly challenging gameplay experience.
+            If you enjoy <strong>Retro Drift online</strong>, the simple controls still leave room
+            for a real challenge. It fits next to other online racing games you can open in the
+            browser and start right away.
           </p>
         </div>
       </section>
@@ -121,10 +101,24 @@ export function RetroDriftArticle() {
             precise movement, and score chasing.
           </p>
           <p>
-            Because the gameplay is easy to understand, Retro Drift works well for both casual
-            players and racing fans who enjoy improving their performance through practice.
+            Because the gameplay is easy to understand, the Retro Drift game works well for a short
+            session and for players who like improving through practice.
           </p>
         </div>
+        <figure className="mx-auto mt-5 max-w-3xl">
+          <img
+            src={RETRO_DRIFT_GAMEPLAY_IMAGE}
+            alt={RETRO_DRIFT_GAMEPLAY_ALT}
+            width={1024}
+            height={480}
+            loading="lazy"
+            decoding="async"
+            className="h-auto w-full rounded-xl"
+          />
+          <figcaption className="mt-2 text-center text-sm text-[var(--color-muted)]">
+            Retro Drift gameplay
+          </figcaption>
+        </figure>
       </section>
 
       <section className="game-seo-block" aria-labelledby="retro-drift-tips">
@@ -178,9 +172,8 @@ export function RetroDriftArticle() {
             challenge to keep you coming back.
           </p>
           <p>
-            Fans of <strong>car drifting games</strong>, arcade racing, and retro-style games can
-            enjoy experimenting with different driving techniques and working toward better
-            results.
+            Fans of car drifting, arcade racing, and retro-style games can try different lines and
+            work toward a cleaner run.
           </p>
           <p>
             If you like games where your performance improves through practice, Retro Drift gives
@@ -225,15 +218,19 @@ export function RetroDriftArticle() {
             <Link href="/c/racing" className={linkClass}>
               more racing games
             </Link>
-            ,{" "}
+            , try{" "}
+            <Link href="/game/drift-dudes" className={linkClass}>
+              Drift Dudes
+            </Link>{" "}
+            for another drifting game, or open{" "}
             <Link href="/c/arcade" className={linkClass}>
               more arcade racing games
             </Link>
-            , or{" "}
+            . You can also check{" "}
             <Link href="/popular" className={linkClass}>
               popular car games
-            </Link>
-            . You can also{" "}
+            </Link>{" "}
+            or{" "}
             <Link href="/all-games" className={linkClass}>
               browse more games
             </Link>

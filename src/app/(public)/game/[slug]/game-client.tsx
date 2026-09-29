@@ -8,7 +8,7 @@ import { GameToolbar } from "@/components/game/game-toolbar";
 import { GameBreadcrumb } from "@/components/game/game-breadcrumb";
 import { GameInfoPanel } from "@/components/game/game-info-panel";
 import { GameSeoSection } from "@/components/game/game-seo-section";
-import { RetroDriftArticle } from "@/components/game/retro-drift-article";
+import { RetroDriftArticle, RetroDriftIntro } from "@/components/game/retro-drift-article";
 import { PlayNextSidebar } from "@/components/game/play-next-sidebar";
 import { PlayNextMobileStrip } from "@/components/game/play-next-mobile-strip";
 import { ReportPanel } from "@/components/game/report-panel";
@@ -78,11 +78,20 @@ export function GameClient({
 
   const gameUrl = `${siteUrl}/game/${game.slug}`;
   const embedPath = game.embedPath ?? "";
+  const retroDrift = isRetroDriftSlug(game.slug);
 
   return (
     <div className="mx-auto w-full max-w-[1400px] px-3 py-4 sm:px-4 sm:py-6">
       <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:gap-6">
         <div className="min-w-0 flex-1">
+          {retroDrift && (
+            <header className="mb-4 space-y-3">
+              <h1 className="text-xl font-bold leading-tight text-[var(--color-text)] sm:text-2xl">
+                {pageTitle}
+              </h1>
+              <RetroDriftIntro />
+            </header>
+          )}
           {embedPath ? (
             <>
               <GamePlayer
@@ -92,9 +101,11 @@ export function GameClient({
               />
 
               <div className="mt-4 space-y-2">
-                <h1 className="text-xl font-bold leading-tight text-[var(--color-text)] sm:text-2xl">
-                  {pageTitle}
-                </h1>
+                {!retroDrift && (
+                  <h1 className="text-xl font-bold leading-tight text-[var(--color-text)] sm:text-2xl">
+                    {pageTitle}
+                  </h1>
+                )}
                 <div className="flex flex-wrap items-center justify-between gap-3">
                   <GameBreadcrumb categories={game.categories} title={game.title} />
                   <GameToolbar
@@ -110,9 +121,11 @@ export function GameClient({
             </>
           ) : (
             <div className="space-y-4">
-              <h1 className="text-xl font-bold leading-tight text-[var(--color-text)] sm:text-2xl">
-                {pageTitle}
-              </h1>
+              {!retroDrift && (
+                <h1 className="text-xl font-bold leading-tight text-[var(--color-text)] sm:text-2xl">
+                  {pageTitle}
+                </h1>
+              )}
               <p className="rounded-2xl bg-[var(--color-surface)] p-8 text-center text-[var(--color-muted)]">
                 This game is not available to play yet.
               </p>

@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import type { GameCard } from "@/lib/games";
 import { getGameImageAlt } from "@/lib/game-image-alt";
 
@@ -10,6 +11,7 @@ type Props = {
 };
 
 export function PlayNextMobileStrip({ games }: Props) {
+  const pathname = usePathname();
   if (games.length === 0) return null;
 
   return (
@@ -27,7 +29,9 @@ export function PlayNextMobileStrip({ games }: Props) {
               {game.thumbnail ? (
                 <Image
                   src={game.thumbnail}
-                  alt={getGameImageAlt(game.title)}
+                  alt={getGameImageAlt(game.title, {
+                    omitUnblocked: pathname === "/game/retro-drift",
+                  })}
                   fill
                   className="object-cover transition group-hover:scale-105"
                   sizes="120px"

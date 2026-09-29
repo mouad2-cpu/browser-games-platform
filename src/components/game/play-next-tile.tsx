@@ -3,6 +3,7 @@
 import { useState, useRef, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import type { GameCard } from "@/lib/games";
 import { getGameImageAlt } from "@/lib/game-image-alt";
 
@@ -11,6 +12,7 @@ type Props = {
 };
 
 export function PlayNextTile({ game }: Props) {
+  const pathname = usePathname();
   const [hovering, setHovering] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const hasVideo = !!game.previewVideo;
@@ -46,7 +48,9 @@ export function PlayNextTile({ game }: Props) {
         {game.thumbnail ? (
           <Image
             src={game.thumbnail}
-            alt={getGameImageAlt(game.title)}
+            alt={getGameImageAlt(game.title, {
+              omitUnblocked: pathname === "/game/retro-drift",
+            })}
             fill
             className={`object-cover transition duration-300 ${
               hovering && hasVideo ? "opacity-0" : "opacity-100"
