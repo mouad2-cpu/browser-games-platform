@@ -2,12 +2,22 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { getSession } from "@/lib/auth";
 import { getGameBySlug, getRelatedGames, getPopularGamesPaginated } from "@/lib/games";
-import { descriptionToMetaDescription } from "@/lib/meta-description";
 import { isStaffRole } from "@/lib/rbac";
 import { getGameVoteStats, resolveVoterId } from "@/lib/game-votes.server";
 import { SITE_URL } from "@/lib/site-config";
 import { getGameSeoContent } from "@/lib/game-seo-content";
-import { buildPageMetadata, formatGameMetaTitle } from "@/lib/seo-metadata";
+import {
+  isRetroDriftSlug,
+  RETRO_DRIFT_DESCRIPTION,
+  RETRO_DRIFT_FAQS,
+  RETRO_DRIFT_H1,
+  RETRO_DRIFT_TITLE,
+} from "@/lib/retro-drift-seo";
+import {
+  buildPageMetadata,
+  resolveGameMetaDescription,
+  resolveGameMetaTitle,
+} from "@/lib/seo-metadata";
 import { GameJsonLd } from "@/components/seo/structured-data";
 import { GameClient } from "./game-client";
 
@@ -20,12 +30,22 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const game = await getGameBySlug(slug);
   if (!game) return { title: "Game Not Found" };
 
-  const title = formatGameMetaTitle(game.title);
-  const description = descriptionToMetaDescription(
-    game.metaDescription ??
-      (game.description
-        ? game.description
-        : `Play ${game.title} free online on ZenFun Games — instant HTML5 browser play, no download.`)
+  if (isRetroDriftSlug(slug)) {
+    return buildPageMetadata({
+      path: `/game/${slug}`,
+      title: RETRO_DRIFT_TITLE,
+      description: RETRO_DRIFT_DESCRIPTION,
+      ogTitle: RETRO_DRIFT_TITLE,
+      absoluteTitle: true,
+      exactDescription: true,
+      images: game.thumbnail ? [game.thumbnail] : undefined,
+    });
+  }
+
+  const title = resolveGameMetaTitle(game.title, game.metaTitle);
+  const description = resolveGameMetaDescription(
+    game.title,
+    game.metaDescription ?? game.description
   );
 
   return buildPageMetadata({
@@ -58,19 +78,22 @@ export default async function GamePage({ params }: Props) {
     playNextGames = popular.games.filter((g) => g.id !== game.id);
   }
 
-  const seoContent = getGameSeoContent({
-    title: game.title,
-    slug: game.slug,
-    description: game.description,
-    categories: game.categories,
-  });
+  const retroDrift = isRetroDriftSlug(slug);
+  const seoContent = retroDrift
+    ? null
+    : getGameSeoContent({
+        title: game.title,
+        slug: game.slug,
+        description: game.description,
+        categories: game.categories,
+      });
 
   return (
     <>
       <GameJsonLd
         game={game}
         votes={{ likes: initialVoteStats.likes, dislikes: initialVoteStats.dislikes }}
-        faqs={seoContent.faqs}
+        faqs={retroDrift ? RETRO_DRIFT_FAQS : seoContent!.faqs}
       />
       <GameClient
         game={game}
@@ -79,6 +102,9 @@ export default async function GamePage({ params }: Props) {
         showPlayCount={showPlayCount}
         initialVoteStats={initialVoteStats}
         seoContent={seoContent}
+        pageTitle={
+          retroDrift ? RETRO_DRIFT_H1 : resolveGameMetaTitle(game.title, game.metaTitle)
+        }
       />
     </>
   );

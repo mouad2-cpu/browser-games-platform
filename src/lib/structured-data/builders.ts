@@ -264,7 +264,6 @@ export function buildVideoGameSchema(
     operatingSystem: "Web Browser",
     applicationCategory: "GameApplication",
     gamePlatform: "Web Browser",
-    playMode: "https://schema.org/SinglePlayer",
     datePublished: toIsoDate(input.datePublished),
     dateModified: toIsoDateTime(input.dateModified) ?? toIsoDate(input.dateModified),
     offers: {
@@ -286,7 +285,7 @@ function buildVideoGameKeywords(input: VideoGameInput): string {
     ...(input.genres ?? []).slice(0, 2),
     "Browser Game",
     "HTML5 Game",
-    "Unblocked Game",
+    ...(input.omitUnblockedKeyword ? [] : ["Unblocked Game"]),
   ]
     .map((part) => part.trim())
     .filter(Boolean);
@@ -363,7 +362,7 @@ export function buildHomePageGraph(input: HomePageGraphInput = {}): JsonLdGraph 
   const name = input.name ?? SITE_NAME;
   const description =
     input.description ??
-    `${SITE_NAME} features the latest and best free online games. Play fun HTML5 games in your browser with no downloads.`;
+    `Play free unblocked games in your browser on ${SITE_NAME}. HTML5 titles start instantly — no download.`;
   const inLanguage = input.inLanguage ?? SITE_IN_LANGUAGE;
 
   const logo = buildSiteLogoImageObject();
@@ -430,8 +429,8 @@ export function buildGamePageGraph(input: {
       buildImageObjectSchema({
         id: imageId,
         url: input.game.image,
-        alt: `${input.game.name} logo`,
-        description: `${input.game.name} game thumbnail`,
+        alt: input.game.imageAlt?.trim() || `${input.game.name} logo`,
+        description: input.game.imageAlt?.trim() || `${input.game.name} game thumbnail`,
         width: input.game.imageWidth,
         height: input.game.imageHeight,
         encodingFormat: guessImageEncodingFormat(input.game.image),
@@ -451,8 +450,12 @@ export function buildGamePageGraph(input: {
         buildImageObjectSchema({
           id: screenshotIds![index],
           url,
-          alt: `${input.game.name} screenshot ${index + 1}`,
-          description: `${input.game.name} screenshot ${index + 1}`,
+          alt:
+            input.game.screenshotAlts?.[index]?.trim() ||
+            `${input.game.name} screenshot ${index + 1}`,
+          description:
+            input.game.screenshotAlts?.[index]?.trim() ||
+            `${input.game.name} screenshot ${index + 1}`,
           width: size?.width,
           height: size?.height,
           encodingFormat: guessImageEncodingFormat(url),

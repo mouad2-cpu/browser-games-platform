@@ -18,6 +18,8 @@ export type GameSeoContent = {
   commonMistake: string;
   unblockedTitle: string;
   unblocked: string;
+  /** Contextual links to the category cluster and list pages. */
+  links: { href: string; label: string }[];
   faqs: FaqItemInput[];
 };
 
@@ -41,126 +43,136 @@ function primaryGenre(categories: { slug: string; name: string }[]): {
   return { name, lower: name.toLowerCase(), slug: primary.slug };
 }
 
+function isGeneratedDescription(title: string, description: string | null): boolean {
+  if (!description?.trim()) return true;
+  return (
+    description.includes(`**Play ${title} free online**`) ||
+    description.includes(`Play ${title} free online on ${SITE_NAME}.`)
+  );
+}
+
 function overviewFromDescription(title: string, description: string | null, genreLower: string): string[] {
-  if (description?.trim()) {
-    const plain = descriptionToMetaDescription(description, 520);
-    if (plain) {
-      return [
-        plain,
-        `${title} is a free online ${genreLower} game you can play instantly in your browser on ${SITE_NAME}. No download or installation is required — just open the game and start playing on desktop, tablet, or mobile.`,
-      ];
-    }
+  const playLine = `${title} is free to play in your browser on ${SITE_NAME}. It is an HTML5 ${genreLower} game — no download and no account. Press play on this page to start on desktop, tablet, or mobile.`;
+
+  if (!isGeneratedDescription(title, description)) {
+    const plain = descriptionToMetaDescription(description ?? "", 420);
+    if (plain) return [plain, playLine];
   }
 
-  return [
-    `${title} is a free online ${genreLower} game where you jump straight into the action in your web browser. The core loop is easy to learn and rewarding to master, whether you want a quick session or a longer playthrough.`,
-    `Play ${title} on ${SITE_NAME} with no downloads, no installs, and no sign-up. It runs as an HTML5 browser game on desktop, tablet, and mobile, so you can start playing in seconds.`,
-  ];
+  return [playLine];
 }
 
 function howToSteps(title: string, genreSlug: string): string[] {
+  const open = `Open ${title} on this page and press play. Nothing needs to be installed.`;
+  const controls =
+    "Follow the controls shown inside the game. Desktop builds usually use a keyboard or mouse; phones and tablets usually use touch.";
+
   switch (genreSlug) {
     case "puzzle":
       return [
-        `Open ${title} and read the first level’s goal — match, arrange, or clear the board according to the rules shown on screen.`,
-        "Use your mouse, keyboard, or touch controls to make moves. Experiment early; most puzzles teach through play.",
-        "Clear each stage to unlock the next. Watch for move limits, timers, or special tiles that change the strategy.",
-        "Replay earlier levels to improve your score or finish with fewer moves once you understand the patterns.",
+        open,
+        controls,
+        "Read the goal on the first board, then make moves until the level clears.",
+        "Replay a level if you want a cleaner solution or a better score.",
       ];
     case "racing":
       return [
-        `Start ${title} and choose your vehicle or race mode if the game offers options.`,
-        "Use keyboard arrows/WASD or on-screen controls to steer, accelerate, and brake around the track.",
-        "Stay on course, avoid obstacles or rivals, and cross the finish line as fast as you can.",
-        "Unlock new tracks or cars by winning races and improving your best times.",
+        open,
+        controls,
+        "Steer through the course and finish the race. Later tracks are usually stricter about corners.",
+        "Retry a run to improve your time.",
       ];
     case "sports":
       return [
-        `Launch ${title} and pick a match, challenge, or practice mode if available.`,
-        "Use the on-screen prompts for shooting, passing, swinging, or aiming — timing is usually the key skill.",
-        "Score points, win rounds, or complete objectives to progress through the game.",
-        "Retry tough moments and refine your timing to beat your previous best performance.",
+        open,
+        controls,
+        "Use the prompts in the game for the main action, such as a shot, pass, or swing.",
+        "Retry a round to improve your timing.",
       ];
     case "strategy":
       return [
-        `Begin ${title} and learn the basic resources, units, or build options in the first mission.`,
-        "Plan ahead: gather resources, place defenses or units, and react to enemy waves or opposing moves.",
-        "Complete objectives to unlock upgrades, new units, or harder stages.",
-        "Try alternate strategies on replay — many strategy games reward experimentation.",
+        open,
+        controls,
+        "Learn the first objective, then spend resources or place units in the order the level asks for.",
+        "Replay a mission if the first plan falls short.",
       ];
     case "arcade":
       return [
-        `Press play in ${title} and learn the simple control scheme shown at the start.`,
-        "Survive as long as you can, collect points, and react to rising difficulty.",
-        "Use power-ups or special moves when they appear to extend your run.",
-        "Chase a higher score each attempt — arcade games are built for quick restarts.",
+        open,
+        controls,
+        "Stay alive and score for as long as the round lasts. Difficulty usually rises as you continue.",
+        "Start again after a run ends and try to beat that score.",
       ];
     default:
       return [
-        `Click play to load ${title} and follow any on-screen tutorial or control hints.`,
-        "Use your keyboard, mouse, or touch controls to move, attack, or interact with the game world.",
-        "Complete levels, defeat enemies, or beat objectives to progress and unlock new challenges.",
-        "Retry after a fail, improve your timing, and push for a better score or clearer run.",
+        open,
+        controls,
+        "Follow the on-screen goal, whether that is a score, a level, or a timer.",
+        "Restart when a run ends and try to beat your last result.",
       ];
   }
 }
 
-function tipsForGenre(title: string, genreSlug: string): { proTip: string; commonMistake: string } {
+function tipsForGenre(genreSlug: string): { proTip: string; commonMistake: string } {
   switch (genreSlug) {
     case "puzzle":
       return {
-        proTip: `In ${title}, look a few moves ahead before committing. Clearing space early and saving special pieces for crowded boards usually beats rushing the first obvious match.`,
+        proTip:
+          "In most puzzle games, looking one or two moves ahead beats taking the first match you see.",
         commonMistake:
-          "A common mistake is burning special boosts too early. Save them for levels with tight move limits or awkward layouts where a single smart clear saves the run.",
+          "Using a limited boost on an easy board often leaves nothing for a tighter level later.",
       };
     case "racing":
       return {
-        proTip: `In ${title}, brake before sharp corners and accelerate out of the turn. Smooth lines beat raw speed — especially on later tracks.`,
-        commonMistake:
-          "New players often hold accelerate through every bend and slam into walls. Ease off early, keep control, then boost on the straights.",
+        proTip: "In most racing games, easing off before a sharp corner keeps you faster overall than holding accelerate.",
+        commonMistake: "Holding full speed through every bend usually ends in a wall.",
       };
     case "strategy":
       return {
-        proTip: `In ${title}, invest early in a reliable economy or core defense, then expand. A stable base makes mid-game spikes much easier to handle.`,
-        commonMistake:
-          "Spreading upgrades across everything at once leaves you weak everywhere. Specialize first, then branch out once your core plan is working.",
+        proTip: "A stable early setup — economy or defense — usually handles later waves better than spreading upgrades immediately.",
+        commonMistake: "Upgrading everything at once often leaves the base weak when the first spike hits.",
       };
     default:
       return {
-        proTip: `In ${title}, master one or two core moves before chasing advanced tricks. Consistent basics clear more content than flashy but unreliable plays.`,
-        commonMistake:
-          "A common pitfall is ignoring on-screen cues and rushing. Watch enemy tells, timers, and UI prompts — they usually telegraph the next challenge.",
+        proTip: "Learn the one or two controls the game shows first. Those usually matter more than extra moves.",
+        commonMistake: "Skipping the on-screen prompts is the usual reason an early run ends.",
       };
   }
 }
 
 /**
- * OzoGames-style Game Overview / How to Play / Tips / Unblocked / FAQ copy
- * generated from title, genre, and description (no extra DB fields required).
+ * On-page game copy from the title, category, and description.
+ * Only states facts we actually know: free, HTML5, browser, category.
  */
 export function getGameSeoContent(input: GameSeoInput): GameSeoContent {
   const genre = primaryGenre(input.categories);
   const overview = overviewFromDescription(input.title, input.description, genre.lower);
-  const tips = tipsForGenre(input.title, genre.slug);
+  const tips = tipsForGenre(genre.slug);
 
   return {
-    overviewTitle: "Game Overview",
+    overviewTitle: "About this game",
     overview,
     specs: [
-      { label: "Game Engine", value: "HTML5" },
-      { label: "Input Mode", value: "Keyboard + Mouse / Touch" },
-      { label: "Save Type", value: "Browser local storage" },
-      { label: "Players", value: "Single-player" },
-      { label: "Platform", value: "Web browser (desktop, mobile, tablet)" },
+      { label: "Price", value: "Free" },
+      { label: "Technology", value: "HTML5" },
+      { label: "Where it runs", value: "Web browser" },
+      { label: "Devices", value: "Desktop, tablet, and mobile" },
       { label: "Category", value: genre.name },
     ],
-    howToTitle: `How to Play ${input.title}`,
+    howToTitle: `How to play ${input.title}`,
     howToSteps: howToSteps(input.title, genre.slug),
-    tipsTitle: `${input.title} Tips and Strategy`,
+    tipsTitle: "Tips",
     proTip: tips.proTip,
     commonMistake: tips.commonMistake,
-    unblockedTitle: `Play ${input.title} Unblocked`,
-    unblocked: `You can play ${input.title} directly in your web browser with no download required. This free ${genre.lower} game runs as an HTML5 title on ${SITE_NAME}, so you can enjoy it on many school or work networks without installing software or using a VPN. Open the game page, hit play, and start instantly on desktop, tablet, or mobile.`,
+    unblockedTitle: `Play ${input.title} unblocked`,
+    unblocked: `${input.title} loads in the browser on ${SITE_NAME}, so there is nothing to install. Many school and work networks allow that. If a filter still blocks the page, that is set by the network, not by the game.`,
+    links: [
+      ...(genre.slug && genre.slug !== "games"
+        ? [{ href: `/c/${genre.slug}`, label: `free ${genre.lower} games` }]
+        : []),
+      { href: "/popular", label: "popular unblocked games" },
+      { href: "/new", label: "new unblocked games" },
+    ],
     faqs: buildGameSpecificFaqs(input.title, genre, input.description),
   };
 }
@@ -172,50 +184,27 @@ function buildGameSpecificFaqs(
 ): FaqItemInput[] {
   const faqs: FaqItemInput[] = [
     {
-      question: `Is ${title} free to play online?`,
-      answer: `Yes. ${title} is a free ${genre.lower} browser game on ${SITE_NAME}. Open the game page and play instantly with no download or sign-up.`,
+      question: `Is ${title} free?`,
+      answer: `Yes. ${title} is free on ${SITE_NAME}. Open this page and press play. There is no download and no account.`,
     },
     {
-      question: `Can you play ${title} unblocked at school or work?`,
-      answer: `${title} runs as an HTML5 game in a normal browser tab on ${SITE_NAME}, so many players can access it on restricted networks without installing software. Network filters still vary by location.`,
+      question: `Can I play ${title} unblocked?`,
+      answer: `${title} runs in a browser tab, which is why people search for it as an unblocked game. Whether a school or work network allows the page depends on that network’s filter.`,
     },
     {
-      question: `What genre is ${title}?`,
-      answer: `${title} is listed as a ${genre.name} game. You can browse more ${genre.lower} titles in the ${genre.name} category on ${SITE_NAME}.`,
+      question: `What kind of game is ${title}?`,
+      answer: `${title} is in the ${genre.name} category on ${SITE_NAME}. You can browse more ${genre.lower} games from that category.`,
+    },
+    {
+      question: `Does ${title} work on mobile?`,
+      answer: `${title} is an HTML5 browser game, so it can run on a phone or tablet as well as a computer. Use the controls the game shows on that device.`,
     },
   ];
 
-  if (genre.slug === "puzzle") {
-    faqs.push({
-      question: `How do you win in ${title}?`,
-      answer: `In ${title}, progress by solving boards or clearing objectives. Watch move limits and special tiles, then replay stages to improve your score.`,
-    });
-  } else if (genre.slug === "racing") {
-    faqs.push({
-      question: `How do you control ${title}?`,
-      answer: `Use keyboard or on-screen controls to steer, accelerate, and brake in ${title}. Smooth cornering usually beats holding full speed through every turn.`,
-    });
-  } else if (genre.slug === "strategy") {
-    faqs.push({
-      question: `What should you upgrade first in ${title}?`,
-      answer: `Early in ${title}, strengthen your core economy or defenses before spreading upgrades. A stable base makes later waves and missions much easier.`,
-    });
-  } else {
-    faqs.push({
-      question: `How do you control ${title}?`,
-      answer: `Most players use a keyboard and mouse on desktop, or touch controls on mobile, to play ${title}. Check the in-game prompts for the exact layout.`,
-    });
-  }
-
-  if (description?.trim()) {
-    faqs.push({
+  if (description?.trim() && !isGeneratedDescription(title, description)) {
+    faqs.unshift({
       question: `What is ${title} about?`,
       answer: descriptionToMetaDescription(description, 220),
-    });
-  } else {
-    faqs.push({
-      question: `Does ${title} save progress?`,
-      answer: `Many browser builds of ${title} store progress in local storage. Clearing site data or switching browsers may reset your save.`,
     });
   }
 

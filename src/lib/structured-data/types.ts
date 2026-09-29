@@ -80,10 +80,16 @@ export type VideoGameInput = {
   description: string | null;
   path: string;
   image?: string | null;
+  /** Accessible name for the main image. Defaults to "{name} logo". */
+  imageAlt?: string;
   /** Optional known thumbnail dimensions (omit when unknown — never invent). */
   imageWidth?: number;
   imageHeight?: number;
   screenshots?: Array<string | null | undefined>;
+  /** Accessible names for screenshots, same order as `screenshots`. */
+  screenshotAlts?: Array<string | null | undefined>;
+  /** Skip the generic "Unblocked Game" keyword on this entity. */
+  omitUnblockedKeyword?: boolean;
   /** Parallel optional dimensions for screenshots (same order). */
   screenshotSizes?: Array<{ width?: number; height?: number } | null | undefined>;
   genres?: string[];

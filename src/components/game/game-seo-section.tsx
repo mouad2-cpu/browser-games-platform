@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { GameSeoContent } from "@/lib/game-seo-content";
 import "./game-seo-section.css";
 
@@ -67,7 +68,16 @@ export function GameSeoSection({ content }: Props) {
           {content.unblockedTitle}
         </h2>
         <div className="game-seo-prose">
-          <p>{content.unblocked}</p>
+          <p>
+            {content.unblocked}{" "}
+            {content.links.map((link, index) => (
+              <span key={link.href}>
+                {index === 0 ? "Browse " : index === content.links.length - 1 ? ", or " : ", "}
+                <Link href={link.href}>{link.label}</Link>
+                {index === content.links.length - 1 ? "." : ""}
+              </span>
+            ))}
+          </p>
         </div>
       </section>
 

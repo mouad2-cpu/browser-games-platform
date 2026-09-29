@@ -7,7 +7,14 @@ import {
   buildHomePageGraph,
   SITE_IN_LANGUAGE,
 } from "@/lib/structured-data/builders";
-import { descriptionToMetaDescription } from "@/lib/meta-description";
+import { resolveGameMetaDescription } from "@/lib/seo-metadata";
+import {
+  isRetroDriftSlug,
+  RETRO_DRIFT_DESCRIPTION,
+  RETRO_DRIFT_GAMEPLAY_ALT,
+  RETRO_DRIFT_GAMEPLAY_IMAGE,
+  RETRO_DRIFT_MAIN_ALT,
+} from "@/lib/retro-drift-seo";
 import { translate } from "@/lib/i18n";
 import { SITE_NAME } from "@/lib/site-config";
 import { absoluteUrl } from "@/lib/structured-data/urls";
@@ -45,9 +52,10 @@ export function GameJsonLd({
   votes: VoteLike;
   faqs?: FaqItemInput[];
 }) {
-  const description =
-    game.metaDescription ??
-    (game.description ? descriptionToMetaDescription(game.description) : null);
+  const retroDrift = isRetroDriftSlug(game.slug);
+  const description = retroDrift
+    ? RETRO_DRIFT_DESCRIPTION
+    : resolveGameMetaDescription(game.title, game.metaDescription ?? game.description);
 
   const primaryCategory = game.categories[0];
   const gamePath = `/game/${game.slug}`;
@@ -77,8 +85,10 @@ export function GameJsonLd({
           description,
           path: gamePath,
           image: game.thumbnail,
-          // Screenshots: not in DB yet — builder omits ImageObjects when empty.
-          screenshots: [],
+          imageAlt: retroDrift ? RETRO_DRIFT_MAIN_ALT : undefined,
+          screenshots: retroDrift ? [RETRO_DRIFT_GAMEPLAY_IMAGE] : [],
+          screenshotAlts: retroDrift ? [RETRO_DRIFT_GAMEPLAY_ALT] : undefined,
+          omitUnblockedKeyword: retroDrift,
           genres: game.categories.map((c) => c.name),
           datePublished: game.releasedAt,
           dateModified: game.updatedAt,

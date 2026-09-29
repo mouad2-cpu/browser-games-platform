@@ -8,12 +8,14 @@ import { GameToolbar } from "@/components/game/game-toolbar";
 import { GameBreadcrumb } from "@/components/game/game-breadcrumb";
 import { GameInfoPanel } from "@/components/game/game-info-panel";
 import { GameSeoSection } from "@/components/game/game-seo-section";
+import { RetroDriftArticle } from "@/components/game/retro-drift-article";
 import { PlayNextSidebar } from "@/components/game/play-next-sidebar";
 import { PlayNextMobileStrip } from "@/components/game/play-next-mobile-strip";
 import { ReportPanel } from "@/components/game/report-panel";
 import type { GameCard, GameDetail } from "@/lib/games";
 import type { GameVoteStats } from "@/lib/game-votes-shared";
 import type { GameSeoContent } from "@/lib/game-seo-content";
+import { isRetroDriftSlug } from "@/lib/retro-drift-seo";
 import {
   appendRecentGameSlug,
   parseRecentGameSlugs,
@@ -27,7 +29,9 @@ type Props = {
   siteUrl: string;
   showPlayCount?: boolean;
   initialVoteStats: GameVoteStats;
-  seoContent: GameSeoContent;
+  seoContent: GameSeoContent | null;
+  /** Visible H1. Retro Drift uses the article heading so the page has one H1. */
+  pageTitle: string;
 };
 
 export function GameClient({
@@ -37,6 +41,7 @@ export function GameClient({
   showPlayCount = false,
   initialVoteStats,
   seoContent,
+  pageTitle,
 }: Props) {
   const [isReportOpen, setIsReportOpen] = useState(false);
   const [voteStats, setVoteStats] = useState(initialVoteStats);
@@ -88,7 +93,7 @@ export function GameClient({
 
               <div className="mt-4 space-y-2">
                 <h1 className="text-xl font-bold leading-tight text-[var(--color-text)] sm:text-2xl">
-                  {game.title}
+                  {pageTitle}
                 </h1>
                 <div className="flex flex-wrap items-center justify-between gap-3">
                   <GameBreadcrumb categories={game.categories} title={game.title} />
@@ -106,7 +111,7 @@ export function GameClient({
           ) : (
             <div className="space-y-4">
               <h1 className="text-xl font-bold leading-tight text-[var(--color-text)] sm:text-2xl">
-                {game.title}
+                {pageTitle}
               </h1>
               <p className="rounded-2xl bg-[var(--color-surface)] p-8 text-center text-[var(--color-muted)]">
                 This game is not available to play yet.
@@ -123,7 +128,11 @@ export function GameClient({
             categories={game.categories}
           />
 
-          <GameSeoSection content={seoContent} />
+          {isRetroDriftSlug(game.slug) ? (
+            <RetroDriftArticle />
+          ) : seoContent ? (
+            <GameSeoSection content={seoContent} />
+          ) : null}
 
           <div className="mt-8">
             <PlayNextMobileStrip games={relatedGames} />
