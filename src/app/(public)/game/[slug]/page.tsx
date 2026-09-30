@@ -16,6 +16,15 @@ import {
   RETRO_DRIFT_TITLE,
 } from "@/lib/retro-drift-seo";
 import {
+  CARS_ARENA_DESCRIPTION,
+  CARS_ARENA_FAQS,
+  CARS_ARENA_GAMEPLAY_ALT,
+  CARS_ARENA_GAMEPLAY_IMAGE,
+  CARS_ARENA_H1,
+  CARS_ARENA_TITLE,
+  isCarsArenaSlug,
+} from "@/lib/cars-arena-seo";
+import {
   buildPageMetadata,
   resolveGameMetaDescription,
   resolveGameMetaTitle,
@@ -23,7 +32,7 @@ import {
 import { GameJsonLd } from "@/components/seo/structured-data";
 import { GameClient } from "./game-client";
 
-function scrubRetroDriftCopy(game: GameDetail): GameDetail {
+function scrubUnblockedCopy(game: GameDetail): GameDetail {
   const drop = (value: string | null) => (value && /unblocked/i.test(value) ? null : value);
   return {
     ...game,
@@ -54,6 +63,21 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       imageAlt: RETRO_DRIFT_GAMEPLAY_ALT,
       imageWidth: 1024,
       imageHeight: 480,
+    });
+  }
+
+  if (isCarsArenaSlug(slug)) {
+    return buildPageMetadata({
+      path: `/game/${slug}`,
+      title: CARS_ARENA_TITLE,
+      description: CARS_ARENA_DESCRIPTION,
+      ogTitle: CARS_ARENA_TITLE,
+      absoluteTitle: true,
+      exactDescription: true,
+      images: [CARS_ARENA_GAMEPLAY_IMAGE],
+      imageAlt: CARS_ARENA_GAMEPLAY_ALT,
+      imageWidth: 1024,
+      imageHeight: 475,
     });
   }
 
@@ -94,7 +118,9 @@ export default async function GamePage({ params }: Props) {
   }
 
   const retroDrift = isRetroDriftSlug(slug);
-  const seoContent = retroDrift
+  const carsArena = isCarsArenaSlug(slug);
+  const customSeo = retroDrift || carsArena;
+  const seoContent = customSeo
     ? null
     : getGameSeoContent({
         title: game.title,
@@ -108,17 +134,19 @@ export default async function GamePage({ params }: Props) {
       <GameJsonLd
         game={game}
         votes={{ likes: initialVoteStats.likes, dislikes: initialVoteStats.dislikes }}
-        faqs={retroDrift ? RETRO_DRIFT_FAQS : seoContent!.faqs}
+        faqs={
+          retroDrift ? RETRO_DRIFT_FAQS : carsArena ? CARS_ARENA_FAQS : seoContent!.faqs
+        }
       />
       <GameClient
-        game={retroDrift ? scrubRetroDriftCopy(game) : game}
+        game={customSeo ? scrubUnblockedCopy(game) : game}
         relatedGames={playNextGames}
         siteUrl={SITE_URL}
         showPlayCount={showPlayCount}
         initialVoteStats={initialVoteStats}
         seoContent={seoContent}
         pageTitle={
-          retroDrift ? RETRO_DRIFT_H1 : resolveGameMetaTitle(game.title, game.metaTitle)
+          retroDrift ? RETRO_DRIFT_H1 : carsArena ? CARS_ARENA_H1 : resolveGameMetaTitle(game.title, game.metaTitle)
         }
       />
     </>

@@ -16,6 +16,14 @@ import {
   RETRO_DRIFT_MAIN_ALT,
   RETRO_DRIFT_MAIN_IMAGE,
 } from "@/lib/retro-drift-seo";
+import {
+  CARS_ARENA_DESCRIPTION,
+  CARS_ARENA_GAMEPLAY_ALT,
+  CARS_ARENA_GAMEPLAY_IMAGE,
+  CARS_ARENA_MAIN_ALT,
+  CARS_ARENA_MAIN_IMAGE,
+  isCarsArenaSlug,
+} from "@/lib/cars-arena-seo";
 import { translate } from "@/lib/i18n";
 import { SITE_NAME } from "@/lib/site-config";
 import { absoluteUrl } from "@/lib/structured-data/urls";
@@ -54,9 +62,13 @@ export function GameJsonLd({
   faqs?: FaqItemInput[];
 }) {
   const retroDrift = isRetroDriftSlug(game.slug);
+  const carsArena = isCarsArenaSlug(game.slug);
+  const customSeo = retroDrift || carsArena;
   const description = retroDrift
     ? RETRO_DRIFT_DESCRIPTION
-    : resolveGameMetaDescription(game.title, game.metaDescription ?? game.description);
+    : carsArena
+      ? CARS_ARENA_DESCRIPTION
+      : resolveGameMetaDescription(game.title, game.metaDescription ?? game.description);
 
   const primaryCategory = game.categories[0];
   const gamePath = `/game/${game.slug}`;
@@ -85,16 +97,32 @@ export function GameJsonLd({
           name: game.title,
           description,
           path: gamePath,
-          image: retroDrift ? RETRO_DRIFT_MAIN_IMAGE : game.thumbnail,
-          imageAlt: retroDrift ? RETRO_DRIFT_MAIN_ALT : undefined,
-          screenshots: retroDrift ? [RETRO_DRIFT_GAMEPLAY_IMAGE] : [],
-          screenshotAlts: retroDrift ? [RETRO_DRIFT_GAMEPLAY_ALT] : undefined,
-          omitUnblockedKeyword: retroDrift,
-          omitAuthor: retroDrift,
-          omitOffer: retroDrift,
+          image: retroDrift
+            ? RETRO_DRIFT_MAIN_IMAGE
+            : carsArena
+              ? CARS_ARENA_MAIN_IMAGE
+              : game.thumbnail,
+          imageAlt: retroDrift
+            ? RETRO_DRIFT_MAIN_ALT
+            : carsArena
+              ? CARS_ARENA_MAIN_ALT
+              : undefined,
+          screenshots: retroDrift
+            ? [RETRO_DRIFT_GAMEPLAY_IMAGE]
+            : carsArena
+              ? [CARS_ARENA_GAMEPLAY_IMAGE]
+              : [],
+          screenshotAlts: retroDrift
+            ? [RETRO_DRIFT_GAMEPLAY_ALT]
+            : carsArena
+              ? [CARS_ARENA_GAMEPLAY_ALT]
+              : undefined,
+          omitUnblockedKeyword: customSeo,
+          omitAuthor: customSeo,
+          omitOffer: customSeo,
           genres: game.categories.map((c) => c.name),
           datePublished: game.releasedAt,
-          dateModified: retroDrift ? undefined : game.updatedAt,
+          dateModified: customSeo ? undefined : game.updatedAt,
           aggregateRating: votes,
         },
         breadcrumbs,

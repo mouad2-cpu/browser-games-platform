@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { GameCard } from "@/lib/games";
-import { getGameImageAlt } from "@/lib/game-image-alt";
+import { getGameImageAlt, pageOmitsUnblockedAlt } from "@/lib/game-image-alt";
 
 type Props = {
   game: GameCard;
@@ -49,7 +49,7 @@ export function PlayNextTile({ game }: Props) {
           <Image
             src={game.thumbnail}
             alt={getGameImageAlt(game.title, {
-              omitUnblocked: pathname === "/game/retro-drift",
+              omitUnblocked: pageOmitsUnblockedAlt(pathname),
             })}
             fill
             className={`object-cover transition duration-300 ${
