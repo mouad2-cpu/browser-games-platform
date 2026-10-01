@@ -25,6 +25,17 @@ import {
   isCarsArenaSlug,
 } from "@/lib/cars-arena-seo";
 import {
+  isMrBulletSlug,
+  MR_BULLET_DESCRIPTION,
+  MR_BULLET_FAQS,
+  MR_BULLET_H1,
+  MR_BULLET_IMAGE,
+  MR_BULLET_IMAGE_ALT,
+  MR_BULLET_IMAGE_HEIGHT,
+  MR_BULLET_IMAGE_WIDTH,
+  MR_BULLET_TITLE,
+} from "@/lib/mr-bullet-seo";
+import {
   buildPageMetadata,
   resolveGameMetaDescription,
   resolveGameMetaTitle,
@@ -81,6 +92,21 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     });
   }
 
+  if (isMrBulletSlug(slug)) {
+    return buildPageMetadata({
+      path: `/game/${slug}`,
+      title: MR_BULLET_TITLE,
+      description: MR_BULLET_DESCRIPTION,
+      ogTitle: MR_BULLET_TITLE,
+      absoluteTitle: true,
+      exactDescription: true,
+      images: [game.thumbnail || MR_BULLET_IMAGE],
+      imageAlt: MR_BULLET_IMAGE_ALT,
+      imageWidth: MR_BULLET_IMAGE_WIDTH,
+      imageHeight: MR_BULLET_IMAGE_HEIGHT,
+    });
+  }
+
   const title = resolveGameMetaTitle(game.title, game.metaTitle);
   const description = resolveGameMetaDescription(
     game.title,
@@ -119,7 +145,8 @@ export default async function GamePage({ params }: Props) {
 
   const retroDrift = isRetroDriftSlug(slug);
   const carsArena = isCarsArenaSlug(slug);
-  const customSeo = retroDrift || carsArena;
+  const mrBullet = isMrBulletSlug(slug);
+  const customSeo = retroDrift || carsArena || mrBullet;
   const seoContent = customSeo
     ? null
     : getGameSeoContent({
@@ -135,7 +162,13 @@ export default async function GamePage({ params }: Props) {
         game={game}
         votes={{ likes: initialVoteStats.likes, dislikes: initialVoteStats.dislikes }}
         faqs={
-          retroDrift ? RETRO_DRIFT_FAQS : carsArena ? CARS_ARENA_FAQS : seoContent!.faqs
+          retroDrift
+            ? RETRO_DRIFT_FAQS
+            : carsArena
+              ? CARS_ARENA_FAQS
+              : mrBullet
+                ? MR_BULLET_FAQS
+                : seoContent!.faqs
         }
       />
       <GameClient
@@ -146,7 +179,13 @@ export default async function GamePage({ params }: Props) {
         initialVoteStats={initialVoteStats}
         seoContent={seoContent}
         pageTitle={
-          retroDrift ? RETRO_DRIFT_H1 : carsArena ? CARS_ARENA_H1 : resolveGameMetaTitle(game.title, game.metaTitle)
+          retroDrift
+            ? RETRO_DRIFT_H1
+            : carsArena
+              ? CARS_ARENA_H1
+              : mrBullet
+                ? MR_BULLET_H1
+                : resolveGameMetaTitle(game.title, game.metaTitle)
         }
       />
     </>

@@ -24,6 +24,11 @@ import {
   CARS_ARENA_MAIN_IMAGE,
   isCarsArenaSlug,
 } from "@/lib/cars-arena-seo";
+import {
+  isMrBulletSlug,
+  MR_BULLET_DESCRIPTION,
+  MR_BULLET_IMAGE_ALT,
+} from "@/lib/mr-bullet-seo";
 import { translate } from "@/lib/i18n";
 import { SITE_NAME } from "@/lib/site-config";
 import { absoluteUrl } from "@/lib/structured-data/urls";
@@ -63,12 +68,15 @@ export function GameJsonLd({
 }) {
   const retroDrift = isRetroDriftSlug(game.slug);
   const carsArena = isCarsArenaSlug(game.slug);
-  const customSeo = retroDrift || carsArena;
+  const mrBullet = isMrBulletSlug(game.slug);
+  const customSeo = retroDrift || carsArena || mrBullet;
   const description = retroDrift
     ? RETRO_DRIFT_DESCRIPTION
     : carsArena
       ? CARS_ARENA_DESCRIPTION
-      : resolveGameMetaDescription(game.title, game.metaDescription ?? game.description);
+      : mrBullet
+        ? MR_BULLET_DESCRIPTION
+        : resolveGameMetaDescription(game.title, game.metaDescription ?? game.description);
 
   const primaryCategory = game.categories[0];
   const gamePath = `/game/${game.slug}`;
@@ -106,7 +114,9 @@ export function GameJsonLd({
             ? RETRO_DRIFT_MAIN_ALT
             : carsArena
               ? CARS_ARENA_MAIN_ALT
-              : undefined,
+              : mrBullet
+                ? MR_BULLET_IMAGE_ALT
+                : undefined,
           screenshots: retroDrift
             ? [RETRO_DRIFT_GAMEPLAY_IMAGE]
             : carsArena
@@ -117,7 +127,7 @@ export function GameJsonLd({
             : carsArena
               ? [CARS_ARENA_GAMEPLAY_ALT]
               : undefined,
-          omitUnblockedKeyword: customSeo,
+          omitUnblockedKeyword: retroDrift || carsArena,
           omitAuthor: customSeo,
           omitOffer: customSeo,
           genres: game.categories.map((c) => c.name),
