@@ -17,5 +17,9 @@ export function getGameImageAlt(
 
 /** Related-game alts on these pages should not say "unblocked". */
 export function pageOmitsUnblockedAlt(pathname: string | null): boolean {
-  return pathname === "/game/retro-drift" || pathname === "/game/cars-arena";
+  return (
+    pathname === "/game/retro-drift" ||
+    pathname === "/game/cars-arena" ||
+    pathname === "/game/mr-bullet-2"
+  );
 }
