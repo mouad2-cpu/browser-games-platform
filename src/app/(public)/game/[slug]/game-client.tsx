@@ -11,6 +11,7 @@ import { GameSeoSection } from "@/components/game/game-seo-section";
 import { RetroDriftArticle, RetroDriftIntro } from "@/components/game/retro-drift-article";
 import { CarsArenaArticle, CarsArenaIntro } from "@/components/game/cars-arena-article";
 import { MrBulletArticle, MrBulletIntro } from "@/components/game/mr-bullet-article";
+import { GolfOrbitArticle, GolfOrbitIntro } from "@/components/game/golf-orbit-article";
 import { PlayNextSidebar } from "@/components/game/play-next-sidebar";
 import { PlayNextMobileStrip } from "@/components/game/play-next-mobile-strip";
 import { ReportPanel } from "@/components/game/report-panel";
@@ -20,6 +21,7 @@ import type { GameSeoContent } from "@/lib/game-seo-content";
 import { isRetroDriftSlug } from "@/lib/retro-drift-seo";
 import { isCarsArenaSlug } from "@/lib/cars-arena-seo";
 import { isMrBulletSlug } from "@/lib/mr-bullet-seo";
+import { isGolfOrbitSlug } from "@/lib/golf-orbit-seo";
 import {
   appendRecentGameSlug,
   parseRecentGameSlugs,
@@ -85,7 +87,8 @@ export function GameClient({
   const retroDrift = isRetroDriftSlug(game.slug);
   const carsArena = isCarsArenaSlug(game.slug);
   const mrBullet = isMrBulletSlug(game.slug);
-  const customIntro = retroDrift || carsArena || mrBullet;
+  const golfOrbit = isGolfOrbitSlug(game.slug);
+  const customIntro = retroDrift || carsArena || mrBullet || golfOrbit;
 
   return (
     <div className="mx-auto w-full max-w-[1400px] px-3 py-4 sm:px-4 sm:py-6">
@@ -100,8 +103,10 @@ export function GameClient({
                 <RetroDriftIntro />
               ) : carsArena ? (
                 <CarsArenaIntro />
-              ) : (
+              ) : mrBullet ? (
                 <MrBulletIntro />
+              ) : (
+                <GolfOrbitIntro />
               )}
             </header>
           )}
@@ -160,6 +165,8 @@ export function GameClient({
             <CarsArenaArticle />
           ) : mrBullet ? (
             <MrBulletArticle />
+          ) : golfOrbit ? (
+            <GolfOrbitArticle />
           ) : seoContent ? (
             <GameSeoSection content={seoContent} />
           ) : null}

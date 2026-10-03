@@ -20,6 +20,7 @@ export function pageOmitsUnblockedAlt(pathname: string | null): boolean {
   return (
     pathname === "/game/retro-drift" ||
     pathname === "/game/cars-arena" ||
-    pathname === "/game/mr-bullet-2"
+    pathname === "/game/mr-bullet-2" ||
+    pathname === "/game/golf-orbit"
   );
 }

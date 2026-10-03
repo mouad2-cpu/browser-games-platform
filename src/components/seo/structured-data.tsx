@@ -29,6 +29,14 @@ import {
   MR_BULLET_DESCRIPTION,
   MR_BULLET_IMAGE_ALT,
 } from "@/lib/mr-bullet-seo";
+import {
+  GOLF_ORBIT_DESCRIPTION,
+  GOLF_ORBIT_GAMEPLAY_ALT,
+  GOLF_ORBIT_GAMEPLAY_IMAGE,
+  GOLF_ORBIT_MAIN_ALT,
+  GOLF_ORBIT_MAIN_IMAGE,
+  isGolfOrbitSlug,
+} from "@/lib/golf-orbit-seo";
 import { translate } from "@/lib/i18n";
 import { SITE_NAME } from "@/lib/site-config";
 import { absoluteUrl } from "@/lib/structured-data/urls";
@@ -69,14 +77,17 @@ export function GameJsonLd({
   const retroDrift = isRetroDriftSlug(game.slug);
   const carsArena = isCarsArenaSlug(game.slug);
   const mrBullet = isMrBulletSlug(game.slug);
-  const customSeo = retroDrift || carsArena || mrBullet;
+  const golfOrbit = isGolfOrbitSlug(game.slug);
+  const customSeo = retroDrift || carsArena || mrBullet || golfOrbit;
   const description = retroDrift
     ? RETRO_DRIFT_DESCRIPTION
     : carsArena
       ? CARS_ARENA_DESCRIPTION
       : mrBullet
         ? MR_BULLET_DESCRIPTION
-        : resolveGameMetaDescription(game.title, game.metaDescription ?? game.description);
+        : golfOrbit
+          ? GOLF_ORBIT_DESCRIPTION
+          : resolveGameMetaDescription(game.title, game.metaDescription ?? game.description);
 
   const primaryCategory = game.categories[0];
   const gamePath = `/game/${game.slug}`;
@@ -109,24 +120,32 @@ export function GameJsonLd({
             ? RETRO_DRIFT_MAIN_IMAGE
             : carsArena
               ? CARS_ARENA_MAIN_IMAGE
-              : game.thumbnail,
+              : golfOrbit
+                ? GOLF_ORBIT_MAIN_IMAGE
+                : game.thumbnail,
           imageAlt: retroDrift
             ? RETRO_DRIFT_MAIN_ALT
             : carsArena
               ? CARS_ARENA_MAIN_ALT
               : mrBullet
                 ? MR_BULLET_IMAGE_ALT
-                : undefined,
+                : golfOrbit
+                  ? GOLF_ORBIT_MAIN_ALT
+                  : undefined,
           screenshots: retroDrift
             ? [RETRO_DRIFT_GAMEPLAY_IMAGE]
             : carsArena
               ? [CARS_ARENA_GAMEPLAY_IMAGE]
-              : [],
+              : golfOrbit
+                ? [GOLF_ORBIT_GAMEPLAY_IMAGE]
+                : [],
           screenshotAlts: retroDrift
             ? [RETRO_DRIFT_GAMEPLAY_ALT]
             : carsArena
               ? [CARS_ARENA_GAMEPLAY_ALT]
-              : undefined,
+              : golfOrbit
+                ? [GOLF_ORBIT_GAMEPLAY_ALT]
+                : undefined,
           omitUnblockedKeyword: retroDrift || carsArena,
           omitAuthor: customSeo,
           omitOffer: customSeo,

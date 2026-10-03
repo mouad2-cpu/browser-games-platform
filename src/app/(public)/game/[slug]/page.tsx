@@ -36,6 +36,17 @@ import {
   MR_BULLET_TITLE,
 } from "@/lib/mr-bullet-seo";
 import {
+  GOLF_ORBIT_DESCRIPTION,
+  GOLF_ORBIT_FAQS,
+  GOLF_ORBIT_GAMEPLAY_ALT,
+  GOLF_ORBIT_GAMEPLAY_HEIGHT,
+  GOLF_ORBIT_GAMEPLAY_IMAGE,
+  GOLF_ORBIT_GAMEPLAY_WIDTH,
+  GOLF_ORBIT_H1,
+  GOLF_ORBIT_TITLE,
+  isGolfOrbitSlug,
+} from "@/lib/golf-orbit-seo";
+import {
   buildPageMetadata,
   resolveGameMetaDescription,
   resolveGameMetaTitle,
@@ -107,6 +118,21 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     });
   }
 
+  if (isGolfOrbitSlug(slug)) {
+    return buildPageMetadata({
+      path: `/game/${slug}`,
+      title: GOLF_ORBIT_TITLE,
+      description: GOLF_ORBIT_DESCRIPTION,
+      ogTitle: GOLF_ORBIT_TITLE,
+      absoluteTitle: true,
+      exactDescription: true,
+      images: [GOLF_ORBIT_GAMEPLAY_IMAGE],
+      imageAlt: GOLF_ORBIT_GAMEPLAY_ALT,
+      imageWidth: GOLF_ORBIT_GAMEPLAY_WIDTH,
+      imageHeight: GOLF_ORBIT_GAMEPLAY_HEIGHT,
+    });
+  }
+
   const title = resolveGameMetaTitle(game.title, game.metaTitle);
   const description = resolveGameMetaDescription(
     game.title,
@@ -146,7 +172,8 @@ export default async function GamePage({ params }: Props) {
   const retroDrift = isRetroDriftSlug(slug);
   const carsArena = isCarsArenaSlug(slug);
   const mrBullet = isMrBulletSlug(slug);
-  const customSeo = retroDrift || carsArena || mrBullet;
+  const golfOrbit = isGolfOrbitSlug(slug);
+  const customSeo = retroDrift || carsArena || mrBullet || golfOrbit;
   const seoContent = customSeo
     ? null
     : getGameSeoContent({
@@ -168,7 +195,9 @@ export default async function GamePage({ params }: Props) {
               ? CARS_ARENA_FAQS
               : mrBullet
                 ? MR_BULLET_FAQS
-                : seoContent!.faqs
+                : golfOrbit
+                  ? GOLF_ORBIT_FAQS
+                  : seoContent!.faqs
         }
       />
       <GameClient
@@ -185,7 +214,9 @@ export default async function GamePage({ params }: Props) {
               ? CARS_ARENA_H1
               : mrBullet
                 ? MR_BULLET_H1
-                : resolveGameMetaTitle(game.title, game.metaTitle)
+                : golfOrbit
+                  ? GOLF_ORBIT_H1
+                  : resolveGameMetaTitle(game.title, game.metaTitle)
         }
       />
     </>
