@@ -58,13 +58,13 @@ export function PublicShell({ session, categories, menuPages, children }: Props)
 
           <Link href="/" className="shrink-0" aria-label={t("shell.homeAria")}>
             <Image
-              src="/zenfun-brand.png"
-              alt="ZenFun Games"
-              width={220}
+              src="/zenfun-brand.jpg"
+              alt="ZenFunGames"
+              width={307}
               height={96}
               priority
               unoptimized
-              className="h-[88px] w-auto object-contain sm:h-[96px]"
+              className="h-auto w-[180px] object-contain sm:w-[240px] lg:w-[307px]"
             />
           </Link>
 
