@@ -12,6 +12,9 @@ export function SiteFooter() {
 
   const exploreLinks = [
     { href: "/", label: t("footer.exploreGames") },
+    { href: "/new", label: t("nav.new") },
+    { href: "/popular", label: t("nav.popular") },
+    { href: "/all-games", label: t("nav.allGames") },
     { href: "/about", label: t("footer.exploreAbout") },
     { href: "/contact", label: t("footer.exploreContact") },
     { href: "/information-for-parents", label: t("footer.exploreParents") },

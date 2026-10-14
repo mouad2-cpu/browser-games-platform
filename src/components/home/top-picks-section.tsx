@@ -23,7 +23,7 @@ export function TopPicksSection({ games }: Props) {
       <div className="mb-1.5 flex items-center gap-3 px-2 sm:px-3">
         <HomeSectionTitle>{t("home.topPicks")}</HomeSectionTitle>
         <Link
-          href="/top-picks"
+          href="/popular"
           className="text-sm font-medium text-[var(--color-accent)] hover:underline"
         >
           {t("common.viewMore")}

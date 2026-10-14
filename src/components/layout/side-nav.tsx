@@ -3,7 +3,7 @@
 import { useState, type ReactNode } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { Clock, Flame, Home, Mail, Shuffle, Sparkles, Tag } from "lucide-react";
+import { Clock, Flame, Gamepad2, Home, Mail, Shuffle, Sparkles, Tag } from "lucide-react";
 import { CategoryIcon } from "@/components/category/category-icon";
 import { useLanguage } from "@/components/layout/language-provider";
 import { getMenuPageHref, isMenuPageLinkActive, DEFAULT_SIDEBAR_PAGE_SLUGS, normalizeMenuPageSlug } from "@/lib/menu-page-routes";
@@ -51,6 +51,13 @@ const mainItems = [
     labelKey: "nav.popular",
     icon: Flame,
     match: (p: string) => p.startsWith("/popular"),
+  },
+  {
+    type: "link" as const,
+    href: "/all-games",
+    labelKey: "nav.allGames",
+    icon: Gamepad2,
+    match: (p: string) => p.startsWith("/all-games"),
   },
   { type: "surprise" as const, labelKey: "nav.surprise", icon: Shuffle },
 ];

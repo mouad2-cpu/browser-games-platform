@@ -1,6 +1,6 @@
-import { GameStatus } from "@prisma/client";
 import { prisma } from "./db";
 import { categoryGamesOrderBy, type CategorySort } from "./category-sort";
+import { publishedPlayableGameWhere } from "./game-visibility";
 import { recordUserGameProgress } from "./user-progress";
 
 const PAGE_SIZE = 49;
@@ -70,7 +70,7 @@ function toGameCard(game: {
 
 export async function getGameBySlug(slug: string): Promise<GameDetail | null> {
   const game = await prisma.game.findFirst({
-    where: { slug, status: GameStatus.published, embedPath: { not: null } },
+    where: { slug, ...publishedPlayableGameWhere },
     include: {
       categories: {
         include: { category: { select: { slug: true, name: true } } },
@@ -100,7 +100,7 @@ export async function getGameBySlug(slug: string): Promise<GameDetail | null> {
 
 export async function getFeaturedGames(limit = 8): Promise<GameCard[]> {
   const games = await prisma.game.findMany({
-    where: { status: GameStatus.published, featured: true },
+    where: { ...publishedPlayableGameWhere, featured: true },
     orderBy: { releasedAt: "desc" },
     take: limit,
     select: gameCardSelect,
@@ -110,7 +110,7 @@ export async function getFeaturedGames(limit = 8): Promise<GameCard[]> {
 
 export async function getFeaturedGamesForHome(limit = 14): Promise<FeaturedHomeGame[]> {
   const games = await prisma.game.findMany({
-    where: { status: GameStatus.published, featured: true },
+    where: { ...publishedPlayableGameWhere, featured: true },
     orderBy: { releasedAt: "desc" },
     take: limit,
     select: {
@@ -146,7 +146,7 @@ export async function getContinuePlayingGames(
 
   const slugs = limit ? recentSlugs.slice(0, limit) : recentSlugs;
   const games = await prisma.game.findMany({
-    where: { slug: { in: slugs }, status: GameStatus.published },
+    where: { slug: { in: slugs }, ...publishedPlayableGameWhere },
     select: gameCardSelect,
   });
 
@@ -178,7 +178,7 @@ export async function getTopPicksForYou(
 
   if (recentSlugs.length > 0) {
     const recentGames = await prisma.game.findMany({
-      where: { slug: { in: recentSlugs }, status: GameStatus.published },
+      where: { slug: { in: recentSlugs }, ...publishedPlayableGameWhere },
       select: {
         id: true,
         categories: { select: { categoryId: true } },
@@ -194,7 +194,7 @@ export async function getTopPicksForYou(
     if (categoryIds.length > 0) {
       const related = await prisma.game.findMany({
         where: {
-          status: GameStatus.published,
+          ...publishedPlayableGameWhere,
           id: { notIn: [...excludeIds] },
           categories: { some: { categoryId: { in: categoryIds } } },
         },
@@ -211,7 +211,7 @@ export async function getTopPicksForYou(
   if (picks.length < limit) {
     const popular = await prisma.game.findMany({
       where: {
-        status: GameStatus.published,
+        ...publishedPlayableGameWhere,
         id: { notIn: [...excludeIds] },
       },
       orderBy: { playEvents: { _count: "desc" } },
@@ -226,7 +226,7 @@ export async function getTopPicksForYou(
   if (picks.length < limit) {
     const filler = await prisma.game.findMany({
       where: {
-        status: GameStatus.published,
+        ...publishedPlayableGameWhere,
         id: { notIn: [...excludeIds] },
       },
       orderBy: [{ featured: "desc" }, { releasedAt: "desc" }],
@@ -256,7 +256,7 @@ export async function getTopPicksPaginated(
 
 export async function getLatestGames(limit = LATEST_HOME_LIMIT): Promise<GameCard[]> {
   const games = await prisma.game.findMany({
-    where: { status: GameStatus.published },
+    where: publishedPlayableGameWhere,
     orderBy: { createdAt: "desc" },
     take: limit,
     select: gameCardSelect,
@@ -268,7 +268,7 @@ export async function getLatestGamesPaginated(
   page = 1,
   pageSize = PAGE_SIZE
 ): Promise<{ games: GameCard[]; total: number; pageSize: number }> {
-  const where = { status: GameStatus.published };
+  const where = publishedPlayableGameWhere;
   const [games, total] = await Promise.all([
     prisma.game.findMany({
       where,
@@ -286,7 +286,7 @@ export async function getPopularGamesPaginated(
   page = 1,
   pageSize = PAGE_SIZE
 ): Promise<{ games: GameCard[]; total: number; pageSize: number }> {
-  const where = { status: GameStatus.published };
+  const where = publishedPlayableGameWhere;
   const [games, total] = await Promise.all([
     prisma.game.findMany({
       where,
@@ -304,7 +304,7 @@ export async function getAllGamesPaginated(
   page = 1,
   pageSize = PAGE_SIZE
 ): Promise<{ games: GameCard[]; total: number; pageSize: number }> {
-  const where = { status: GameStatus.published };
+  const where = publishedPlayableGameWhere;
   const [games, total] = await Promise.all([
     prisma.game.findMany({
       where,
@@ -320,13 +320,13 @@ export async function getAllGamesPaginated(
 
 export async function getRandomGameSlug(): Promise<string | null> {
   const count = await prisma.game.count({
-    where: { status: GameStatus.published, embedPath: { not: null } },
+    where: publishedPlayableGameWhere,
   });
   if (count === 0) return null;
 
   const skip = Math.floor(Math.random() * count);
   const game = await prisma.game.findFirst({
-    where: { status: GameStatus.published, embedPath: { not: null } },
+    where: publishedPlayableGameWhere,
     skip,
     select: { slug: true },
   });
@@ -344,7 +344,7 @@ export async function getGamesByCategory(
   if (!category) return { games: [], total: 0, pageSize: PAGE_SIZE };
 
   const where = {
-    status: GameStatus.published,
+    ...publishedPlayableGameWhere,
     categories: { some: { categoryId: category.id } },
   };
 
@@ -370,7 +370,7 @@ export async function searchGames(
   if (!trimmed) return { games: [], total: 0, pageSize: PAGE_SIZE };
 
   const where = {
-    status: GameStatus.published,
+    ...publishedPlayableGameWhere,
     OR: [
       { title: { contains: trimmed } },
       { slug: { contains: trimmed } },
@@ -406,7 +406,7 @@ export async function getRelatedGames(
 
   const games = await prisma.game.findMany({
     where: {
-      status: GameStatus.published,
+      ...publishedPlayableGameWhere,
       id: { not: gameId },
       categories: { some: { categoryId: { in: categoryIds } } },
     },
