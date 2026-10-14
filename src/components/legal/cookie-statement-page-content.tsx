@@ -4,6 +4,7 @@ import { useLanguage } from "@/components/layout/language-provider";
 import { getCookieStatementContent } from "@/lib/i18n/legal/cookie-statement";
 import { LegalDocumentLayout } from "./legal-document-layout";
 import { LegalPageTitleSync } from "./legal-page-title-sync";
+import { AnalyticsConsentSettings } from "@/components/analytics/analytics-consent-settings";
 
 export function CookieStatementPageContent() {
   const { locale, t } = useLanguage();
@@ -12,7 +13,10 @@ export function CookieStatementPageContent() {
   return (
     <>
       <LegalPageTitleSync titleKey="footer.legalCookies" />
-      <LegalDocumentLayout title={t("footer.legalCookies")}>{content}</LegalDocumentLayout>
+      <LegalDocumentLayout title={t("footer.legalCookies")}>
+        {content}
+        <AnalyticsConsentSettings locale={locale} />
+      </LegalDocumentLayout>
     </>
   );
 }

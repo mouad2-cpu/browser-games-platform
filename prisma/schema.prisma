@@ -70,24 +70,24 @@ enum VoteType {
 }
 
 model Game {
-  id                Int          @id @default(autoincrement())
-  slug              String       @unique(map: "Game_slug_key") @db.VarChar(128)
-  title             String       @db.VarChar(256)
-  embedPath         String?      @db.VarChar(512)
-  thumbnail         String?      @db.VarChar(512)
-  previewVideo      String?      @db.VarChar(512)
-  description       String?      @db.Text
-  metaTitle         String?      @db.VarChar(256)
-  metaDescription   String?      @db.VarChar(512)
-  featured          Boolean      @default(false)
+  id                Int        @id @default(autoincrement())
+  slug              String     @unique(map: "Game_slug_key") @db.VarChar(128)
+  title             String     @db.VarChar(256)
+  embedPath         String?    @db.VarChar(512)
+  thumbnail         String?    @db.VarChar(512)
+  previewVideo      String?    @db.VarChar(512)
+  description       String?    @db.Text
+  metaTitle         String?    @db.VarChar(256)
+  metaDescription   String?    @db.VarChar(512)
+  featured          Boolean    @default(false)
   releasedAt        DateTime?
-  status            GameStatus   @default(draft)
+  status            GameStatus @default(draft)
   primaryCategoryId Int?
   addedAt           DateTime?
-  createdAt         DateTime     @default(now())
-  updatedAt         DateTime     @updatedAt
+  createdAt         DateTime   @default(now())
+  updatedAt         DateTime   @updatedAt
 
-  primaryCategory Category?      @relation("PrimaryCategory", fields: [primaryCategoryId], references: [id], onDelete: SetNull)
+  primaryCategory Category?          @relation("PrimaryCategory", fields: [primaryCategoryId], references: [id], onDelete: SetNull)
   categories      GameCategory[]
   reports         GameReport[]
   playEvents      PlayEvent[]
@@ -189,7 +189,7 @@ model User {
   developerProfile Developer?
   auditLogs        AuditLog[]
   playEvents       PlayEvent[]
-  reportsSubmitted GameReport[] @relation("ReportSubmitter")
+  reportsSubmitted GameReport[]       @relation("ReportSubmitter")
   gameProgress     UserGameProgress[]
 
   @@index([role])
@@ -260,6 +260,124 @@ model PlayEvent {
 
   @@index([gameId, createdAt])
   @@index([userId])
+  @@index([createdAt])
+}
+
+model AnalyticsVisitor {
+  id           String   @id @db.VarChar(36)
+  firstSeenAt  DateTime @default(now())
+  lastSeenAt   DateTime @default(now())
+  sessionCount Int      @default(0)
+
+  sessions AnalyticsSession[]
+
+  @@index([firstSeenAt])
+  @@index([lastSeenAt])
+}
+
+model AnalyticsSession {
+  id               String    @id @db.VarChar(36)
+  visitorId        String    @db.VarChar(36)
+  startedAt        DateTime  @default(now())
+  lastSeenAt       DateTime  @default(now())
+  endedAt          DateTime?
+  activeDurationMs Int       @default(0)
+  pageViewCount    Int       @default(0)
+  eventCount       Int       @default(0)
+  engaged          Boolean   @default(false)
+  landingPage      String    @db.VarChar(768)
+  exitPage         String?   @db.VarChar(768)
+  currentPage      String    @db.VarChar(768)
+  currentPageViewId String?  @db.VarChar(36)
+  previousPage     String?   @db.VarChar(768)
+  currentGameId    Int?
+  currentGameSlug  String?   @db.VarChar(128)
+  referrer         String?   @db.VarChar(768)
+  sourceCategory   String    @default("direct") @db.VarChar(32)
+  source           String?   @db.VarChar(128)
+  medium           String?   @db.VarChar(128)
+  campaign         String?   @db.VarChar(255)
+  term             String?   @db.VarChar(255)
+  content          String?   @db.VarChar(255)
+  country          String?   @db.Char(2)
+  deviceType       String    @default("unknown") @db.VarChar(16)
+  browser          String    @default("Unknown") @db.VarChar(64)
+  operatingSystem  String    @default("Unknown") @db.VarChar(64)
+  screenWidth      Int?
+  screenHeight     Int?
+
+  visitor   AnalyticsVisitor    @relation(fields: [visitorId], references: [id], onDelete: Cascade)
+  pageViews AnalyticsPageView[]
+  events    AnalyticsEvent[]
+
+  @@index([visitorId, startedAt])
+  @@index([startedAt])
+  @@index([lastSeenAt])
+  @@index([currentPageViewId])
+  @@index([sourceCategory, startedAt])
+  @@index([country, startedAt])
+  @@index([deviceType, startedAt])
+  @@index([browser, startedAt])
+  @@index([landingPage(length: 191), startedAt])
+  @@index([exitPage(length: 191), startedAt])
+  @@index([currentGameId, lastSeenAt])
+}
+
+model AnalyticsPageView {
+  id                     String    @id @db.VarChar(36)
+  sessionId              String    @db.VarChar(36)
+  visitorId              String    @db.VarChar(36)
+  path                   String    @db.VarChar(768)
+  title                  String?   @db.VarChar(512)
+  referrer               String?   @db.VarChar(768)
+  previousPath           String?   @db.VarChar(768)
+  nextPath               String?   @db.VarChar(768)
+  gameId                 Int?
+  gameSlug               String?   @db.VarChar(128)
+  startedAt              DateTime  @default(now())
+  lastSeenAt             DateTime  @default(now())
+  endedAt                DateTime?
+  activeDurationMs       Int       @default(0)
+  isEntrance             Boolean   @default(false)
+  isExit                 Boolean   @default(true)
+  loadTimeMs             Int?
+  domContentLoadedMs     Int?
+  firstContentfulMs      Int?
+  largestContentfulMs    Int?
+  cumulativeLayoutShift  Float?
+  interactionNextPaintMs Int?
+
+  session AnalyticsSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  @@index([sessionId, startedAt])
+  @@index([visitorId, startedAt])
+  @@index([path(length: 191), startedAt])
+  @@index([gameId, startedAt])
+  @@index([isEntrance, startedAt])
+  @@index([isExit, startedAt])
+  @@index([startedAt])
+}
+
+model AnalyticsEvent {
+  id         String   @id @db.VarChar(36)
+  sessionId  String   @db.VarChar(36)
+  visitorId  String   @db.VarChar(36)
+  pageViewId String?  @db.VarChar(36)
+  eventName  String   @db.VarChar(64)
+  pagePath   String   @db.VarChar(768)
+  gameId     Int?
+  gameSlug   String?  @db.VarChar(128)
+  durationMs Int?
+  metadata   Json?
+  createdAt  DateTime @default(now())
+
+  session AnalyticsSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  @@index([eventName, createdAt])
+  @@index([sessionId, createdAt])
+  @@index([visitorId, createdAt])
+  @@index([gameId, createdAt])
+  @@index([pagePath(length: 191), createdAt])
   @@index([createdAt])
 }
 

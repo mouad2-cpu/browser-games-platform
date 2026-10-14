@@ -6,15 +6,40 @@ type Props = {
   currentPath: string;
   role: Role;
   username: string;
+  mobileOpen: boolean;
+  onNavigate: () => void;
 };
 
-export function AdminSidebar({ currentPath, role, username }: Props) {
+export function AdminSidebar({
+  currentPath,
+  role,
+  username,
+  mobileOpen,
+  onNavigate,
+}: Props) {
   const nav = getNavForRole(role);
 
   return (
-    <aside className="flex w-60 shrink-0 flex-col border-r border-[var(--color-border)] bg-[var(--color-surface)]">
+    <>
+      {mobileOpen && (
+        <button
+          type="button"
+          className="fixed inset-0 z-40 bg-black/70 lg:hidden"
+          aria-label="Close admin navigation"
+          onClick={onNavigate}
+        />
+      )}
+      <aside
+        className={`fixed inset-y-0 left-0 z-50 flex w-60 shrink-0 flex-col border-r border-[var(--color-border)] bg-[var(--color-surface)] transition-transform lg:static lg:z-auto lg:translate-x-0 ${
+          mobileOpen ? "translate-x-0" : "-translate-x-full"
+        }`}
+      >
       <div className="border-b border-[var(--color-border)] p-4">
-        <Link href="/" className="text-sm font-bold text-[var(--color-accent)]">
+        <Link
+          href="/"
+          onClick={onNavigate}
+          className="text-sm font-bold text-[var(--color-accent)]"
+        >
           BrowserGames
         </Link>
         <p className="mt-1 text-xs text-[var(--color-muted)]">Control Center</p>
@@ -33,6 +58,7 @@ export function AdminSidebar({ currentPath, role, username }: Props) {
               <li key={item.href}>
                 <Link
                   href={item.href}
+                  onClick={onNavigate}
                   className={`block rounded-lg px-3 py-2 text-sm transition ${
                     active
                       ? "bg-[var(--color-accent)] text-white"
@@ -47,6 +73,7 @@ export function AdminSidebar({ currentPath, role, username }: Props) {
                       <li key={child.href}>
                         <Link
                           href={child.href}
+                          onClick={onNavigate}
                           className={`block rounded px-2 py-1 text-xs transition ${
                             currentPath === child.href
                               ? "text-[var(--color-accent)]"
@@ -67,11 +94,13 @@ export function AdminSidebar({ currentPath, role, username }: Props) {
       <div className="border-t border-[var(--color-border)] p-3">
         <Link
           href="/"
+          onClick={onNavigate}
           className="block rounded-lg px-3 py-2 text-sm text-[var(--color-muted)] hover:text-[var(--color-text)]"
         >
           ← Back to site
         </Link>
       </div>
-    </aside>
+      </aside>
+    </>
   );
 }

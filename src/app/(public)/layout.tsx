@@ -2,6 +2,7 @@ import { getSession } from "@/lib/auth";
 import { getAllCategories } from "@/lib/categories";
 import { getMenuPagesForNav } from "@/lib/menu-pages";
 import { PublicShell } from "@/components/layout/public-shell";
+import { AnalyticsTracker } from "@/components/analytics/analytics-tracker";
 
 export default async function PublicLayout({
   children,
@@ -31,6 +32,7 @@ export default async function PublicLayout({
       >
         {children}
       </PublicShell>
+      <AnalyticsTracker />
     </div>
   );
 }

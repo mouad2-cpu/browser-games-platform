@@ -1,18 +1,33 @@
 "use client";
 
+import { useEffect } from "react";
 import type { GameCard } from "@/lib/games";
 import { useLanguage } from "@/components/layout/language-provider";
 import { GameGrid } from "@/components/game/game-grid";
+import { trackAnalyticsEvent } from "@/lib/analytics/client";
 
 type Props = {
   games: GameCard[];
   query: string;
+  totalResults: number;
 };
 
-export function SearchPageView({ games, query }: Props) {
+export function SearchPageView({ games, query, totalResults }: Props) {
   const { t, messages } = useLanguage();
-  const total = games.length;
+  const total = totalResults;
   const unit = total === 1 ? messages.common.game : messages.common.games;
+
+  useEffect(() => {
+    if (!query) return;
+    trackAnalyticsEvent({
+      name: "search",
+      metadata: {
+        query: query.slice(0, 120),
+        resultCount: totalResults,
+        zeroResults: totalResults === 0,
+      },
+    });
+  }, [query, totalResults]);
 
   return (
     <div className="px-4 py-8">

@@ -6,12 +6,15 @@
     "dev": "prisma generate && next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "eslint .",
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate dev",
     "db:seed": "tsx prisma/seed.ts",
     "db:seed-gamesnacks-drafts": "tsx prisma/seed-gamesnacks-drafts.ts",
     "db:studio": "prisma studio",
+    "analytics:smoke": "tsx src/lib/analytics/validate.smoke.ts",
+    "analytics:integration": "tsx src/lib/analytics/integration.smoke.ts",
+    "analytics:retention": "tsx src/scripts/analytics-retention.ts",
     "postinstall": "prisma generate"
   },
   "dependencies": {

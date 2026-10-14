@@ -36,10 +36,10 @@ export default async function SearchPage({ searchParams }: Props) {
   const page = Math.max(1, parseInt(pageParam ?? "1", 10) || 1);
 
   if (!query) {
-    return <SearchPageView games={[]} query="" />;
+    return <SearchPageView games={[]} query="" totalResults={0} />;
   }
 
-  const { games } = await searchGames(query, page);
+  const { games, total } = await searchGames(query, page);
 
-  return <SearchPageView games={games} query={query} />;
+  return <SearchPageView games={games} query={query} totalResults={total} />;
 }

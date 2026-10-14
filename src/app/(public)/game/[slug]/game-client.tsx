@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { GamePlayer } from "@/components/game/game-player";
@@ -28,6 +28,7 @@ import {
   RECENT_GAMES_COOKIE,
   serializeRecentGameSlugs,
 } from "@/lib/recent-games";
+import { trackAnalyticsEvent } from "@/lib/analytics/client";
 
 type Props = {
   game: GameDetail;
@@ -52,8 +53,13 @@ export function GameClient({
   const [isReportOpen, setIsReportOpen] = useState(false);
   const [voteStats, setVoteStats] = useState(initialVoteStats);
   const playRecorded = useRef(false);
+  const gameSessionStarted = useRef(false);
+  const gameSessionEnded = useRef(false);
+  const gameActiveMs = useRef(0);
+  const gameLastClock = useRef(0);
+  const gameWasActive = useRef(true);
 
-  function rememberRecentGame() {
+  const rememberRecentGame = useCallback(() => {
     const match = document.cookie.match(new RegExp(`${RECENT_GAMES_COOKIE}=([^;]+)`));
     const current = parseRecentGameSlugs(match?.[1]);
     const next = appendRecentGameSlug(current, game.slug);
@@ -64,15 +70,86 @@ export function GameClient({
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ gameId: game.id }),
     }).catch(() => {});
-  }
+  }, [game.id, game.slug]);
 
   useEffect(() => {
     rememberRecentGame();
-  }, [game.slug]);
+  }, [rememberRecentGame]);
+
+  useEffect(() => {
+    trackAnalyticsEvent({
+      name: "game_view",
+      gameId: game.id,
+      gameSlug: game.slug,
+    });
+
+    function accrueGameTime() {
+      if (!gameSessionStarted.current) return;
+      const now = performance.now();
+      if (gameWasActive.current) {
+        gameActiveMs.current += Math.max(now - gameLastClock.current, 0);
+      }
+      gameLastClock.current = now;
+    }
+
+    function updateVisibility() {
+      accrueGameTime();
+      gameWasActive.current =
+        document.visibilityState === "visible" && document.hasFocus();
+    }
+
+    function endGameSession() {
+      if (!gameSessionStarted.current || gameSessionEnded.current) return;
+      accrueGameTime();
+      gameSessionEnded.current = true;
+      const durationMs = Math.round(gameActiveMs.current);
+      trackAnalyticsEvent({
+        name: "game_exit",
+        gameId: game.id,
+        gameSlug: game.slug,
+        durationMs,
+      });
+      trackAnalyticsEvent({
+        name: "game_session_end",
+        gameId: game.id,
+        gameSlug: game.slug,
+        durationMs,
+      });
+    }
+
+    document.addEventListener("visibilitychange", updateVisibility);
+    window.addEventListener("focus", updateVisibility);
+    window.addEventListener("blur", updateVisibility);
+    window.addEventListener("pagehide", endGameSession);
+
+    return () => {
+      endGameSession();
+      document.removeEventListener("visibilitychange", updateVisibility);
+      window.removeEventListener("focus", updateVisibility);
+      window.removeEventListener("blur", updateVisibility);
+      window.removeEventListener("pagehide", endGameSession);
+    };
+  }, [game.id, game.slug]);
 
   async function handlePlay() {
     if (playRecorded.current) return;
     playRecorded.current = true;
+    gameSessionStarted.current = true;
+    gameSessionEnded.current = false;
+    gameActiveMs.current = 0;
+    gameLastClock.current = performance.now();
+    gameWasActive.current =
+      document.visibilityState === "visible" && document.hasFocus();
+    trackAnalyticsEvent({
+      name: "game_start",
+      gameId: game.id,
+      gameSlug: game.slug,
+    });
+    trackAnalyticsEvent({
+      name: "game_session_start",
+      gameId: game.id,
+      gameSlug: game.slug,
+    });
     rememberRecentGame();
 
     try {

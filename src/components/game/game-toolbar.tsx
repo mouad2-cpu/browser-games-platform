@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useLanguage } from "@/components/layout/language-provider";
 import type { GameVoteStats } from "@/lib/game-votes-shared";
+import { trackAnalyticsEvent } from "@/lib/analytics/client";
 
 type Props = {
   gameId: number;
@@ -46,11 +47,13 @@ export function GameToolbar({
     if (navigator.share) {
       try {
         await navigator.share({ title, url: gameUrl });
+        trackAnalyticsEvent({ name: "share", gameId });
       } catch {
         /* user cancelled */
       }
     } else {
       await navigator.clipboard.writeText(gameUrl);
+      trackAnalyticsEvent({ name: "share", gameId });
     }
   }
 

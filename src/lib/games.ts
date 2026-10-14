@@ -420,10 +420,10 @@ export async function getRelatedGames(
 
 export async function recordPlay(
   gameId: number,
-  opts?: { userId?: string; ip?: string }
+  opts?: { userId?: string }
 ): Promise<void> {
   await prisma.playEvent.create({
-    data: { gameId, userId: opts?.userId, ip: opts?.ip },
+    data: { gameId, userId: opts?.userId },
   });
 
   if (opts?.userId) {
