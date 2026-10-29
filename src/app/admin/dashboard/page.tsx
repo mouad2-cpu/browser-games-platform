@@ -9,13 +9,32 @@ export default async function DashboardPage() {
       <h1 className="mb-2 text-2xl font-bold">Dashboard</h1>
       <p className="mb-6 text-sm text-[var(--color-muted)]">
         Platform overview — content, users, revenue, and safety at a glance.
+        Today&apos;s traffic counts use the same UTC day boundaries as Analytics.
       </p>
 
       <div className="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard label="Total Games" value={stats.totalGames} href="/admin/games" />
         <StatCard label="Total Users" value={stats.totalUsers} href="/admin/users" />
-        <StatCard label="Daily Active Users" value={stats.dailyActiveUsers} />
-        <StatCard label="Plays Today" value={stats.playsToday} href="/admin/analytics" />
+        <StatCard
+          label="Visitors Today"
+          value={stats.visitorsToday}
+          subtitle="Consented analytics (unique IDs)"
+          href="/admin/analytics?range=today"
+        />
+        <StatCard
+          label="Plays Today"
+          value={stats.playsToday}
+          subtitle="Game iframe loads (all visitors)"
+          href="/admin/analytics?range=today"
+        />
+      </div>
+
+      <div className="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <StatCard
+          label="Logged-in Players Today"
+          value={stats.dailyActiveUsers}
+          subtitle="Accounts with at least one play today (UTC)"
+        />
       </div>
 
       <div className="mb-8 grid gap-4 sm:grid-cols-3">

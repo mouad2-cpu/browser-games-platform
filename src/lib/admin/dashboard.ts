@@ -1,19 +1,18 @@
+import { getAnalyticsPeriodSummary } from "@/lib/analytics/dashboard";
+import { resolveAnalyticsRange } from "@/lib/analytics/range";
 import { prisma } from "@/lib/db";
 import { GameStatus } from "@prisma/client";
 
-function startOfToday() {
-  const d = new Date();
-  d.setHours(0, 0, 0, 0);
-  return d;
-}
-
 export async function getDashboardStats() {
-  const today = startOfToday();
+  const todayRange = resolveAnalyticsRange({ range: "today" });
+  const todayStart = todayRange.start;
+  const todayEnd = todayRange.end;
 
   const [
     totalGames,
     totalUsers,
     playsToday,
+    visitorsToday,
     openReports,
     pendingUploads,
     pendingModeration,
@@ -22,7 +21,12 @@ export async function getDashboardStats() {
   ] = await Promise.all([
     prisma.game.count(),
     prisma.user.count({ where: { role: "USER" } }),
-    prisma.playEvent.count({ where: { createdAt: { gte: today } } }),
+    prisma.playEvent.count({
+      where: { createdAt: { gte: todayStart, lt: todayEnd } },
+    }),
+    getAnalyticsPeriodSummary(todayStart, todayEnd).then(
+      (summary) => summary.visitors
+    ),
     prisma.gameReport.count({ where: { status: "OPEN" } }),
     prisma.gameUpload.count({ where: { status: "PENDING" } }),
     prisma.moderationFlag.count({ where: { status: "PENDING" } }),
@@ -39,7 +43,10 @@ export async function getDashboardStats() {
     }),
     prisma.playEvent.groupBy({
       by: ["userId"],
-      where: { createdAt: { gte: today }, userId: { not: null } },
+      where: {
+        createdAt: { gte: todayStart, lt: todayEnd },
+        userId: { not: null },
+      },
     }),
   ]);
 
@@ -58,6 +65,7 @@ export async function getDashboardStats() {
     totalUsers,
     dailyActiveUsers: dailyActiveUsers.length,
     playsToday,
+    visitorsToday,
     revenueEstimate: Math.round(revenueEstimate * 100) / 100,
     openReports,
     pendingUploads,
