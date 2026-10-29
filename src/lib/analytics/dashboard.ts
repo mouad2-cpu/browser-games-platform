@@ -57,6 +57,13 @@ function compare(value: number, previous: number): ComparedMetric {
   };
 }
 
+export async function getAnalyticsPeriodSummary(
+  start: Date,
+  end: Date
+): Promise<Summary> {
+  return getSummary(start, end);
+}
+
 async function getSummary(start: Date, end: Date): Promise<Summary> {
   const [sessionRows, pageViews] = await Promise.all([
     prisma.$queryRaw<RawSummary[]>(Prisma.sql`
@@ -174,12 +181,13 @@ async function getRealtime(): Promise<{
     lastSeenAt: { gte: cutoff },
     endedAt: null,
   };
-  const [sessions, countRows] = await Promise.all([
+  const [sessionRows, countRows] = await Promise.all([
     prisma.analyticsSession.findMany({
       where,
       orderBy: { lastSeenAt: "desc" },
-      take: 100,
+      take: 500,
       select: {
+        visitorId: true,
         currentPage: true,
         currentGameSlug: true,
         deviceType: true,
@@ -195,9 +203,12 @@ async function getRealtime(): Promise<{
       WHERE lastSeenAt >= ${cutoff} AND endedAt IS NULL
     `),
   ]);
-  return {
-    activeVisitors: numberOf(countRows[0]?.count),
-    visitors: sessions.map((session) => ({
+  const seenVisitors = new Set<string>();
+  const visitors = [];
+  for (const session of sessionRows) {
+    if (seenVisitors.has(session.visitorId)) continue;
+    seenVisitors.add(session.visitorId);
+    visitors.push({
       currentPage: session.currentPage,
       game: session.currentGameSlug,
       device: session.deviceType,
@@ -205,7 +216,13 @@ async function getRealtime(): Promise<{
       source: sourceLabel(session.sourceCategory),
       sessionStartedAt: session.startedAt.toISOString(),
       lastSeenAt: session.lastSeenAt.toISOString(),
-    })),
+    });
+    if (visitors.length >= 100) break;
+  }
+
+  return {
+    activeVisitors: numberOf(countRows[0]?.count),
+    visitors,
   };
 }
 

@@ -245,7 +245,7 @@ export function AnalyticsDashboard({ initialData }: Props) {
         <SectionHeading
           id="traffic-chart"
           title="Traffic overview"
-          note="Visitors, sessions, and page views by day"
+          note="Daily unique visitors (a visitor active on multiple days is counted once per day; the overview total deduplicates across the whole period)"
         />
         <TrafficChart points={data.series} />
       </Panel>
@@ -254,8 +254,8 @@ export function AnalyticsDashboard({ initialData }: Props) {
         <Panel className="xl:col-span-2">
           <SectionHeading
             id="realtime"
-            title="Real-time visitors"
-            note={`${data.overview.activeVisitors.toLocaleString()} active in the last 2 minutes`}
+            title="Real-time activity"
+            note={`${data.overview.activeVisitors.toLocaleString()} unique visitors active in the last 2 minutes (one row per visitor)`}
           />
           <DataTable
             rows={data.realtime}
